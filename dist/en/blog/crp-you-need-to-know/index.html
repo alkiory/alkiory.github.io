@@ -1,0 +1,211 @@
+<!DOCTYPE html><html data-astro-cid-37fxchfa> <head><meta charset="UTF-8"><meta name="description" property="og:description" content="CRP that we usually use and we don´t know we use it 🧐.
+"><meta name="viewport" content="width=device-width"><meta name="generator" content="Astro v5.8.0"><title>CRP (Critical Rendering Path) you need to know</title><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,700;1,400&family=Rubik:wght@500;600&display=swap" rel="stylesheet"><script>
+  // This code is inlined in the head to make dark mode instant & blocking.
+  const getThemePreference = () => {
+    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+      return localStorage.getItem("theme");
+    }
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  };
+  const isDark = getThemePreference() === "dark";
+  document.documentElement.classList[isDark ? "add" : "remove"]("theme-dark");
+
+  if (typeof localStorage !== "undefined") {
+    // Watch the document element and persist user preference when it changes.
+    const observer = new MutationObserver(() => {
+      const isDark = document.documentElement.classList.contains("theme-dark");
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+  }
+</script><style>.hero[data-astro-cid-ezj6hheb]{font-size:var(--text-lg);text-align:center}.title[data-astro-cid-ezj6hheb],.tagline[data-astro-cid-ezj6hheb]{max-width:37ch;margin-inline:auto}.title[data-astro-cid-ezj6hheb]{font-size:var(--text-3xl);color:var(--gray-0)}@media (min-width: 50em){.hero[data-astro-cid-ezj6hheb]{font-size:var(--text-xl)}.start[data-astro-cid-ezj6hheb]{text-align:start}.start[data-astro-cid-ezj6hheb] .title[data-astro-cid-ezj6hheb],.start[data-astro-cid-ezj6hheb] .tagline[data-astro-cid-ezj6hheb]{margin-inline:unset}.title[data-astro-cid-ezj6hheb]{font-size:var(--text-5xl)}}
+.pill[data-astro-cid-spvl7h2n]{display:flex;padding:.5rem 1rem;gap:.5rem;color:var(--gray-0);border:1px solid var(--accent-light);border-radius:999rem;background-color:var(--accent-light);font-size:var(--text-md);line-height:1.35;white-space:nowrap}.glow-on-hover[data-astro-cid-spvl7h2n]{height:50px;outline:none;position:relative;z-index:0;border-radius:10px}.glow-on-hover[data-astro-cid-spvl7h2n]:before{content:"";background:linear-gradient(45deg,red,#ff7300,#fffb00,#48ff00,#00ffd5,#002bff,#7a00ff,#ff00c8,red);position:absolute;top:-2px;left:-2px;background-size:400%;z-index:-1;filter:blur(5px);width:calc(100% + 4px);height:calc(100% + 4px);animation:glowing 20s linear infinite;opacity:0;transition:opacity .3s ease-in-out;border-radius:10px}.glow-on-hover[data-astro-cid-spvl7h2n]:active{color:var(--gray-999)}.glow-on-hover[data-astro-cid-spvl7h2n]:active:after{background:transparent}.glow-on-hover[data-astro-cid-spvl7h2n]:hover:before{opacity:1}.glow-on-hover[data-astro-cid-spvl7h2n]:after{z-index:-1;content:"";position:absolute;width:100%;height:100%;background:var(--gray-900);left:0;top:0;border-radius:10px}@keyframes glowing{0%{background-position:0 0}50%{background-position:400% 0}to{background-position:0 0}}
+</style>
+<link rel="stylesheet" href="/_astro/about.DGhyHRUA.css">
+<style>header[data-astro-cid-p32sffdo]{padding-bottom:2.5rem;border-bottom:1px solid var(--gray-800)}.back-link[data-astro-cid-p32sffdo]{display:none}.details[data-astro-cid-p32sffdo]{display:flex;flex-direction:column;padding:.5rem;gap:1.5rem;justify-content:space-between;align-items:center}.tags[data-astro-cid-p32sffdo]{display:flex;gap:.5rem;flex-wrap:wrap}.description[data-astro-cid-p32sffdo]{font-size:var(--text-lg);max-width:54ch}.image[data-astro-cid-p32sffdo]{width:70%;margin-inline:auto}.content[data-astro-cid-p32sffdo]{max-width:110ch;margin-inline:auto}.content[data-astro-cid-p32sffdo]>*+*{margin-top:1rem}.content[data-astro-cid-p32sffdo] h1,.content[data-astro-cid-p32sffdo] h2,.content[data-astro-cid-p32sffdo] h3,.content[data-astro-cid-p32sffdo] h4,.content[data-astro-cid-p32sffdo] h5{margin:1.5rem 0}.content[data-astro-cid-p32sffdo] img{border-radius:1.5rem;box-shadow:var(--shadow-sm);background:var(--gradient-subtle);border:1px solid var(--gray-800)}.content[data-astro-cid-p32sffdo] blockquote{font-size:var(--text-lg);font-family:var(--font-brand);font-weight:600;line-height:1.1;padding-inline-start:1.5rem;border-inline-start:.25rem solid var(--accent-dark);color:var(--gray-0)}.back-link[data-astro-cid-p32sffdo],.content[data-astro-cid-p32sffdo] a{text-decoration:1px solid underline transparent;text-underline-offset:.25em;transition:text-decoration-color var(--theme-transition)}.back-link[data-astro-cid-p32sffdo]:hover,.back-link[data-astro-cid-p32sffdo]:focus,.content[data-astro-cid-p32sffdo] a:hover,.content[data-astro-cid-p32sffdo] a:focus{text-decoration-color:currentColor}@media (min-width: 50em){.back-link[data-astro-cid-p32sffdo]{display:block;align-self:flex-start}.details[data-astro-cid-p32sffdo]{flex-direction:row;gap:2.5rem}.content[data-astro-cid-p32sffdo] blockquote{font-size:var(--text-2xl)}}
+</style></head> <body data-astro-cid-37fxchfa> <div class="stack backgrounds" data-astro-cid-37fxchfa> <nav data-astro-cid-dmqpwcec> <div class="menu-header" data-astro-cid-dmqpwcec> <a href="/" class="site-title" data-astro-cid-dmqpwcec> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="url(#icon-gradient-39q4nr4wk)" style="--size:1.6em" class="astro-3l2o4qys" data-astro-cid-3l2o4qys> <g data-astro-cid-3l2o4qys><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="m80 96 40 32-40 32m56 0h40"/><rect width="192" height="160" x="32" y="48" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16.97" rx="8.5"/></g> <linearGradient id="icon-gradient-39q4nr4wk" x1="23" x2="235" y1="43" y2="202" gradientUnits="userSpaceOnUse" data-astro-cid-3l2o4qys> <stop stop-color="var(--gradient-stop-1)" data-astro-cid-3l2o4qys></stop> <stop offset=".5" stop-color="var(--gradient-stop-2)" data-astro-cid-3l2o4qys></stop> <stop offset="1" stop-color="var(--gradient-stop-3)" data-astro-cid-3l2o4qys></stop> </linearGradient> </svg>  <span class="alkiory-dev" data-astro-cid-dmqpwcec>Alkiory Dev</span> </a> <menu-button data-astro-cid-dmqpwcec="true"> <template data-astro-cid-dmqpwcec> <button class="menu-button" aria-expanded="false" data-astro-cid-dmqpwcec> <span class="sr-only" data-astro-cid-dmqpwcec>Menu</span> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="currentcolor" class="astro-3l2o4qys" data-astro-cid-3l2o4qys> <g data-astro-cid-3l2o4qys><path stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="M40 128h176M40 64h176M40 192h176"/></g>  </svg>  </button> </template> </menu-button> </div> <div id="menu-content" data-astro-cid-dmqpwcec> <ul class="nav-items" data-astro-cid-dmqpwcec> <li data-astro-cid-dmqpwcec> <a aria-current="false" class="link" href="/en/" data-astro-cid-dmqpwcec> Home </a> </li><li data-astro-cid-dmqpwcec> <a aria-current="false" class="link" href="/en/portfolio" data-astro-cid-dmqpwcec> Portfolio </a> </li><li data-astro-cid-dmqpwcec> <a aria-current="false" class="link active" href="/en/blog" data-astro-cid-dmqpwcec> Blog </a> </li><li data-astro-cid-dmqpwcec> <a aria-current="false" class="link" href="/en/about" data-astro-cid-dmqpwcec> About </a> </li><li data-astro-cid-dmqpwcec> <a aria-current="false" class="link" href="/en/contact" data-astro-cid-dmqpwcec> Contact </a> </li> </ul> <div class="menu-footer" data-astro-cid-dmqpwcec> <div class="socials" data-astro-cid-dmqpwcec> <a href="https://twitter.com/alkiory" class="social" target="_blank" data-astro-cid-dmqpwcec> <span class="sr-only" data-astro-cid-dmqpwcec>Twitter</span> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="currentcolor" class="astro-3l2o4qys" data-astro-cid-3l2o4qys> <g data-astro-cid-3l2o4qys><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="M128 88c0-22 18.5-40.3 40.5-40a40 40 0 0 1 36.2 24H240l-32.3 32.3A127.9 127.9 0 0 1 80 224c-32 0-40-12-40-12s32-12 48-36c0 0-64-32-48-120 0 0 40 40 88 48Z"/></g>  </svg>  </a><a href="https://github.com/alkiory" class="social" target="_blank" data-astro-cid-dmqpwcec> <span class="sr-only" data-astro-cid-dmqpwcec>GitHub</span> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="currentcolor" class="astro-3l2o4qys" data-astro-cid-3l2o4qys> <g data-astro-cid-3l2o4qys><g stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke-width="14.7" d="M55.7 167.2c13.9 1 21.3 13.1 22.2 14.6 4.2 7.2 10.4 9.6 18.3 7.1l1.1-3.4a60.3 60.3 0 0 1-25.8-11.9c-12-10.1-18-25.6-18-46.3"/><path fill="none" stroke-width="16" d="M61.4 205.1a24.5 24.5 0 0 1-3-6.1c-3.2-7.9-7.1-10.6-7.8-11.1l-1-.6c-2.4-1.6-9.5-6.5-7.2-13.9 1.4-4.5 6-7.2 12.3-7.2h.8c4 .3 7.6 1.5 10.7 3.2-9.1-10.1-13.6-24.3-13.6-42.3 0-11.3 3.5-21.7 10.1-30.4A46.7 46.7 0 0 1 65 67.3a8.3 8.3 0 0 1 5-4.7c2.8-.9 13.3-2.7 33.2 9.9a105 105 0 0 1 50.5 0c19.9-12.6 30.4-10.8 33.2-9.9 2.3.7 4.1 2.4 5 4.7 5 12.7 4 23.2 2.6 29.4 6.7 8.7 10 18.9 10 30.4 0 42.6-25.8 54.7-43.6 58.7 1.4 4.1 2.2 8.8 2.2 13.7l-.1 23.4v2.3"/><path fill="none" stroke-width="16" d="M160.9 185.7c1.4 4.1 2.2 8.8 2.2 13.7l-.1 23.4v2.3A98.6 98.6 0 1 0 61.4 205c-1.4-2.1-11.3-17.5-11.8-17.8-2.4-1.6-9.5-6.5-7.2-13.9 1.4-4.5 6-7.2 12.3-7.2h.8c4 .3 7.6 1.5 10.7 3.2-9.1-10.1-13.6-24.3-13.6-42.3 0-11.3 3.5-21.7 10.1-30.4A46.4 46.4 0 0 1 65 67.3a8.3 8.3 0 0 1 5-4.7c2.8-.9 13.3-2.7 33.2 9.9a105 105 0 0 1 50.5 0c19.9-12.6 30.4-10.8 33.2-9.9 2.3.7 4.1 2.4 5 4.7 5 12.7 4 23.2 2.6 29.4 6.7 8.7 10 18.9 10 30.4.1 42.6-25.8 54.7-43.6 58.6z"/><path fill="none" stroke-width="18.7" d="m170.1 203.3 17.3-12 17.2-18.7 9.5-26.6v-27.9l-9.5-27.5" /><path fill="none" stroke-width="22.7" d="m92.1 57.3 23.3-4.6 18.7-1.4 29.3 5.4m-110 32.6-8 16-4 21.4.6 20.3 3.4 13" /><path fill="none" stroke-width="13.3" d="M28.8 133a100 100 0 0 0 66.9 94.4v-8.7c-22.4 1.8-33-11.5-35.6-19.8-3.4-8.6-7.8-11.4-8.5-11.8"/></g></g>  </svg>  </a><a href="https://codepen.io/sergiocampbell" class="social" target="_blank" data-astro-cid-dmqpwcec> <span class="sr-only" data-astro-cid-dmqpwcec>CodePen</span> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="currentcolor" class="astro-3l2o4qys" data-astro-cid-3l2o4qys> <g data-astro-cid-3l2o4qys><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="m232 101-104 59-104-59 100.1-56.8a8.3 8.3 0 0 1 7.8 0Z"/><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="m232 165-100.1 56.8a8.3 8.3 0 0 1-7.8 0L24 165l104-59Zm0-64v64M24 101v64m104-5v62.8m0-179.6V106"/></g>  </svg>  </a><a href="https://www.youtube.com/@iamsergiocampbell" class="social" target="_blank" data-astro-cid-dmqpwcec> <span class="sr-only" data-astro-cid-dmqpwcec>YouTube</span> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="currentcolor" class="astro-3l2o4qys" data-astro-cid-3l2o4qys> <g data-astro-cid-3l2o4qys><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="m160 128-48-32v64l48-32z"/><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="M24 128c0 30 3 47 5 56a16 16 0 0 0 10 11c34 13 89 13 89 13s56 0 89-13a16 16 0 0 0 10-11c2-9 5-26 5-56s-3-47-5-56a16 16 0 0 0-10-11c-33-13-89-13-89-13s-55 0-89 13a16 16 0 0 0-10 11c-2 9-5 26-5 56Z"/></g>  </svg>  </a><a href="https://www.linkedin.com/in/iamsergiocampbell" class="social" target="_blank" data-astro-cid-dmqpwcec> <span class="sr-only" data-astro-cid-dmqpwcec>Linkedin</span> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="currentcolor" class="astro-3l2o4qys" data-astro-cid-3l2o4qys> <g data-astro-cid-3l2o4qys><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="M216,26H40A14,14,0,0,0,26,40V216a14,14,0,0,0,14,14H216a14,14,0,0,0,14-14V40A14,14,0,0,0,216,26Zm2,190a2,2,0,0,1-2,2H40a2,2,0,0,1-2-2V40a2,2,0,0,1,2-2H216a2,2,0,0,1,2,2ZM94,112v64a6,6,0,0,1-12,0V112a6,6,0,0,1,12,0Zm88,28v36a6,6,0,0,1-12,0V140a22,22,0,0,0-44,0v36a6,6,0,0,1-12,0V112a6,6,0,0,1,12,0v2.11A34,34,0,0,1,182,140ZM98,84A10,10,0,1,1,88,74,10,10,0,0,1,98,84Z"></path></g>  </svg>  </a> </div> <div class="theme-toggle gap-2" data-astro-cid-dmqpwcec> <theme-toggle data-astro-cid-lsq6jxtd="true"> <button data-astro-cid-lsq6jxtd> <span class="sr-only" data-astro-cid-lsq6jxtd>Dark theme</span> <span class="icon light" data-astro-cid-lsq6jxtd><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="currentcolor" class="astro-3l2o4qys" data-astro-cid-3l2o4qys> <g data-astro-cid-3l2o4qys><circle cx="128" cy="128" r="60" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="M128 36V16M63 63 49 49m-13 79H16m47 65-14 14m79 13v20m65-47 14 14m13-79h20m-47-65 14-14"/></g>  </svg> </span> <span class="icon dark" data-astro-cid-lsq6jxtd><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="currentcolor" class="astro-3l2o4qys" data-astro-cid-3l2o4qys> <g data-astro-cid-3l2o4qys><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="M216 112V64m24 24h-48m-24-64v32m16-16h-32m65 113A92 92 0 0 1 103 39h0a92 92 0 1 0 114 114Z"/></g>  </svg> </span> </button> </theme-toggle>  <script type="module">class n extends HTMLElement{constructor(){super();const e=this.querySelector("button"),t=s=>{document.documentElement.classList[s?"add":"remove"]("theme-dark"),e.setAttribute("aria-pressed",String(s))};e.addEventListener("click",()=>t(!this.isDark())),t(this.isDark())}isDark(){return document.documentElement.classList.contains("theme-dark")}}customElements.define("theme-toggle",n);</script> <a href="/es/blog/crp-you-need-to-know/" class="lang-switcher-button" data-astro-cid-su6xvggn> ES </a>  </div> </div> </div> </nav> <script type="module">class i extends HTMLElement{constructor(){super(),this.appendChild(this.querySelector("template").content.cloneNode(!0));const t=this.querySelector("button"),n=document.getElementById("menu-content");n.hidden=!0;const d=e=>{t.setAttribute("aria-expanded",e?"true":"false"),n.hidden=!e};t.addEventListener("click",()=>d(n.hidden));const s=e=>{d(e.matches),t.hidden=e.matches},c=window.matchMedia("(min-width: 50em)");s(c),c.addEventListener("change",s)}}customElements.define("menu-button",i);</script>   <div class="stack gap-20" data-astro-cid-p32sffdo> <div class="stack gap-15" data-astro-cid-p32sffdo> <header data-astro-cid-p32sffdo> <div class="wrapper stack gap-2" data-astro-cid-p32sffdo> <a class="flex items-center gap-1" href="/en/portfolio" data-astro-cid-p32sffdo><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="currentcolor" class="astro-3l2o4qys" data-astro-cid-3l2o4qys> <g data-astro-cid-3l2o4qys><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="M216 128H40m72-72-72 72 72 72"/></g>  </svg>  <span data-astro-cid-p32sffdo>Back</span></a> <header class="hero stack gap-4 center" data-astro-cid-ezj6hheb> <div class="stack gap-2" data-astro-cid-ezj6hheb> <h1 class="title" data-astro-cid-ezj6hheb>CRP (Critical Rendering Path) you need to know</h1>  </div>  <div class="details" data-astro-cid-p32sffdo> <div class="tags" data-astro-cid-p32sffdo> <div class="pill glow-on-hover" data-astro-cid-spvl7h2n>TypeScript</div> <div class="pill glow-on-hover" data-astro-cid-spvl7h2n>JavaScript</div> <div class="pill glow-on-hover" data-astro-cid-spvl7h2n>HTML</div> <div class="pill glow-on-hover" data-astro-cid-spvl7h2n>CSS</div> <div class="pill glow-on-hover" data-astro-cid-spvl7h2n>DOM</div>  </div> <p class="description" data-astro-cid-p32sffdo>CRP that we usually use and we don´t know we use it 🧐.
+</p> </div>  </header>  </div> </header> <article class="wrapper" data-astro-cid-p32sffdo> <div class="stack gap-10 content" data-astro-cid-p32sffdo> <img src="https://cdn.pixabay.com/photo/2023/11/29/14/15/forest-8419725_1280.jpg" alt="CRP (Critical Rendering Path) by sergio campbell dev" data-astro-cid-p32sffdo="true" width="1920" height="1080" loading="lazy" decoding="async" class="image"> <div class="content" data-astro-cid-p32sffdo> <h3 id="understanding-the-critical-rendering-path-crp-in-web-development">Understanding the Critical Rendering Path (CRP) in Web Development</h3>
+<hr>
+<p>The Critical Rendering Path (CRP) is a key concept in web performance optimization, focusing on how browsers convert HTML, CSS, and JavaScript into pixels on a screen. Understanding the CRP helps developers optimize their websites for faster load times and better user experiences. In this article, we’ll explore the CRP in detail, explain its components, and provide practical tips and resources for optimization.</p>
+<h3 id="what-is-the-critical-rendering-path">What is the Critical Rendering Path?</h3>
+<p>The Critical Rendering Path refers to the sequence of steps the browser takes to render a web page. This process involves:</p>
+<ol>
+<li><strong>Parsing HTML to create the Document Object Model (DOM).</strong></li>
+<li><strong>Parsing CSS to create the CSS Object Model (CSSOM).</strong></li>
+<li><strong>Combining the DOM and CSSOM to create the Render Tree.</strong></li>
+<li><strong>Calculating the layout of the elements on the page.</strong></li>
+<li><strong>Painting the pixels to the screen.</strong></li>
+</ol>
+<h3 id="steps-of-the-critical-rendering-path">Steps of the Critical Rendering Path</h3>
+<h4 id="1-parsing-html-and-building-the-dom">1. Parsing HTML and Building the DOM</h4>
+<p>The browser begins by parsing the HTML document to construct the DOM. The DOM is a tree-like structure that represents the content and structure of the web page.</p>
+<ul>
+<li>
+<p><strong>Example:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">html</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">head</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">>My Page&#x3C;/</span><span style="color:#85E89D">title</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">head</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">>Hello, World!&#x3C;/</span><span style="color:#85E89D">h1</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">>Welcome to my website.&#x3C;/</span><span style="color:#85E89D">p</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">body</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">html</span><span style="color:#E1E4E8">></span></span></code></pre>
+</li>
+<li>
+<p><strong>DOM Tree:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Document</span></span>
+<span class="line"><span>├── html</span></span>
+<span class="line"><span>    ├── head</span></span>
+<span class="line"><span>    │   └── title</span></span>
+<span class="line"><span>    │       └── My Page</span></span>
+<span class="line"><span>    └── body</span></span>
+<span class="line"><span>        ├── h1</span></span>
+<span class="line"><span>        │   └── Hello, World!</span></span>
+<span class="line"><span>        └── p</span></span>
+<span class="line"><span>            └── Welcome to my website.</span></span></code></pre>
+</li>
+</ul>
+<h4 id="2-parsing-css-and-building-the-cssom">2. Parsing CSS and Building the CSSOM</h4>
+<p>Simultaneously, the browser parses the CSS files to construct the CSSOM, which represents the styles applied to the DOM elements.</p>
+<ul>
+<li>
+<p><strong>Example:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#85E89D">body</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  font-family</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">Arial</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">sans-serif</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#85E89D">h1</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">  color</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">blue</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+</li>
+<li>
+<p><strong>CSSOM:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Stylesheet</span></span>
+<span class="line"><span>├── body</span></span>
+<span class="line"><span>│   └── font-family: Arial, sans-serif</span></span>
+<span class="line"><span>└── h1</span></span>
+<span class="line"><span>    └── color: blue</span></span></code></pre>
+</li>
+</ul>
+<h4 id="3-creating-the-render-tree">3. Creating the Render Tree</h4>
+<p>The browser combines the DOM and CSSOM to create the Render Tree, which represents the visual elements on the screen.</p>
+<ul>
+<li>
+<p><strong>Render Tree:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>RenderRoot</span></span>
+<span class="line"><span>├── RenderBody (font-family: Arial, sans-serif)</span></span>
+<span class="line"><span>    ├── RenderH1 (color: blue)</span></span>
+<span class="line"><span>    └── RenderP</span></span></code></pre>
+</li>
+</ul>
+<h4 id="4-layout">4. Layout</h4>
+<p>The browser calculates the layout of each element in the Render Tree, determining their size and position on the screen.</p>
+<ul>
+<li><strong>Example:</strong>
+<ul>
+<li>The browser determines the position and size of the <code>&#x3C;h1></code> and <code>&#x3C;p></code> elements based on the applied styles.</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-painting">5. Painting</h4>
+<p>Finally, the browser paints the pixels to the screen, rendering the visual representation of the web page.</p>
+<h3 id="optimizing-the-critical-rendering-path">Optimizing the Critical Rendering Path</h3>
+<p>Optimizing the CRP involves minimizing the time it takes for a browser to render the page. Here are some practical tips:</p>
+<h4 id="1-minimize-critical-resources">1. Minimize Critical Resources</h4>
+<ul>
+<li>
+<p><strong>Inline Critical CSS:</strong> Place critical CSS directly in the HTML <code>&#x3C;head></code> to reduce render-blocking resources.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">style</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#85E89D">  body</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    font-family</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">Arial</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">sans-serif</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#85E89D">  h1</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    color</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">blue</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">style</span><span style="color:#E1E4E8">></span></span></code></pre>
+</li>
+</ul>
+<h4 id="2-defer-non-essential-javascript">2. Defer Non-Essential JavaScript</h4>
+<ul>
+<li>
+<p><strong>Async and Defer Attributes:</strong> Use the <code>async</code> and <code>defer</code> attributes to load JavaScript files without blocking the rendering.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">script</span><span style="color:#B392F0"> src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"script.js"</span><span style="color:#B392F0"> defer</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">></span></span></code></pre>
+</li>
+</ul>
+<h4 id="3-optimize-css-delivery">3. Optimize CSS Delivery</h4>
+<ul>
+<li><strong>Critical CSS:</strong> Extract and inline only the critical CSS needed for above-the-fold content.
+<ul>
+<li>Tools like <a href="https://github.com/addyosmani/critical">Critical</a> can automate this process.</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-minimize-render-blocking-resources">4. Minimize Render-Blocking Resources</h4>
+<ul>
+<li>
+<p><strong>Load CSS First:</strong> Ensure CSS files are loaded before rendering content. Use the <code>&#x3C;link></code> tag with the <code>rel="stylesheet"</code> attribute in the <code>&#x3C;head></code>.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">link</span><span style="color:#B392F0"> rel</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"stylesheet"</span><span style="color:#B392F0"> href</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"styles.css"</span><span style="color:#E1E4E8">></span></span></code></pre>
+</li>
+</ul>
+<h3 id="tools-and-resources-for-crp-optimization">Tools and Resources for CRP Optimization</h3>
+<ul>
+<li>
+<p><strong>Lighthouse:</strong> Google’s Lighthouse tool provides performance audits and suggests optimizations, including CRP improvements.</p>
+<ul>
+<li><a href="https://developers.google.com/web/tools/lighthouse">Google Lighthouse</a></li>
+</ul>
+</li>
+<li>
+<p><strong>PageSpeed Insights:</strong> Google’s PageSpeed Insights analyzes the content of a web page and generates suggestions to make it faster.</p>
+<ul>
+<li><a href="https://developers.google.com/speed/pagespeed/insights/">PageSpeed Insights</a></li>
+</ul>
+</li>
+<li>
+<p><strong>WebPageTest:</strong> An open-source tool that provides detailed performance analysis, including CRP insights.</p>
+<ul>
+<li><a href="https://www.webpagetest.org/">WebPageTest</a></li>
+</ul>
+</li>
+<li>
+<p><strong>Critical:</strong> A Node.js module for extracting and inlining critical-path CSS.</p>
+<ul>
+<li><a href="https://github.com/addyosmani/critical">Critical on GitHub</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="in-summary">In summary</h3>
+<p>Understanding and optimizing the Critical Rendering Path is essential for enhancing web performance. By focusing on efficient HTML, CSS, and JavaScript delivery, you can ensure faster load times and a better user experience. Utilize the tools and techniques discussed to analyze and optimize your web pages, making them more responsive and user-friendly.</p>
+<hr>
+<p><em>Sources:</em></p>
+<ol>
+<li><a href="https://developers.google.com/web/fundamentals/performance/critical-rendering-path/">Google Developers: Critical Rendering Path</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model">MDN Web Docs: CSS Object Model (CSSOM)</a></li>
+<li><a href="https://developers.google.com/speed/docs/insights/OptimizeCSSDelivery">Google Developers: Optimize CSS Delivery</a></li>
+<li><a href="https://developers.google.com/web/tools/lighthouse">Lighthouse Documentation</a></li>
+<li><a href="https://developers.google.com/speed/pagespeed/insights/">PageSpeed Insights</a></li>
+<li><a href="https://www.webpagetest.org/">WebPageTest</a></li>
+<li><a href="https://github.com/addyosmani/critical">Critical GitHub Repository</a></li>
+</ol>
+<p>These resources provide in-depth information on CRP and tools for optimizing web performance.</p>
+<p><em>Together, we build better code!</em></p> </div> </div> </article> </div> </div>  <footer class="flex flex-col gap-12 mt-auto py-6 px-8 text-center text-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-slate-950 border-t border-gray-200 dark:border-gray-800"> <div class="flex flex-col md:flex-row md:justify-between md:items-center w-full max-w-7xl mx-auto"> <div class="group flex flex-col md:flex-row gap-2 md:gap-4 items-center justify-center md:justify-start"> <p class="flex items-center gap-1"> Made with ❤️ and ☕ by Alkiory | Built with <a href="https://astro.build/" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors underline underline-offset-2 decoration-transparent hover:decoration-current">
+Astro
+</a> <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 256" aria-hidden="true" stroke="currentcolor" style="--size:1.2em" class="astro-3l2o4qys" data-astro-cid-3l2o4qys> <g data-astro-cid-3l2o4qys><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="M94.1 184.6c-11.4 33.9-56.6 33.9-56.6 33.9s0-45.2 33.9-56.6m124.5-56.5L128 173.3 82.7 128l67.9-67.9C176.3 34.4 202 34.7 213 36.3a7.8 7.8 0 0 1 6.7 6.7c1.6 11 1.9 36.7-23.8 62.4Z"/><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="M184.6 116.7v64.6a8 8 0 0 1-2.4 5.6l-32.3 32.4a8 8 0 0 1-13.5-4.1l-8.4-41.9m11.3-101.9H74.7a8 8 0 0 0-5.6 2.4l-32.4 32.3a8 8 0 0 0 4.1 13.5l41.9 8.4"/></g>  </svg>  </p> <p class="text-gray-500 dark:text-gray-400">
+&copy; 2025 </p> </div> <div class="socials flex justify-center md:justify-end gap-4 flex-wrap"> <a href="https://twitter.com/alkiory" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors underline underline-offset-2 decoration-transparent hover:decoration-current">
+Twitter
+</a> <a href="https://github.com/alkiory" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors underline underline-offset-2 decoration-transparent hover:decoration-current">
+GitHub
+</a> <a href="https://www.linkedin.com/in/iamsergiocampbell" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors underline underline-offset-2 decoration-transparent hover:decoration-current">
+Linkedin
+</a> </div> </div> </footer> </div> <script type="module">addEventListener("load",()=>document.documentElement.classList.add("loaded"));</script> <script type="text/javascript" src="https://unpkg.com/vanilla-tilt@1.7.0/dist/vanilla-tilt.js">
+      VanillaTilt.init(document.querySelector(".card"), {
+        max: 25,
+        speed: 400,
+        transform: perspective("1000px"),
+      });
+    </script>  </body> </html> 
