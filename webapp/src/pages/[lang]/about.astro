@@ -1,0 +1,163 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getTranslations } from "../../data/i18n";
+import Hero from "../../components/ui/Hero.astro";
+import Grid from "../../components/Grid.astro";
+import { Image } from "astro:assets";
+
+export async function getStaticPaths() {
+  const locales = ["es", "en"];
+
+  return locales.map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const lang = (Astro.url.pathname.split("/")[1] as "es" | "en") || "en";
+const t = getTranslations(lang as "es" | "en");
+---
+
+<BaseLayout title={t.about.title} description={t.about.description}>
+  <div class="stack gap-20">
+    <main class="wrapper about">
+      <Hero title={t.about.title} tagline={t.about.description}>
+        <Image
+          data-tilt
+          data-tilt-full-page-listening
+          class="hover-effect"
+          width={1553}
+          height={873}
+          src="/assets/at-work.jpg"
+          alt="Alkiory at work"
+        />
+      </Hero>
+
+      <section>
+        <h2 class="section-title">{t.about.title}</h2>
+        <div class="content">
+          <p style="margin:1em 0;">
+            {t.about.description}
+          </p>
+          <Grid variant="small">
+            {
+              ["JavaScript", "Java", "SQL"].map((brand) => (
+                <li class="mention-card">{brand}</li>
+              ))
+            }
+          </Grid>
+          <p style="margin:1em 0;">
+            {t.about.introParagraph1}
+          </p>
+          <p style="margin:1em 0;">{t.about.introParagraph2}</p>
+          <Grid variant="small">
+            {
+              [
+                "TypeScript",
+                "React",
+                "React-Native",
+                "Angular",
+                "Redux",
+                "React-Query",
+                "NodeJS",
+                "Jest",
+                "PlayWright",
+                "JavaScript",
+                "Python",
+                "SQL",
+                "Azure DevOps",
+                "Firebase",
+                "Figma",
+              ].map((brand) => <li class="mention-card">{brand}</li>)
+            }
+          </Grid>
+        </div>
+      </section>
+      <section>
+        <h2 class="section-title">{t.about.education}</h2>
+        <div class="content">
+          <p>Politecnico de las Costa Atlántica University.</p>
+          <p>Sena Colombo Aleman.</p>
+        </div>
+      </section>
+      <section>
+        <h2 class="section-title">Skills</h2>
+        <div class="content">
+          <Grid variant="small">
+            {
+              [
+                "Leadership",
+                "Team lead",
+                "Comunication",
+                "Clean code",
+                "Kindness",
+                "Initiative",
+                "SCRUM",
+                "Active hearing",
+              ].map((brand) => <li class="mention-card">{brand}</li>)
+            }
+          </Grid>
+        </div>
+      </section>
+    </main>
+
+    <!-- <ContactCTA /> -->
+  </div>
+</BaseLayout>
+
+<style>
+  .about {
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+  }
+
+  img {
+    margin-top: 1.5rem;
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow-md);
+  }
+
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: var(--gray-200);
+  }
+
+  .section-title {
+    grid-column-start: 1;
+    font-size: var(--text-xl);
+    color: var(--gray-0);
+  }
+
+  .content {
+    grid-column: 2 / 4;
+  }
+
+  .content :global(a) {
+    text-decoration: 1px solid underline transparent;
+    text-underline-offset: 0.25em;
+    transition: text-decoration-color var(--theme-transition);
+  }
+
+  .content :global(a:hover),
+  .content :global(a:focus) {
+    text-decoration-color: currentColor;
+  }
+
+  @media (min-width: 50em) {
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 60% 1fr;
+    }
+
+    .about > :global(:first-child) {
+      grid-column-start: 2;
+    }
+
+    section {
+      display: contents;
+      font-size: var(--text-lg);
+    }
+  }
+</style>

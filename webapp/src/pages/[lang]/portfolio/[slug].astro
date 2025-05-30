@@ -1,0 +1,177 @@
+---
+import { getCollection } from "astro:content";
+import ProjectLayout from "../../../layouts/BaseLayout.astro";
+
+import Hero from "../../../components/ui/Hero.astro";
+import Icon from "../../../components/ui/icon.astro";
+import Pill from "../../../components/ui/Pill.astro";
+import { ROUTE_NAMES } from "../../../lib/routes-names";
+import { Image } from "astro:assets";
+
+export async function getStaticPaths() {
+  const allProjects = await getCollection("work");
+
+  return allProjects.map((project) => {
+    const [lang, actualSlug] = project.slug.split("/");
+
+    return {
+      params: {
+        lang: lang,
+        slug: actualSlug,
+      },
+      props: { project },
+    };
+  });
+}
+
+const lang = (Astro.url.pathname.split("/")[1] as "es" | "en") || "en";
+
+const { project } = Astro.props;
+const { Content } = await project.render();
+---
+
+<ProjectLayout
+  title={project.data.title}
+  description={project.data.description}
+>
+  <div class="stack gap-20">
+    <div class="stack gap-15">
+      <header>
+        <div class="wrapper stack gap-2">
+          <a
+            class="flex items-center gap-1"
+            href={`/${lang}${ROUTE_NAMES.WORK}`}
+            ><Icon icon="arrow-left" />
+            <span>Back</span></a
+          >
+          <Hero title={project.data.title} align="center">
+            <div class="details">
+              <div class="tags">
+                {project.data.tags.map((t: any) => <Pill>{t}</Pill>)}
+              </div>
+              <p class="description">{project.data.description}</p>
+            </div>
+          </Hero>
+        </div>
+      </header>
+      <article class="wrapper">
+        <div class="stack gap-10 content">
+          {
+            project.data.img && (
+              <Image
+                class="image"
+                src={project.data.img}
+                alt={project.data.img_alt || ""}
+                width={1920}
+                height={1080}
+              />
+            )
+          }
+          <div class="content">
+            <Content />
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</ProjectLayout>
+
+<style>
+  header {
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--gray-800);
+  }
+
+  .back-link {
+    display: none;
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    gap: 1.5rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .description {
+    font-size: var(--text-lg);
+    max-width: 54ch;
+  }
+
+  .image {
+    width: 70%;
+    margin-inline: auto;
+  }
+
+  .content {
+    max-width: 110ch;
+    margin-inline: auto;
+  }
+
+  .content > :global(* + *) {
+    margin-top: 1rem;
+  }
+
+  .content :global(h1),
+  .content :global(h2),
+  .content :global(h3),
+  .content :global(h4),
+  .content :global(h5) {
+    margin: 1.5rem 0;
+  }
+
+  .content :global(img) {
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    background: var(--gradient-subtle);
+    border: 1px solid var(--gray-800);
+  }
+
+  .content :global(blockquote) {
+    font-size: var(--text-lg);
+    font-family: var(--font-brand);
+    font-weight: 600;
+    line-height: 1.1;
+    padding-inline-start: 1.5rem;
+    border-inline-start: 0.25rem solid var(--accent-dark);
+    color: var(--gray-0);
+  }
+
+  .back-link,
+  .content :global(a) {
+    text-decoration: 1px solid underline transparent;
+    text-underline-offset: 0.25em;
+    transition: text-decoration-color var(--theme-transition);
+  }
+
+  .back-link:hover,
+  .back-link:focus,
+  .content :global(a:hover),
+  .content :global(a:focus) {
+    text-decoration-color: currentColor;
+  }
+
+  @media (min-width: 50em) {
+    .back-link {
+      display: block;
+      align-self: flex-start;
+    }
+
+    .details {
+      flex-direction: row;
+      gap: 2.5rem;
+    }
+
+    .content :global(blockquote) {
+      font-size: var(--text-2xl);
+    }
+  }
+</style>

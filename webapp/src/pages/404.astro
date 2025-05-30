@@ -1,0 +1,42 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/ui/Hero.astro";
+import { getTranslations } from "../data/i18n";
+
+export async function getStaticPaths() {
+  const locales = ["es", "en"];
+
+  return locales.map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const lang = (Astro.url.pathname.split("/")[1] as "es" | "en") || "en";
+const t = getTranslations(lang);
+---
+
+<BaseLayout
+  title={t?.notFound.title}
+  description={t?.notFound.description}
+  lang={lang}
+>
+  <Hero title={t?.notFound.title} tagline={t?.notFound.description} />
+  <p style="text-align: center; margin-top: 2rem;">
+    <a href={`/${lang}/`} class="button"> Back Home </a>
+  </p>
+</BaseLayout>
+
+<style>
+  .button {
+    display: inline-block;
+    padding: 0.8em 1.5em;
+    background-color: var(--accent-regular);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  .button:hover {
+    background-color: var(--accent-dark);
+  }
+</style>

@@ -1,0 +1,9 @@
+---
+const defaultLang = "es"; // O 'en'
+
+// Si Astro.url.pathname es simplemente '/', redirige.
+// Si ya estás en una ruta multilenguaje (ej. /es/blog), no redirige aquí.
+if (!Astro.url.pathname.startsWith(`/${defaultLang}/`)) {
+  return Astro.redirect(`/${defaultLang}/`);
+}
+---

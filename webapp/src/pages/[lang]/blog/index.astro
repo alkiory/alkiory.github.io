@@ -1,0 +1,43 @@
+---
+import { getCollection } from "astro:content";
+import BlogPreview from "../../../components/blog-preview.astro";
+import Grid from "../../../components/Grid.astro";
+import Hero from "../../../components/ui/Hero.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { getTranslations } from "../../../data/i18n";
+
+export async function getStaticPaths() {
+  const locales = ["es", "en"];
+
+  return locales.map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const lang = (Astro.url.pathname.split("/")[1] as "es" | "en") || "en";
+const t = getTranslations(lang);
+
+const allBlogPost = await getCollection("blog", ({ id }) =>
+  id.startsWith(lang)
+);
+allBlogPost.sort(
+  (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
+);
+---
+
+<BaseLayout title={t.blog.title} description={t.blog.description}>
+  <div class="stack gap-20">
+    <main class="wrapper stack gap-8">
+      <Hero title={t.blog.title} tagline={t.blog.description} align="start" />
+      <Grid variant="offset">
+        {
+          allBlogPost.map((blog) => (
+            <li>
+              <BlogPreview blog={blog} />
+            </li>
+          ))
+        }
+      </Grid>
+    </main>
+  </div>
+</BaseLayout>

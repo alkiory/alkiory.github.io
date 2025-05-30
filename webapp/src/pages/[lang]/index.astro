@@ -1,0 +1,390 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getTranslations } from "../../data/i18n";
+import BlogPreview from "../../components/blog-preview.astro";
+import Grid from "../../components/Grid.astro";
+import Pill from "../../components/Pill.astro";
+import PortfolioPreview from "../../components/portfolio-preview.astro";
+import Hero from "../../components/ui/Hero.astro";
+import Icon from "../../components/ui/icon.astro";
+import { getCollection } from "astro:content";
+import Skills from "../../components/Skills.astro";
+import Btn from "../../components/ui/Btn.astro";
+import { ROUTE_NAMES } from "../../lib/routes-names";
+import { Image } from "astro:assets";
+
+export async function getStaticPaths() {
+  const locales = ["es", "en"];
+
+  return locales.map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const allBlogsPost = (await getCollection("blog"))
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+  .slice(0, 3);
+
+const allProjects = (await getCollection("work"))
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+  .slice(1, 4);
+
+const { lang } = Astro.params;
+const t = getTranslations(lang as "es" | "en");
+---
+
+<BaseLayout>
+  <div class="stack gap-20 lg:gap-48">
+    <div class="wrapper stack gap-8 lg:gap-20">
+      <header class="hero">
+        <Hero title={t.home.welcome} tagline={t.home.intro} align="start">
+          <div class="roles">
+            <Pill><Icon icon="code" size="1.33em" /> Developer</Pill>
+            <Pill><Icon icon="motorcycle" size="1.33em" /> Biker</Pill>
+            <Pill><Icon icon="game-controller" size="1.33em" /> Gamer</Pill>
+            <Pill><Icon icon="pencil-line" size="1.33em" /> Video</Pill>
+          </div>
+        </Hero>
+
+        <Image
+          data-tilt
+          data-tilt-full-page-listening
+          alt="Rudeus"
+          width={480}
+          height={620}
+          src="/assets/shirotaka_rudeus.jpg"
+        />
+      </header>
+
+      <Skills />
+    </div>
+
+    <main class="wrapper stack gap-20 lg:gap-48">
+      <section class="section with-background with-cta">
+        <header class="section-header stack gap-2 lg:gap-4">
+          <h3>{t.home.selectedWorks}</h3>
+          <p>
+            {t.home.selectedWorksDesc}
+          </p>
+        </header>
+
+        <div class="gallery">
+          <Grid variant="small">
+            {
+              allProjects.map((project) => (
+                <li>
+                  <PortfolioPreview project={project} />
+                </li>
+              ))
+            }
+          </Grid>
+        </div>
+
+        <div class="cta">
+          <Btn href={`/${lang}${ROUTE_NAMES.WORK}`}>
+            {t.home.viewAll}
+            <Icon icon="arrow-right" size="1.2em" />
+          </Btn>
+        </div>
+      </section>
+      <section class="section with-background with-cta">
+        <header class="section-header stack gap-2 lg:gap-4">
+          <h3>{t.home.lastBlog}</h3>
+          <p>
+            {t.home.lastBlogDesc}
+          </p>
+        </header>
+
+        <div class="gallery">
+          <Grid variant="small">
+            {
+              allBlogsPost.map((blog) => (
+                <li>
+                  <BlogPreview blog={blog} />
+                </li>
+              ))
+            }
+          </Grid>
+        </div>
+
+        <div class="cta">
+          <Btn href={`/${lang}${ROUTE_NAMES.BLOG}`}>
+            {t.home.viewAll}
+            <Icon icon="arrow-right" size="1.2em" />
+          </Btn>
+        </div>
+      </section>
+
+      <section class="section with-background bg-variant">
+        <header class="section-header stack gap-2 lg:gap-4">
+          <h3>{t.home.workExperience}</h3>
+          <p>
+            {t.home.workExperienceDesc}
+          </p>
+        </header>
+
+        <div class="gallery">
+          <Grid variant="small">
+            {
+              [
+                { name: "Excelia", web: "https://excelia.com" },
+                { name: "Bchange", web: "https://bchange.es" },
+                { name: "Zemoga", web: "https://zemoga.com" },
+                { name: "Evolution Code", web: "https://evolutioncode.io" },
+                { name: "Liteyca", web: "https://www.liteyca.es" },
+                { name: "Optecom", web: "https://www.optecom.com.co" },
+                {
+                  name: "Devices & Technologies",
+                  web: "https://devitech.com.co",
+                },
+                {
+                  name: "Optimacom",
+                  web: "https://www.linkedin.com/company/optimacom-sas",
+                },
+                { name: "ITA", web: "https://ita-sa.com" },
+                {
+                  name: "Open Source and more...",
+                  web: "https://github.com/alkiory",
+                },
+              ].map((brand) => (
+                <li class="mention-card glow-on-hover">
+                  <a href={brand.web} class="brands" target="_blank">
+                    {brand.name}
+                  </a>
+                </li>
+              ))
+            }
+          </Grid>
+        </div>
+      </section>
+    </main>
+  </div>
+</BaseLayout>
+
+<style>
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .roles {
+    display: none;
+  }
+
+  .hero img {
+    aspect-ratio: 5 / 4;
+    object-fit: fill;
+    object-position: top;
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow-md);
+  }
+
+  @media (min-width: 50em) {
+    .hero {
+      display: grid;
+      grid-template-columns: 6fr 4fr;
+      padding-inline: 2.5rem;
+      gap: 3.75rem;
+    }
+
+    .roles {
+      margin-top: 0.5rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .hero img {
+      aspect-ratio: 3 / 4;
+      border-radius: 4.5rem;
+      object-fit: cover;
+    }
+  }
+
+  /* ====================================================== */
+
+  .brands {
+    text-decoration: none;
+    color: var(--gray-300);
+    transition: transform 0.2s;
+  }
+
+  .section {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .with-background {
+    position: relative;
+  }
+
+  .with-background::before {
+    --hero-bg: var(--bg-image-subtle-2);
+
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    left: 50%;
+    width: 100vw;
+    aspect-ratio: calc(2.25 / var(--bg-scale));
+    top: 0;
+    transform: translateY(-75%) translateX(-50%);
+    background:
+      url("/assets/backgrounds/noise.png") top center/220px repeat,
+      var(--hero-bg) center center / var(--bg-gradient-size) no-repeat,
+      var(--gray-999);
+    background-blend-mode: overlay, normal, normal, normal;
+    mix-blend-mode: var(--bg-blend-mode);
+    z-index: -1;
+  }
+
+  .with-background.bg-variant::before {
+    --hero-bg: var(--bg-image-subtle-1);
+  }
+
+  .section-header {
+    justify-self: center;
+    text-align: center;
+    max-width: 50ch;
+    font-size: var(--text-md);
+    color: var(--gray-300);
+  }
+
+  .section-header h3 {
+    font-size: var(--text-2xl);
+  }
+
+  @media (min-width: 50em) {
+    .section {
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-areas: "header header header header" "gallery gallery gallery gallery";
+      gap: 5rem;
+    }
+
+    .section.with-cta {
+      grid-template-areas: "header header header cta" "gallery gallery gallery gallery";
+    }
+
+    .section-header {
+      grid-area: header;
+      font-size: var(--text-lg);
+    }
+
+    .section-header h3 {
+      font-size: var(--text-4xl);
+    }
+
+    .with-cta .section-header {
+      justify-self: flex-start;
+      text-align: left;
+    }
+
+    .gallery {
+      grid-area: gallery;
+    }
+
+    .cta {
+      grid-area: cta;
+    }
+  }
+
+  /* ====================================================== */
+
+  .mention-card {
+    display: flex;
+    height: 7rem;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 1px solid var(--accent-light);
+    border-radius: 1.5rem;
+    color: var(--gray-300);
+    background: var(--accent-light);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s;
+    box-shadow:
+      0 0 2px 2px #def2ff inset,
+      0 0 0 0 #def2ff;
+    -webkit-transition: all 150ms ease-in-out;
+    transition: all 150ms ease-in-out;
+    outline: none;
+    position: relative;
+    z-index: 0;
+  }
+
+  @media (min-width: 50em) {
+    .mention-card {
+      border-radius: 1.5rem;
+      height: 9.5rem;
+    }
+
+    .brands:hover {
+      transform: scale(1.2);
+    }
+  }
+
+  .mention-card:before {
+    content: "";
+    background: linear-gradient(
+      45deg,
+      #ff0000,
+      #ff7300,
+      #fffb00,
+      #48ff00,
+      #00ffd5,
+      #002bff,
+      #7a00ff,
+      #ff00c8,
+      #ff0000
+    );
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background-size: 300%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing 20s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    border-radius: 10px;
+  }
+
+  .mention-card:active {
+    color: var(--gray-0);
+  }
+
+  .mention-card:active:after {
+    background: transparent;
+  }
+
+  .mention-card:hover:before {
+    opacity: 1;
+  }
+
+  .mention-card:after {
+    z-index: -1;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--gray-900);
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+  }
+
+  @keyframes glowing {
+    0% {
+      background-position: 0 0;
+    }
+    50% {
+      background-position: 400% 0;
+    }
+    100% {
+      background-position: 0 0;
+    }
+  }
+</style>
