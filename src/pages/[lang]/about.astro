@@ -22,33 +22,27 @@ const t = getTranslations(lang as "es" | "en");
     <main class="wrapper about">
       <Hero title={t.about.title} tagline={t.about.description}>
         <Image
-          data-tilt
-          data-tilt-full-page-listening
-          class="hover-effect"
-          width={1553}
-          height={873}
-          src="/assets/at-work.jpg"
-          alt="Alkiory at work"
+          style={"object-fit: cover;"}
+          width={853}
+          height={573}
+          src="/assets/sergio_moto.webp"
+          alt="Alkiory profile picture"
         />
       </Hero>
 
       <section>
         <h2 class="section-title">{t.about.title}</h2>
         <div class="content">
-          <p style="margin:1em 0;">
-            {t.about.description}
-          </p>
-          <Grid variant="small">
-            {
-              ["JavaScript", "Java", "SQL"].map((brand) => (
-                <li class="mention-card">{brand}</li>
-              ))
-            }
-          </Grid>
-          <p style="margin:1em 0;">
-            {t.about.introParagraph1}
-          </p>
+          <p style="margin:1em 0;">{t.about.introParagraph1}</p>
           <p style="margin:1em 0;">{t.about.introParagraph2}</p>
+          <p style="margin:1em 0;">{t.about.introParagraph3}</p>
+          <hr />
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title">{t.about.techSkills}</h2>
+        <div class="content">
           <Grid variant="small">
             {
               [
@@ -61,26 +55,33 @@ const t = getTranslations(lang as "es" | "en");
                 "NodeJS",
                 "Jest",
                 "PlayWright",
-                "JavaScript",
                 "Python",
                 "SQL",
                 "Azure DevOps",
+                "AWS",
                 "Firebase",
                 "Figma",
+                "Git",
+                "Docker",
+                "Python",
               ].map((brand) => <li class="mention-card">{brand}</li>)
             }
           </Grid>
+          <hr />
         </div>
       </section>
+
       <section>
         <h2 class="section-title">{t.about.education}</h2>
         <div class="content">
           <p>Politecnico de las Costa Atlántica University.</p>
-          <p>Sena Colombo Aleman.</p>
+          <p style="margin:1em 0;">Sena Colombo Aleman.</p>
+          <hr />
         </div>
       </section>
+
       <section>
-        <h2 class="section-title">Skills</h2>
+        <h2 class="section-title">{t.about.softSkills}</h2>
         <div class="content">
           <Grid variant="small">
             {
@@ -96,11 +97,66 @@ const t = getTranslations(lang as "es" | "en");
               ].map((brand) => <li class="mention-card">{brand}</li>)
             }
           </Grid>
+          <hr />
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title">{t.about.languages}</h2>
+        <div class="content">
+          <Grid variant="small">
+            {
+              ["English: B2", "Spanish: Native"].map((brand) => (
+                <li class="mention-card">{brand}</li>
+              ))
+            }
+          </Grid>
+          <hr />
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title">{t.about.certifications}</h2>
+        <div class="content">
+          <Grid variant="small">
+            {
+              [
+                {
+                  name: "Liderazgo para el desarrollo de proyectos de software",
+                  web: "https://www.linkedin.com/learning/certificates/fdc291aa371b819963965130d2e1babbba62b3601acb0d2bb3c00ef1f938d6a9",
+                },
+                {
+                  name: "Software Architecture: Domain Driven Design",
+                  web: "https://www.linkedin.com/learning/certificates/1d9a4306ed5ea970ebd5819b0ccc7f26704b94bbb50f371caaf7c1982e583b6b?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_certifications_details%3BIQut0IYCSf%2BiguDpES9cdQ%3D%3D",
+                },
+                {
+                  name: "English B2",
+                  web: "https://cert.efset.org/Dbe3Y5",
+                },
+                {
+                  name: "Fundamentos de Ingeniería de Software",
+                  web: "https://platzi.com/p/iamsergiocampbell/curso/1195-fundamentos-appsco/diploma/detalle/",
+                },
+              ].map((brand) => (
+                <li class="mention-card glow-on-hover">
+                  <a href={brand.web} class="brands" target="_blank">
+                    {brand.name}
+                  </a>
+                </li>
+              ))
+            }
+          </Grid>
+          <hr />
+        </div>
+      </section>
+
+      <section>
+        <div class="content">
+          <p style="margin:1em 0;">{t.about.introParagraph4}</p>
+          <p style="margin:1em 0;">{t.about.introParagraph5}</p>
         </div>
       </section>
     </main>
-
-    <!-- <ContactCTA /> -->
   </div>
 </BaseLayout>
 
@@ -122,6 +178,12 @@ const t = getTranslations(lang as "es" | "en");
     flex-direction: column;
     gap: 0.5rem;
     color: var(--gray-200);
+  }
+
+  hr {
+    border: 1px solid var(--gray-100);
+    opacity: 0.2;
+    margin: 1em 0;
   }
 
   .section-title {
