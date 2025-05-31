@@ -5,6 +5,29 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "redirects": [
+      {
+        "source": "/",
+        "destination": "/es",
+        "type": 302
+      },
+      {
+        "source": "/en",
+        "destination": "/en/",
+        "type": 301
+      },
+      {
+        "source": "/es",
+        "destination": "/es/",
+        "type": 301
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
     ]
   }
 }

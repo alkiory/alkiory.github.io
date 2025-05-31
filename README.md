@@ -1,5 +1,7 @@
 # Alkiory Portfolio
 
+![alt text](image.png)
+
 This is my personal portfolio website built with Astro, a modern web framework for building fast, scalable, and secure websites.
 
 ## Features

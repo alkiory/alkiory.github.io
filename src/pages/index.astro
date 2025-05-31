@@ -1,9 +1,44 @@
 ---
-const defaultLang = "es"; // O 'en'
-
-// Si Astro.url.pathname es simplemente '/', redirige.
-// Si ya estás en una ruta multilenguaje (ej. /es/blog), no redirige aquí.
-if (!Astro.url.pathname.startsWith(`/${defaultLang}/`)) {
-  return Astro.redirect(`/${defaultLang}/`);
-}
+// El frontmatter de este archivo Astro puede estar vacío o contener
+// cualquier otra lógica que no sea de redirección server-side.
+// La redirección principal se hará en el cliente.
 ---
+
+<script is:inline>
+  // Define tus idiomas soportados. Asegúrate de que coincidan con tus carpetas.
+  const supportedLangs = ["es", "en"];
+  // Define el idioma por defecto si el idioma del navegador no está soportado.
+  const defaultLang = "es";
+
+  // Esta lógica solo debe ejecutarse si el usuario está en la raíz del sitio ('/')
+  // para evitar redirecciones innecesarias en páginas ya localizadas (ej. /es/about).
+  if (window.location.pathname === "/") {
+    let detectedLang = defaultLang;
+
+    // Obtener la lista de idiomas preferidos del navegador
+    const preferredLanguages = navigator.languages || [
+      navigator.language || navigator.userLanguage,
+    ];
+
+    // Iterar sobre los idiomas preferidos para encontrar una coincidencia soportada
+    for (const lang of preferredLanguages) {
+      // Tomar solo la parte principal del idioma (ej. 'es' de 'es-ES')
+      const baseLang = lang.split("-")[0].toLowerCase();
+      if (supportedLangs.includes(baseLang)) {
+        detectedLang = baseLang;
+        break; // Encontramos un idioma soportado, no necesitamos buscar más
+      }
+    }
+
+    // Construir la URL de destino (ej. /es/ o /en/)
+    const targetUrl = `/${detectedLang}/`;
+
+    // Realizar la redirección.
+    // Usamos window.location.replace() para que la página de redirección no quede en el historial
+    // del navegador, evitando que el usuario vuelva a ella con el botón "Atrás".
+    if (window.location.pathname !== targetUrl) {
+      // Evita redireccionar si ya estamos en la URL de destino
+      window.location.replace(targetUrl);
+    }
+  }
+</script>
