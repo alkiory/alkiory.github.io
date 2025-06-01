@@ -3,8 +3,7 @@ title: CRP (Critical Rendering Path) you need to know
 publishDate: 2024-12-20 00:00:00
 img: https://cdn.pixabay.com/photo/2023/11/29/14/15/forest-8419725_1280.jpg
 img_alt: CRP (Critical Rendering Path) by sergio campbell dev
-description: |
-   CRP that we usually use and we don´t know we use it 🧐.
+description: CRP that we usually use and we don´t know we use it 🧐.
 tags:
 - TypeScript
 - JavaScript
@@ -17,7 +16,7 @@ tags:
 
 ---
 
-The Critical Rendering Path (CRP) is a key concept in web performance optimization, focusing on how browsers convert HTML, CSS, and JavaScript into pixels on a screen. Understanding the CRP helps developers optimize their websites for faster load times and better user experiences. In this article, we’ll explore the CRP in detail, explain its components, and provide practical tips and resources for optimization.
+The **Critical Rendering Path (CRP)** is a key concept in web performance optimization, focusing on how browsers convert HTML, CSS, and JavaScript into pixels on a screen. Understanding the CRP helps developers optimize their websites for faster load times and better user experiences. In this article, we’ll explore the CRP in detail, explain its components, and provide practical tips and resources for optimization.
 
 ### What is the Critical Rendering Path?
 

@@ -3,8 +3,7 @@ title: Video Chat App
 publishDate: 2020-03-02 00:00:00
 img: https://i.postimg.cc/KzSd7wC7/Captura-de-pantalla-2023-12-04-222723.png
 img_alt: Iridescent ripples of a bright blue and pink liquid
-description: |
-  This project is crafted with the latest technologies, including React for a dynamic and interactive front end, TypeScript for type-safe code, WebRTC for peer-to-peer video communication, Socket.io for real-time WebSocket connections, and Node.js powering the backend 🚀.
+description: Este proyecto está elaborado con las últimas tecnologías, incluyendo React para un frontend dinámico e interactivo, TypeScript para código con tipado seguro, WebRTC para comunicación de video punto a punto, Socket.io para conexiones WebSocket en tiempo real, y Node.js impulsando el backend 🚀.
 tags:
 - TypeScript
 - Dev
@@ -16,7 +15,7 @@ tags:
 - CSS3
 ---
 
-Real-Time Video Chat: Connect with friends and colleagues instantly through high-quality video calls. React & TypeScript: Utilize the power of React for a responsive and intuitive user interface, with TypeScript ensuring a robust and statically-typed codebase. WebRTC: Experience smooth and secure peer-to-peer video communication using the WebRTC protocol. Socket.io: Enable real-time bidirectional event-based communication between clients and the server, ensuring instant updates and synchronization. Node.js: Empower the backend with Node.js, allowing for scalable and efficient server-side operations.
+Video Chat en Tiempo Real: Conecta con amigos y colegas al instante a través de videollamadas de alta calidad. React y TypeScript: Utiliza el poder de React para una interfaz de usuario responsiva e intuitiva, con TypeScript asegurando una base de código robusta y tipada estáticamente. WebRTC: Experimenta una comunicación de video punto a punto fluida y segura usando el protocolo WebRTC. Socket.io: Habilita la comunicación bidireccional basada en eventos en tiempo real entre clientes y el servidor, asegurando actualizaciones y sincronización instantáneas. Node.js: Potencia el backend con Node.js, permitiendo operaciones del lado del servidor escalables y eficientes.
 
 ##### Repo
 
