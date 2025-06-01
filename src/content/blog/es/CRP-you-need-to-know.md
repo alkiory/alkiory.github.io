@@ -36,32 +36,32 @@ El navegador comienza parseando el documento HTML para construir el **DOM**. El 
 
 - **Ejemplo:**
 
-  ```html
-  <html>
-    <head>
-      <title>Mi Página</title>
-    </head>
-    <body>
-      <h1>¡Hola, Mundo!</h1>
-      <p>Bienvenido a mi sitio web.</p>
-    </body>
-  </html>
-  ```
+  ```html
+  <html>
+    <head>
+      <title>My Page</title>
+    </head>
+    <body>
+      <h1>Hello, World!</h1>
+      <p>Welcome to my website.</p>
+    </body>
+  </html>
+  ```
 
 - **Árbol DOM:**
 
-  ```sheet
-  Documento
-  ├── html
-      ├── head
-      │   └── title
-      │       └── Mi Página
-      └── body
-          ├── h1
-          │   └── ¡Hola, Mundo!
-          └── p
-              └── Bienvenido a mi sitio web.
-  ```
+  ```sheet
+  Document
+  ├── html
+      ├── head
+      │   └── title
+      │       └── My Page
+      └── body
+          ├── h1
+          │   └── Hello, World!
+          └── p
+              └── Welcome to my website.
+  ```
 
 #### 2. Parseo de CSS y Construcción del CSSOM
 
@@ -69,24 +69,24 @@ Simultáneamente, el navegador parsea los archivos CSS para construir el **CSSOM
 
 - **Ejemplo:**
 
-  ```css
-  body {
-    font-family: Arial, sans-serif;
-  }
-  h1 {
-    color: blue;
-  }
-  ```
+  ```css
+  body {
+    font-family: Arial, sans-serif;
+  }
+  h1 {
+    color: blue;
+  }
+  ```
 
 - **CSSOM:**
 
-  ```sheet
-  Hoja de estilos
-  ├── body
-  │   └── font-family: Arial, sans-serif
-  └── h1
-      └── color: blue
-  ```
+  ```sheet
+  Stylesheet
+  ├── body
+  │   └── font-family: Arial, sans-serif
+  └── h1
+      └── color: blue
+  ```
 
 #### 3. Creación del Árbol de Renderizado
 
@@ -94,12 +94,12 @@ El navegador combina el DOM y el CSSOM para crear el **Árbol de Renderizado**, 
 
 - **Árbol de Renderizado:**
 
-  ```sheet
-  RenderRoot
-  ├── RenderBody (font-family: Arial, sans-serif)
-      ├── RenderH1 (color: blue)
-      └── RenderP
-  ```
+  ```sheet
+  RenderRoot
+  ├── RenderBody (font-family: Arial, sans-serif)
+      ├── RenderH1 (color: blue)
+      └── RenderP
+  ```
 
 #### 4. Diseño (Layout)
 
@@ -120,24 +120,24 @@ Optimizar la CRP implica minimizar el tiempo que le toma a un navegador renderiz
 
 - **CSS Crítico en Línea:** Coloca el CSS crítico directamente en la etiqueta `<head>` del HTML para reducir los recursos que bloquean el renderizado.
 
-  ```html
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-    h1 {
-      color: blue;
-    }
-  </style>
-  ```
+  ```html
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    h1 {
+      color: blue;
+    }
+  </style>
+  ```
 
 #### 2. Aplazar JavaScript No Esencial
 
 - **Atributos Async y Defer:** Usa los atributos `async` y `defer` para cargar archivos JavaScript sin bloquear el renderizado.
 
-  ```html
-  <script src="script.js" defer></script>
-  ```
+  ```html
+  <script src="script.js" defer></script>
+  ```
 
 #### 3. Optimizar la Entrega de CSS
 
@@ -148,9 +148,9 @@ Optimizar la CRP implica minimizar el tiempo que le toma a un navegador renderiz
 
 - **Cargar CSS Primero:** Asegúrate de que los archivos CSS se carguen antes de renderizar el contenido. Usa la etiqueta `<link>` con el atributo `rel="stylesheet"` en el `<head>`.
 
-  ```html
-  <link rel="stylesheet" href="styles.css">
-  ```
+  ```html
+  <link rel="stylesheet" href="styles.css">
+  ```
 
 ### Herramientas y Recursos para la Optimización de la CRP
 

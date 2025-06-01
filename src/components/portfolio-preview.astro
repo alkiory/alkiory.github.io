@@ -2,6 +2,7 @@
 import { type CollectionEntry } from "astro:content";
 import { ROUTE_NAMES } from "../lib/routes-names";
 import { Image } from "astro:assets";
+import type { Lang } from "../data/i18n";
 
 interface Props {
   project: CollectionEntry<"work">;
@@ -9,7 +10,7 @@ interface Props {
 
 const { data, slug } = Astro.props.project;
 
-const lang = (Astro.url.pathname.split("/")[1] as "es" | "en") || "en";
+const lang = Astro.url.pathname.split("/")[1] as Lang;
 ---
 
 <a
