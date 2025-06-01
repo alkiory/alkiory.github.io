@@ -1,23 +1,9 @@
-<!-- <script is:inline>
-  const supportedLangs = ["es", "en"];
-  const defaultLang = "es";
-  const currentPath = window.location.pathname;
+---
+const defaultLang = "es"; // O 'en'
 
-  // 1. Evitar ejecución en rutas ya localizadas
-  if (
-    !currentPath.startsWith(`/${defaultLang}/`) &&
-    !currentPath.startsWith("/en/")
-  ) {
-    // 2. Detectar idioma
-    const userLang =
-      navigator.languages
-        .find((lang) => supportedLangs.includes(lang.split("-")[0]))
-        ?.split("-")[0] || defaultLang;
-
-    // 3. Redirigir SOLO si no está en la raíz exacta
-    if (currentPath === "/" || currentPath === `/${userLang}`) {
-      const targetUrl = `/${userLang}/${currentPath === `/${userLang}` ? "" : currentPath}`;
-      window.location.replace(targetUrl);
-    }
-  }
-</script> -->
+// Si Astro.url.pathname es simplemente '/', redirige.
+// Si ya estás en una ruta multilenguaje (ej. /es/blog), no redirige aquí.
+if (!Astro.url.pathname.startsWith(`/${defaultLang}/`)) {
+  return Astro.redirect(`/${defaultLang}/`);
+}
+---

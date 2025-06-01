@@ -8,11 +8,6 @@
     ],
     "redirects": [
       {
-        "source": "/",
-        "destination": "/es",
-        "type": 302
-      },
-      {
         "source": "/en",
         "destination": "/en/",
         "type": 301
@@ -30,12 +25,12 @@
       }
     ],
     "headers": [
-  {
-    "source": "/index.html",
-    "headers": [
-      { "key": "Cache-Control", "value": "no-cache, max-age=0" }
+      {
+        "source": "/index.html",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-cache, max-age=0" }
+        ]
+      }
     ]
-  }
-]
   }
 }

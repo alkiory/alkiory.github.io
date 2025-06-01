@@ -2,7 +2,7 @@
 import ThemeToggle from "./ThemeToogle.astro";
 import { ROUTE_NAMES } from "../lib/routes-names";
 import Icon, { type Props as IconProps } from "./ui/icon.astro";
-import { getLangFromUrl } from "../data/i18n";
+import { getLangFromUrl, type Lang } from "../data/i18n";
 import LangSwitcher from "./LangSwitcher.astro";
 
 const lang = Astro.currentLocale || getLangFromUrl(Astro.url) || "en";
@@ -57,14 +57,17 @@ const localizedTextLinks = textLinks.map((link) => ({
 
 <nav class={className}>
   <div class="menu-header">
-    <a href="/" class="site-title">
+    <a href={`${langPrefix}/`} class="site-title">
       <Icon
         icon="terminal-window"
         color="var(--accent-regular)"
         size="1.6em"
         gradient
       />
-      <span class="alkiory-dev">Alkiory Dev</span>
+      <span class="alkiory-dev">
+        Alkiory Dev
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </span>
     </a>
     <menu-button>
       <template>
@@ -113,7 +116,7 @@ const localizedTextLinks = textLinks.map((link) => ({
 
       <div class="theme-toggle gap-2">
         <ThemeToggle />
-        <LangSwitcher lang={lang} path={Astro.url.pathname} />
+        <LangSwitcher lang={lang as Lang} path={Astro.url.pathname} />
       </div>
     </div>
   </div>
@@ -367,7 +370,7 @@ const localizedTextLinks = textLinks.map((link) => ({
   }
 
   .alkiory-dev {
-    color: var(--accent-regular);
+    color: var(--accent-dark);
     font-weight: bold;
     text-decoration: none;
     transition:
@@ -385,7 +388,7 @@ const localizedTextLinks = textLinks.map((link) => ({
     top: 0;
     left: 0;
     height: 100%;
-    color: var(--accent-regular);
+    color: var(--accent-dark);
     font-weight: bold;
     opacity: 0;
     transform: translateY(100%);

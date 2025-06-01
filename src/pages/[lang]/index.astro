@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getTranslations } from "../../data/i18n";
+import { getTranslations, type Lang } from "../../data/i18n";
 import BlogPreview from "../../components/blog-preview.astro";
 import Grid from "../../components/Grid.astro";
 import Pill from "../../components/Pill.astro";
@@ -29,8 +29,8 @@ const allProjects = (await getCollection("work"))
   .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
   .slice(1, 4);
 
-const { lang } = Astro.params;
-const t = getTranslations(lang as "es" | "en");
+const lang = (Astro.url.pathname.split("/")[1] as Lang) || "en";
+const t = getTranslations(lang);
 ---
 
 <BaseLayout>

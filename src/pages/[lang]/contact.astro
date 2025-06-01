@@ -1,5 +1,5 @@
 ---
-import { getTranslations } from "../../data/i18n";
+import { getTranslations, type Lang } from "../../data/i18n";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
@@ -10,7 +10,7 @@ export async function getStaticPaths() {
   }));
 }
 
-const lang = (Astro.url.pathname.split("/")[1] as "es" | "en") || "en";
+const lang = (Astro.url.pathname.split("/")[1] as Lang) || "en";
 const t = getTranslations(lang);
 
 let message = { text: "", type: "" };
