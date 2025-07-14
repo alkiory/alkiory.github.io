@@ -4,7 +4,7 @@ title: ¿What if the best commit you can make today... is to pause?
 publishDate: 2025-07-12 00:00:00
 date: 2025-07-12
 img: https://cdn.pixabay.com/photo/2018/01/03/19/17/cat-3059075_1280.jpg
-img\_alt: Imagen de Gato, Gato rojo y Ojos de gato.
+img_alt: Imagen de Gato, Gato rojo y Ojos de gato.
 description: In a world where everything moves at sprint speed, rest may seem like a luxury—or even a threat to productivity.
 tags:
 - productivity
@@ -54,13 +54,13 @@ During the final stretch of work on BudgetGenius, I implemented what I now call:
 pause("no_code_day");
 reflect("what did I learn today?");
 reset_mindset("reconnect with the bigger vision");
-````
+```
 
 ---
 
 ## 📊 Critical Analysis
 
-| ✅ Benefits                               | ⚠️ Risks / Downsides                      |
+| ✅ Benefits                              | ⚠️ Risks / Downsides                     |
 | ---------------------------------------- | ----------------------------------------- |
 | Restores mental energy                   | May seem like “low productivity”          |
 | Improves clarity and architectural focus | Could be misunderstood as procrastination |
