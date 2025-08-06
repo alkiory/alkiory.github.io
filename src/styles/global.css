@@ -379,6 +379,28 @@ pre {
   line-height: 1.6;
 }
 
+/* Estilos para las citas en Markdown */
+.markdown-content blockquote {
+    /* Resalta la cita con un borde a la izquierda */
+    border-left: 4px solid var(--primary-color, #3498db);
+    /* Color de fondo para diferenciarla */
+    background-color: #f9f9f9;
+    /* Espaciado interno y externo */
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    /* Estilo de la fuente */
+    font-style: italic;
+    color: #555;
+    /* Margen izquierdo para alinear con el texto */
+    margin-left: 0;
+}
+
+/* Opcional: Estilo para párrafos dentro de una cita */
+.markdown-content blockquote p {
+    margin: 0; /* Elimina el margen por defecto de los párrafos */
+    line-height: 1.6;
+}
+
 /* Código en Markdown */
 .markdown-content pre {
   overflow-x: auto;

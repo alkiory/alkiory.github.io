@@ -16,8 +16,6 @@ Los **microfrontends** permiten dividir una aplicación frontend monolítica en 
 
 Sin embargo, la elección de la arquitectura no se basa solo en la velocidad de compilación. Hay que considerar la interoperabilidad, el despliegue, el mantenimiento y, crucialmente, la experiencia de desarrollo. Herramientas como Vite destacan por ciclos de desarrollo muy rápidos, mientras que Webpack (Module Federation) ofrece un control más granular, lo que resulta crítico en entornos empresariales complejos. No hay una “bala de plata”: cada enfoque tiene fortalezas y limitaciones según el contexto.
 
----
-
 ### Webpack Module Federation
 
 Webpack **Module Federation** es una solución avanzada de microfrontends que carga módulos de otras aplicaciones en tiempo de ejecución. Permite que distintos equipos construyan y desplieguen fragmentos de UI independientes. Por ejemplo, un microfrontend puede “exponer” componentes (botones, vistas) y otro puede importarlos dinámicamente sin duplicar librerías comunes. El sistema de dependencias `shared` de Module Federation previene la duplicación de paquetes (p. ej., React compartido) y facilita el *lazy loading* de recursos, mejorando el rendimiento inicial. Esto lo hace ideal para proyectos empresariales de gran escala: cada módulo se puede publicar por separado y actualizar sin volver a desplegar toda la aplicación.
@@ -52,8 +50,6 @@ module.exports = {
   ]
 };
 ```
-
----
 
 ### Vite + Workspaces (monorepo)
 
@@ -92,8 +88,6 @@ export default defineConfig({
 });
 ```
 
----
-
 ### PNPM Workspaces
 
 PNPM Workspaces ofrece una gestión eficiente de monorepos. A diferencia de npm o Yarn clásicos, pnpm usa un almacén global para dependencias: cada paquete se instala solo una vez en disco y se enlaza en los *workspaces*. Esto implica grandes ventajas en proyectos con muchos microfrontends. Por ejemplo, en npm v7 cada *workspace* duplica sus dependencias (hasta 100 paquetes iguales si hay 100 microapps), pero pnpm las deduplica estrictamente. Como resultado, **npm** puede llenar gigas de `node_modules`, mientras **pnpm** solo almacena una copia por versión. Hotjar descubrió que migrar de npm a pnpm en su monorepo redujo drásticamente el tiempo de instalación y el espacio en disco. Además, pnpm provee herramientas avanzadas (protocolos de *workspace*, filtros `--filter`) para ejecutar comandos en paquetes específicos, lo cual es útil en repositorios muy fragmentados.
@@ -121,8 +115,6 @@ packages:
 }
 ```
 
----
-
 ### ¿Cuándo elegir cada enfoque?
 
 A la hora de decidir, conviene reflexionar en base a los objetivos y limitaciones del proyecto:
@@ -136,8 +128,6 @@ A la hora de decidir, conviene reflexionar en base a los objetivos y limitacione
 Estos puntos varían según el contexto real: el tamaño del equipo, la necesidad de escala y la familiaridad tecnológica de los desarrolladores. Por ejemplo, una *startup* pequeña podría privilegiar Vite y un monorepo para maximizar velocidad y flexibilidad en etapas tempranas. Una compañía grande con varios equipos autónomos podría preferir Module Federation para aislar despliegues y arquitecturas entre dominios de negocio.
 
 Además de estos factores técnicos, la **experiencia de desarrollo** es clave. Vite sobresale por su servidor local ultrarrápido y recarga casi instantánea, lo que mejora enormemente la productividad del equipo. Webpack/WebPack MF, en cambio, brinda opciones de optimización más complejas, pero con mayor curva de aprendizaje. Herramientas de *workspace* como pnpm optimizan el flujo diario: no duplican librerías en `node_modules`, acelerando las instalaciones. Esos detalles impactan directamente cómo se siente trabajar en el proyecto día a día.
-
----
 
 ### Profundizando en la Orquestación y Experiencia de Desarrollo 🎭
 
@@ -175,20 +165,14 @@ Mantener una UI/UX coherente es un gran desafío cuando múltiples equipos traba
 - **Sistemas de Diseño (Design Systems):** La adopción de un **Design System** robusto y compartido (con una librería de componentes comunes) es fundamental. Esto garantiza que todos los microfrontends utilicen los mismos estilos, tipografías y componentes (botones, formularios, etc.), ofreciendo una experiencia unificada al usuario final.
 - **Equipos de Gobernanza/Coordinación:** Puede ser útil tener un pequeño equipo de "plataforma" o "UX/UI" que establezca directrices, mantenga el Design System y ofrezca soporte a los equipos de microfrontends para asegurar la coherencia.
 
----
-
 ### Conclusión Accionable 🎯
 
 En definitiva, **no existe una bala de plata**. La arquitectura elegida debe responder a las necesidades de las personas y del producto. Cada tecnología es un medio al servicio del equipo. Lo importante es evaluar reflexivamente los pros y contras técnicos (velocidad, despliegue, mantenimiento, compatibilidad) y decidir en función del caso real, complementando esa decisión con estrategias sólidas para la comunicación, gestión de estado y consistencia entre los módulos.
-
----
 
 ### 🧠 Recursos recomendados
 
 - 📖 *Team Topologies* — sobre estructuras de equipo y flujo cognitivo
 - 📺 Video: ["Vite and Module Federation Makes Micro-Frontends EASY!"](https://www.youtube.com/watch?v=t-nchkL9yIg)
-
----
 
 ### 📚 Fuentes consultadas
 
