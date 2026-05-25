@@ -12,10 +12,6 @@ tags:
 - productivity
 ---
 
-To complement the blog, I've incorporated information from the Japanese article you provided. I've added details on how to use the feature to simulate data and how it can be used for live demonstrations. I've also updated the references section to include this new source.
-
----
-
 ## 🛠️ Debugging Like a Pro: Content & Headers Overrides in DevTools
 
 When we think about debugging, most developers picture `console.log()` or breakpoints. But there's a lesser-known, highly powerful technique: **Content & Headers Overrides in DevTools**.

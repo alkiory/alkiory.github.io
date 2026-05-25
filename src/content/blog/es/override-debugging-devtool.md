@@ -12,10 +12,6 @@ tags:
 - productividad
 ---
 
-Para complementar el blog, he incorporado la información del artículo japonés que proporcionaste. He añadido detalles sobre cómo usar la función para simular datos y cómo se puede usar para fines de demostración en vivo. También he actualizado la sección de referencias para incluir esta nueva fuente.
-
----
-
 ## 🛠️ Ayuda a depurar como un profesional: Anulaciones de contenido y encabezados en DevTools
 
 Cuando pensamos en la depuración, la mayoría de los desarrolladores se imaginan `console.log()` o puntos de interrupción. Pero hay una técnica menos conocida y muy poderosa: las **Anulaciones (Overrides) de contenido y encabezados en DevTools**.
