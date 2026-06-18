@@ -21,9 +21,18 @@ services:
       PUBLIC_FIREBASE_APP_ID: ${PUBLIC_FIREBASE_APP_ID:-}
       PUBLIC_FIREBASE_MEASUREMENT_ID: ${PUBLIC_FIREBASE_MEASUREMENT_ID:-}
 
-    # Los logs van a stdout/stderr de nginx, ya configurado en nginx.conf
+    # Logs a stdout/stderr de nginx (ya configurado en nginx.conf)
     logging:
       driver: json-file
       options:
         max-size: "10m"
         max-file: "3"
+
+    networks:
+      - default
+      - npm_network
+
+# Red externa compartida con Nginx Proxy Manager (u otro proxy reverso).
+networks:
+  npm_network:
+    external: true
