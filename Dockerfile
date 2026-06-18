@@ -42,6 +42,10 @@ RUN pnpm run build
 # ============================================================
 FROM nginx:1.27-alpine AS runner
 
+# bash es requerido por docker-entrypoint.sh (alpine sólo trae busybox sh);
+# sin esto el kernel reporta ENOENT al hacer exec /docker-entrypoint.sh.
+RUN apk add --no-cache bash
+
 # Eliminar la config default para evitar conflictos
 RUN rm -f /etc/nginx/conf.d/default.conf
 
@@ -62,6 +66,14 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 
 # Copiar entrypoint
 COPY docker-entrypoint.sh /docker-entrypoint.sh
+
+# Fase 1: defensivo contra CRLF introducido por git autocrlf. Sin este paso el
+# kernel intenta ejecutar `/bin/bash\r` y reporta ENOENT al hacer exec.
+# Fase 2: chmod + chown para usuario no-root.
+RUN sed -i 's/\r$//' /docker-entrypoint.sh && \
+    head -1 /docker-entrypoint.sh | grep -qE '^#!/bin/(bash|sh)' || \
+      (echo "ERROR: shebang inválido en docker-entrypoint.sh" >&2; exit 1)
+
 RUN chmod +x /docker-entrypoint.sh && \
     chown appuser:appgroup /docker-entrypoint.sh
 

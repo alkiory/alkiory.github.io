@@ -1,0 +1,10 @@
+# Forzar LF en archivos de shell y configuraciones que rompen con CRLF.
+# Sin esto, `git clone` con core.autocrlf=true convierte el shebang
+# `#!/bin/bash` en `#!/bin/bash\r` y el kernel devuelve ENOENT al hacer exec.
+*.sh text eol=lf
+Dockerfile text eol=lf
+nginx.conf text eol=lf
+default.conf text eol=lf
+docker-compose.yml text eol=lf
+.dockerignore text eol=lf
+.gitattributes text eol=lf
