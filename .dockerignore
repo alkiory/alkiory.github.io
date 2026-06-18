@@ -1,45 +1,72 @@
-# Dependencias y outputs
-node_modules
-dist
-.astro
-.pnpm-store
-
 # Control de versiones
 .git
 .gitignore
 .github
+.gitattributes
 
-# Configuración Firebase
-.firebase
-.firebaserc
-firebase.json
-firebase-debug.log
-firebase-debug.*.log
-
-# IDEs
+# IDE / editor
 .vscode
 .idea
 *.swp
 
-# Variables de entorno sensibles (.env se ignora; .env.example NO para documentar)
+# Dependencias y caches de build (se reconstruyen dentro de Docker)
+node_modules
+.npm
+.pnpm-store
+.astro
+
+# Build local (se regenera en la stage builder)
+dist
+
+# Archivos de configuración sensibles / específicos del host
 .env
 .env.*
 !.env.example
+.firebase
+.firebaserc
+firebase.json
+.firebaserc.*.json
 
-# Logs
+# Logs y archivos temporales
 *.log
 logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-# Documentación
-README.md
-*.md
-
-# Archivos del SO
+# Sistema operativo / misceláneos
 .DS_Store
 Thumbs.db
+*.tgz
+*.pid
+*.seed
+*.pid.lock
 
-# Cache
-.cache
-.npm
-.eslintcache
-data-store.json
+# Documentación e imágenes grandes no necesarias para el build
+README.md
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.mp4
+*.mov
+image.png
+
+# Dockerfiles (no necesitamos recursión)
+Dockerfile.dev
+docker-compose.*
+.dockerignore
+
+# Tests / cobertura
+coverage
+.nyc_output
+
+# pnpm: el archivo <raíz>/pnpm-workspace.yaml es solo un README/notes
+# comentado (no es config de workspace válida). pnpm 9.15.4 detecta
+# el nombre y exige `packages:` -> error "packages field missing or empty".
+# Sacarlo del build context evita el falso positivo en Docker; en el repo
+# sigue como documentación.
+pnpm-workspace.yaml
+

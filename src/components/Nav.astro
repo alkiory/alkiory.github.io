@@ -48,10 +48,11 @@ const iconLinks: { label: string; href: string; icon: IconProps["icon"] }[] = [
   },
 ];
 
-// Generar rutas con prefijo de idioma
+// Generar rutas con prefijo de idioma. SIEMPRE con trailing slash para
+// coincidir con `trailingSlash: 'always'` de astro.config.mjs (dist/<lang>/<path>/index.html)
 const localizedTextLinks = textLinks.map((link) => ({
   label: link.label,
-  href: link.href === "/" ? langPrefix + "/" : langPrefix + link.href,
+  href: link.href === "/" ? langPrefix + "/" : langPrefix + link.href + "/",
 }));
 ---
 

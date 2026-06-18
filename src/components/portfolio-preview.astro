@@ -18,7 +18,7 @@ const lang = Astro.url.pathname.split("/")[1] as Lang;
   data-tilt-glare
   data-tilt-max-glare="0.8"
   class="card"
-  href={`/${lang}${ROUTE_NAMES.WORK}/${slug.split("/").pop()}`}
+  href={`/${lang}${ROUTE_NAMES.WORK}/${slug.split("/").pop()}/`}
 >
   <span class="title">{data.title}</span>
   <Image

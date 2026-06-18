@@ -3,15 +3,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Hero from "../components/ui/Hero.astro";
 import { getTranslations } from "../data/i18n";
 
-export async function getStaticPaths() {
-  const locales = ["es", "en"];
-
-  return locales.map((lang) => ({
-    params: { lang },
-  }));
-}
-
-const lang = (Astro.url.pathname.split("/")[1] as "es" | "en") || "en";
+// 404.astro es una ruta estática (sin [lang] dinámico), así que no usa
+// getStaticPaths. Astro emite esta página como dist/404/index.html
+// (con trailingSlash:'always' + build.format:'directory'). El lang
+// se intenta derivar de la URL por compatibilidad con posibles refactors
+// futuros que muevan 404 a src/pages/[lang]/404.astro.
+const langParam = Astro.url.pathname.split("/")[1];
+const lang = (langParam === "es" || langParam === "en" ? langParam : "en");
 const t = getTranslations(lang);
 ---
 

@@ -1,38 +1,27 @@
 services:
   alkiory-portfolio:
-    container_name: alkiory-portfolio
     build:
       context: .
       dockerfile: Dockerfile
-    image: alkiory-portfolio:latest
+    image: alkiory:${TAG:-latest}
+    container_name: alkiory
     restart: unless-stopped
-    ports:
-      - "${PORT:-3000}:3000"
-
-    # Variables PUBLIC_FIREBASE_* con default vacío. El entrypoint las sustituirá
-    # en runtime sobre los archivos generados por Astro. Si están vacías, deja el
-    # placeholder y emite una advertencia visible en logs.
     environment:
-      PUBLIC_FIREBASE_API_KEY: ${PUBLIC_FIREBASE_API_KEY:-}
-      PUBLIC_FIREBASE_AUTH_DOMAIN: ${PUBLIC_FIREBASE_AUTH_DOMAIN:-}
-      PUBLIC_FIREBASE_PROJECT_ID: ${PUBLIC_FIREBASE_PROJECT_ID:-}
-      PUBLIC_FIREBASE_STORAGE_BUCKET: ${PUBLIC_FIREBASE_STORAGE_BUCKET:-}
-      PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${PUBLIC_FIREBASE_MESSAGING_SENDER_ID:-}
-      PUBLIC_FIREBASE_APP_ID: ${PUBLIC_FIREBASE_APP_ID:-}
-      PUBLIC_FIREBASE_MEASUREMENT_ID: ${PUBLIC_FIREBASE_MEASUREMENT_ID:-}
-
-    # Logs a stdout/stderr de nginx (ya configurado en nginx.conf)
-    logging:
-      driver: json-file
-      options:
-        max-size: "10m"
-        max-file: "3"
-
+      - NODE_ENV=production
+      - PORT=3000
+    env_file:
+      - .env
+    expose:
+      - "3000"
     networks:
-      - default
-      - npm_network
+      - proxy_network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
 
-# Red externa compartida con Nginx Proxy Manager (u otro proxy reverso).
 networks:
-  npm_network:
+  proxy_network:
     external: true
