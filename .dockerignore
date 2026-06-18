@@ -1,0 +1,45 @@
+# Dependencias y outputs
+node_modules
+dist
+.astro
+.pnpm-store
+
+# Control de versiones
+.git
+.gitignore
+.github
+
+# Configuración Firebase
+.firebase
+.firebaserc
+firebase.json
+firebase-debug.log
+firebase-debug.*.log
+
+# IDEs
+.vscode
+.idea
+*.swp
+
+# Variables de entorno sensibles (.env se ignora; .env.example NO para documentar)
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+logs
+
+# Documentación
+README.md
+*.md
+
+# Archivos del SO
+.DS_Store
+Thumbs.db
+
+# Cache
+.cache
+.npm
+.eslintcache
+data-store.json
