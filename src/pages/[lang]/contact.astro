@@ -1,6 +1,7 @@
 ---
 import { getTranslations, type Lang } from "../../data/i18n";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Icon, { type Props as IconProps } from "../../components/ui/icon.astro";
 
 export async function getStaticPaths() {
   const locales = ["es", "en"];
@@ -13,158 +14,184 @@ export async function getStaticPaths() {
 const lang = (Astro.url.pathname.split("/")[1] as Lang) || "en";
 const t = getTranslations(lang);
 
-let message = { text: "", type: "" };
-let formData = { name: "", email: "", subject: "", message: "" };
+// Reutilizamos las mismas redes sociales declaradas en el Nav para que
+// la página de contacto se mantenga sincronizada con un solo punto de
+// cambio.
+const socials: { label: string; href: string; icon: IconProps["icon"] }[] = [
+  { label: "GitHub", href: "https://github.com/alkiory", icon: "github-logo" },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/iamsergiocampbell",
+    icon: "linkedin-logo",
+  },
+  {
+    label: "YouTube",
+    href: "https://www.youtube.com/@iamsergiocampbell",
+    icon: "youtube-logo",
+  },
+  {
+    label: "CodePen",
+    href: "https://codepen.io/sergiocampbell",
+    icon: "codepen-logo",
+  },
+  { label: "Twitter", href: "https://twitter.com/alkiory", icon: "twitter-logo" },
+];
 
-if (Astro.request.method === "POST") {
-  try {
-    const data = await Astro.request.formData();
-    formData = {
-      name: data.get("name")?.toString() || "",
-      email: data.get("email")?.toString() || "",
-      subject: data.get("subject")?.toString() || "",
-      message: data.get("message")?.toString() || "",
-    };
-
-    // Validación básica
-    if (!formData.name || !formData.email || !formData.message) {
-      throw new Error("Faltan campos requeridos");
-    }
-
-    // Aquí iría la lógica para enviar el correo o guardar en base de datos
-    // Por ahora simulamos un envío exitoso
-    message = {
-      text: t.contact.successMessage,
-      type: "success",
-    };
-
-    // Resetear el formulario después de 3 segundos
-    setTimeout(() => {
-      formData = { name: "", email: "", subject: "", message: "" };
-      message = { text: "", type: "" };
-    }, 3000);
-  } catch (error) {
-    message = {
-      text: error instanceof Error ? error.message : t.contact.errorMessage,
-      type: "error",
-    };
-  }
-}
+const email = "sergiocampbell.dev@gmail.com";
 ---
 
 <BaseLayout title={t.contact.title} description={t.contact.description}>
-  <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-    {t.contact.title}
-  </h2>
+  <main class="wrapper contact-page stack gap-20">
+    <header class="contact-header stack gap-4">
+      <h1 class="contact-title">{t.contact.title}</h1>
+      <p class="contact-description">{t.contact.description}</p>
+    </header>
 
-  <p class="text-gray-600 dark:text-gray-300 mb-8">
-    {t.contact.description}
-  </p>
+    <section class="contact-card stack gap-6">
+      <a class="contact-email" href={`mailto:${email}`}>
+        <Icon icon="envelope" size="1.5em" />
+        <span>{email}</span>
+      </a>
 
-  <form method="POST" class="space-y-6 w-4xl">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- Nombre -->
-      <div>
-        <label
-          for="name"
-          class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-        >
-          {t.contact.form.name}
-        </label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={formData.name}
-          required
-          class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-600 dark:bg-gray-700 dark:text-white"
-        />
+      <div class="contact-divider" role="presentation"></div>
+
+      <div class="contact-socials stack gap-3">
+        <p class="contact-socials-label">{t.contact.findMeOn}</p>
+        <ul class="contact-social-list">
+          {
+            socials.map(({ label, href, icon }) => (
+              <li>
+                <a
+                  class="contact-social"
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Icon icon={icon} size="1.5em" />
+                  <span>{label}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
       </div>
-
-      <!-- Email -->
-      <div>
-        <label
-          for="email"
-          class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-        >
-          {t.contact.form.email}
-        </label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          required
-          class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-600 dark:bg-gray-700 dark:text-white"
-        />
-      </div>
-    </div>
-
-    <!-- Asunto -->
-    <div>
-      <label
-        for="subject"
-        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-      >
-        {t.contact.form.subject}
-      </label>
-      <input
-        type="text"
-        id="subject"
-        name="subject"
-        value={formData.subject}
-        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-600 dark:bg-gray-700 dark:text-white"
-      />
-    </div>
-
-    <!-- Mensaje -->
-    <div>
-      <label
-        for="message"
-        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-      >
-        {t.contact.form.message}
-      </label>
-      <textarea
-        id="message"
-        name="message"
-        rows={5}
-        required
-        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-600 dark:bg-gray-700 dark:text-white"
-      >
-        {formData.message}
-      </textarea>
-    </div>
-
-    <!-- Botón de envío -->
-    <div class="pt-2">
-      <button
-        type="submit"
-        class="w-full md:w-auto cursor-pointer px-6 py-3 bg-purple-600 hover:bg-purple-700 dark:bg-purple-800 dark:hover:bg-purple-900 text-white font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
-      >
-        {t.contact.form.submit}
-      </button>
-    </div>
-  </form>
-
-  <!-- Mensaje de éxito/error -->
-  {
-    message.text && (
-      <div
-        class={`mt-4 p-4 rounded-lg ${
-          message.type === "success"
-            ? "bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-300"
-            : "bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-300"
-        }`}
-      >
-        {message.text}
-      </div>
-    )
-  }
+    </section>
+  </main>
 </BaseLayout>
+
 <style>
-  textarea {
-    min-height: 150px;
-    resize: none;
+  .contact-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-block: 2.5rem;
+  }
+
+  .contact-header {
+    align-items: center;
+    max-width: 50ch;
+  }
+
+  .contact-title {
+    font-size: var(--text-4xl);
+    color: var(--gray-0);
+  }
+
+  .contact-description {
+    font-size: var(--text-md);
+    color: var(--gray-300);
+  }
+
+  .contact-card {
+    width: 100%;
+    max-width: 38rem;
+    padding: 2rem;
+    background: var(--gradient-subtle);
+    border: 1px solid var(--gray-800);
+    border-radius: 1.25rem;
+    box-shadow: var(--shadow-md);
+    text-align: start;
+  }
+
+  .contact-email {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--gradient-accent-orange);
+    color: var(--accent-text-over);
+    border-radius: 999rem;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: var(--text-lg);
+    box-shadow: var(--shadow-md);
+    transition:
+      transform var(--theme-transition),
+      box-shadow var(--theme-transition);
+  }
+
+  .contact-email:hover,
+  .contact-email:focus {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .contact-divider {
+    height: 1px;
+    background: var(--gray-800);
+    opacity: 0.6;
+    border: none;
+    margin: 0.25rem 0;
+  }
+
+  .contact-socials-label {
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gray-300);
+  }
+
+  .contact-social-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .contact-social {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 1rem;
+    border-radius: 999rem;
+    background: var(--gray-999);
+    border: 1px solid var(--gray-800);
+    color: var(--gray-100);
+    text-decoration: none;
+    font-weight: 500;
+    transition:
+      color var(--theme-transition),
+      border-color var(--theme-transition),
+      transform var(--theme-transition);
+  }
+
+  .contact-social:hover,
+  .contact-social:focus {
+    color: var(--accent-regular);
+    border-color: var(--accent-overlay);
+    transform: translateY(-1px);
+  }
+
+  @media (min-width: 50em) {
+    .contact-title {
+      font-size: var(--text-5xl);
+    }
+
+    .contact-description {
+      font-size: var(--text-lg);
+    }
   }
 </style>

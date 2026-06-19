@@ -14,7 +14,7 @@ ARG PNPM_VER=9.15.4
 RUN npm install -g pnpm@$PNPM_VER && pnpm --version
 
 # Copia solo los manifiestos primero para aprovechar la caché de Docker
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Descarga todos los paquetes al store + los enlaza en node_modules,
 # respetando estrictamente el lockfile (reproducible)
@@ -23,7 +23,7 @@ RUN pnpm fetch && \
     pnpm store prune
 
 # ============================================================
-# Stage 2: builder - build con placeholders embebidos
+# Stage 2: builder - build estático de Astro
 # ============================================================
 FROM node:20-alpine AS builder
 
@@ -36,19 +36,6 @@ RUN npm install -g pnpm@$PNPM_VER && pnpm --version
 # Reutiliza node_modules cacheado desde la stage anterior
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
-# Placeholders para PUBLIC_FIREBASE_*: se reemplazan en runtime
-# mediante docker-entrypoint.sh con sed en /usr/share/nginx/html.
-# Vite (motor de Astro) inlinea los valores de import.meta.env.PUBLIC_*
-# como literales en el bundle, por lo que estas cadenas aparecen tal cual
-# en los .js/.html/.css generados y son seguras de sustituir.
-ENV PUBLIC_FIREBASE_API_KEY=__PUBLIC_FIREBASE_API_KEY__ \
-    PUBLIC_FIREBASE_AUTH_DOMAIN=__PUBLIC_FIREBASE_AUTH_DOMAIN__ \
-    PUBLIC_FIREBASE_PROJECT_ID=__PUBLIC_FIREBASE_PROJECT_ID__ \
-    PUBLIC_FIREBASE_STORAGE_BUCKET=__PUBLIC_FIREBASE_STORAGE_BUCKET__ \
-    PUBLIC_FIREBASE_MESSAGING_SENDER_ID=__PUBLIC_FIREBASE_MESSAGING_SENDER_ID__ \
-    PUBLIC_FIREBASE_APP_ID=__PUBLIC_FIREBASE_APP_ID__ \
-    PUBLIC_FIREBASE_MEASUREMENT_ID=__PUBLIC_FIREBASE_MEASUREMENT_ID__
 
 RUN pnpm run build
 
@@ -77,7 +64,7 @@ RUN mkdir -p /var/client_body /var/proxy_temp /var/fastcgi_temp \
     chown -R appuser:appgroup /var/client_body /var/proxy_temp \
                                /var/fastcgi_temp /var/uwsgi_temp /var/scgi_temp
 
-# Entry point que reemplaza placeholders PUBLIC_FIREBASE_* en runtime
+# Entry point mínimo: arranca Nginx como usuario no-root.
 COPY docker-entrypoint.sh /app/docker-entrypoint.sh
 RUN chmod +x /app/docker-entrypoint.sh
 
@@ -92,8 +79,6 @@ RUN chown -R appuser:appgroup /usr/share/nginx/html && \
     touch /var/run/nginx.pid && \
     chown appuser:appgroup /var/run/nginx.pid
 
-# Inicia Nginx como usuario no-root (el entrypoint hace el sed replace
-# de las variables de entorno antes de arrancar el proceso principal)
 USER appuser
 
 EXPOSE 3000

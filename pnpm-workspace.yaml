@@ -2,8 +2,14 @@ packages:
   - '.'
 
 allowBuilds:
-  '@firebase/util': true
-  '@tailwindcss/oxide': true
-  esbuild: true
-  protobufjs: true
-  sharp: true
+  '@tailwindcss/oxide': set this to true or false
+  esbuild: set this to true or false
+  sharp: set this to true or false
+
+# Paquetes que necesitan ejecutar scripts de instalación (build nativo).
+# En pnpm 10+ este campo reemplaza al antiguo `pnpm.onlyBuiltDependencies`
+# del package.json.
+onlyBuiltDependencies:
+  - '@tailwindcss/oxide'
+  - esbuild
+  - sharp

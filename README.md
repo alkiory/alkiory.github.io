@@ -8,15 +8,17 @@ This is my personal portfolio website built with Astro, a modern web framework f
 
 * A clean and minimalistic design
 * A responsive layout that works well on desktop and mobile devices
+* Bilingual content (English / Spanish) with locale-aware routing
 * A gallery of my projects with links to the live demos and source code
-* A contact page with a form to send me a message
+* A blog with technical articles and translations
+* A contact page with my email and links to my social profiles
 
 ## Technologies Used
 
 * Astro: a modern web framework for building fast, scalable, and secure websites
-* Tailwind CSS: a utility-first CSS framework for styling the website
+* Tailwind CSS (via `@tailwindcss/vite`): a utility-first CSS framework for styling the website
 * TypeScript: a statically typed JavaScript language for writing the code
-* Markdown: a lightweight markup language for formatting and writing documentation and content.
+* Markdown / MDX: lightweight markup languages for the blog and portfolio content
 
 ## Development
 

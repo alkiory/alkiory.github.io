@@ -1,5 +1,4 @@
 ---
-import "../styles/global.css";
 import Icon from "../components/ui/icon.astro";
 import { getTranslations } from "../data/i18n";
 
@@ -8,9 +7,10 @@ const t = getTranslations(lang);
 const currentYear = new Date().getFullYear();
 ---
 
-<footer
-  class="flex flex-col gap-12 mt-auto py-6 px-8 text-center text-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-slate-950 border-t border-gray-200 dark:border-gray-800"
->
+<footer class="site-footer flex flex-col gap-12 mt-auto py-6 px-8 text-center text-sm">
+  <!-- Línea de gradiente superior: usa variables CSS que ya flipean con :root.theme-dark -->
+  <div class="footer-gradient-line" aria-hidden="true"></div>
+
   <div
     class="flex flex-col md:flex-row md:justify-between md:items-center w-full max-w-7xl mx-auto"
   >
@@ -19,38 +19,101 @@ const currentYear = new Date().getFullYear();
     >
       <p class="flex items-center gap-1">
         {t?.footer.sign}
-        <a
-          href="https://astro.build/"
-          class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors underline underline-offset-2 decoration-transparent hover:decoration-current"
-        >
-          Astro
-        </a>
+        <a href="https://astro.build/" class="footer-link">Astro</a>
         <Icon icon="rocket-launch" size="1.2em" />
       </p>
-      <p class="text-gray-500 dark:text-gray-400">
+      <p class="footer-copyright">
         &copy; {currentYear}
       </p>
     </div>
 
-    <div class="socials flex justify-center md:justify-end gap-4 flex-wrap">
-      <a
-        href="https://twitter.com/alkiory"
-        class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors underline underline-offset-2 decoration-transparent hover:decoration-current"
-      >
-        Twitter
-      </a>
-      <a
-        href="https://github.com/alkiory"
-        class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors underline underline-offset-2 decoration-transparent hover:decoration-current"
-      >
-        GitHub
-      </a>
+    <div class="footer-socials flex justify-center md:justify-end gap-4 flex-wrap">
+      <a href="https://twitter.com/alkiory" class="footer-link" target="_blank" rel="noopener noreferrer">Twitter</a>
+      <a href="https://github.com/alkiory" class="footer-link" target="_blank" rel="noopener noreferrer">GitHub</a>
       <a
         href="https://www.linkedin.com/in/iamsergiocampbell"
-        class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors underline underline-offset-2 decoration-transparent hover:decoration-current"
-      >
-        Linkedin
-      </a>
+        class="footer-link"
+        target="_blank"
+        rel="noopener noreferrer">Linkedin</a>
     </div>
   </div>
 </footer>
+
+<style>
+  /* El footer usa SOLO CSS variables del proyecto (ya flipean con
+     :root.theme-dark). Antes dependía de las variantes `bg-white` /
+     `dark:bg-slate-950` de Tailwind, que NO responden a `.theme-dark`
+     y por eso se invertían cuando el OS y el toggle no coincidían. */
+  .site-footer {
+    background-color: var(--gray-999);
+    color: var(--gray-300);
+    border-top: 1px solid var(--gray-800);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .footer-copyright {
+    color: var(--gray-300);
+  }
+
+  .footer-link {
+    color: var(--gray-300);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 2px;
+    transition:
+      color var(--theme-transition),
+      text-decoration-color var(--theme-transition);
+  }
+
+  .footer-link:hover,
+  .footer-link:focus {
+    color: var(--gray-100);
+    text-decoration-color: currentColor;
+  }
+
+  /* Banda de gradiente superior de 4px. Usa `--gradient-accent`, que
+     ya está definida en `src/styles/global.css` y re-asigna sus stops
+     bajo :root.theme-dark, por lo que alterna de tono al cambiar el
+     tema sin necesidad de variantes `dark:` de Tailwind. */
+  .footer-gradient-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-image: var(--gradient-accent);
+    background-size: 200% 100%;
+    background-position: 0% 50%;
+    animation: footer-gradient-pan 9s ease-in-out infinite;
+  }
+
+  /* Respeto a usuarios que prefieren reducir movimiento. */
+  @media (prefers-reduced-motion: reduce) {
+    .footer-gradient-line {
+      animation: none;
+    }
+  }
+
+  @keyframes footer-gradient-pan {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  /* Forzar-colors: en Windows High Contrast los gradientes no se
+     reproducen, pero conservamos el alto de la banda (4px) cambiándola
+     a un color de sistema sólido y desactivando la animación. Esto
+     evita layout shift respecto al modo normal. */
+  @media (forced-colors: active) {
+    .footer-gradient-line {
+      background-image: none;
+      background-color: CanvasText;
+      animation: none;
+    }
+  }
+</style>

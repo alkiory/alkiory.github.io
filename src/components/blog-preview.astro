@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { ROUTE_NAMES } from "../lib/routes-names";
+import { ROUTE_NAMES, slugFromId } from "../lib/routes-names";
 import { Image } from "astro:assets";
 import type { Lang } from "../data/i18n";
 
@@ -8,7 +8,7 @@ interface Props {
   blog: CollectionEntry<"blog">;
 }
 
-const { data, slug } = Astro.props.blog;
+const { data, id } = Astro.props.blog;
 const lang = Astro.url.pathname.split("/")[1] as Lang;
 ---
 
@@ -17,7 +17,7 @@ const lang = Astro.url.pathname.split("/")[1] as Lang;
   data-tilt-glare
   data-tilt-max-glare="0.8"
   class="card"
-  href={`/${lang}${ROUTE_NAMES.BLOG}/${slug.split("/").pop()}/`}
+  href={`/${lang}${ROUTE_NAMES.BLOG}/${slugFromId(id)}/`}
 >
   <span class="title">{data.title}</span>
   <Image

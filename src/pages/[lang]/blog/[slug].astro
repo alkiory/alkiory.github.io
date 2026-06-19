@@ -1,36 +1,34 @@
 ---
-import { getCollection } from "astro:content";
-import ProjectLayout from "../../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { Image } from "astro:assets";
 
 import Hero from "../../../components/ui/Hero.astro";
 import Icon from "../../../components/ui/icon.astro";
 import Pill from "../../../components/ui/Pill.astro";
-import { ROUTE_NAMES } from "../../../lib/routes-names";
+import { ROUTE_NAMES, splitContentId } from "../../../lib/routes-names";
+import type { Lang } from "../../../data/i18n";
 
 export async function getStaticPaths() {
   const allBlogPost = await getCollection("blog");
 
   return allBlogPost.map((blog) => {
-    const [lang, actualSlug] = blog.slug.split("/");
+    const { lang, slug } = splitContentId(blog.id);
 
     return {
-      params: {
-        lang: lang,
-        slug: actualSlug,
-      },
+      params: { lang, slug },
       props: { blog },
     };
   });
 }
 
-const lang = (Astro.url.pathname.split("/")[1] as "es" | "en") || "en";
+const lang = (Astro.url.pathname.split("/")[1] as Lang) || "en";
 
 const { blog } = Astro.props;
-const { Content } = await blog.render();
+const { Content } = await render(blog);
 ---
 
-<ProjectLayout title={blog.data.title} description={blog.data.description}>
+<BaseLayout title={blog.data.title} description={blog.data.description}>
   <div class="stack gap-20">
     <div class="stack gap-15">
       <header>
@@ -44,7 +42,7 @@ const { Content } = await blog.render();
           <Hero title={blog.data.title} align="center">
             <div class="details">
               <div class="tags">
-                {blog.data.tags.map((t: any) => <Pill>{t}</Pill>)}
+                {blog.data.tags.map((tag: string) => <Pill>{tag}</Pill>)}
               </div>
               <p class="description">{blog.data.description}</p>
             </div>
@@ -71,7 +69,7 @@ const { Content } = await blog.render();
       </article>
     </div>
   </div>
-</ProjectLayout>
+</BaseLayout>
 
 <style>
   header {

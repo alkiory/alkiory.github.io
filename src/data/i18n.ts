@@ -52,17 +52,8 @@ export const translations = {
     },
     contact: {
       title: 'Contacto',
-      description: 'Si deseas ponerte en contacto conmigo, puedes enviarme un correo electrónico a:',
-      form: {
-        name: 'Nombre',
-        email: 'Correo electrónica',
-        subject: 'Asunto',
-        message: 'Mensaje',
-        submit: 'Enviar',
-      },
-      successMessage: 'Mensaje enviado correctamente.',
-      errorMessage: 'Ha ocurrido un error al enviar el mensaje.',
-
+      description: 'Si deseas ponerte en contacto conmigo, puedes escribirme o seguirme en mis redes sociales.',
+      findMeOn: 'Encuéntrame en',
     },
     portfolio: {
       title: 'Portafolio',
@@ -129,16 +120,8 @@ export const translations = {
     },
     contact: {
       title: 'Contact',
-      description: 'If you want to get in touch with me, you can send me an email at:',
-      form: {
-        name: 'Name',
-        email: 'Email',
-        subject: 'Subject',
-        message: 'Message',
-        submit: 'Submit',
-      },
-      successMessage: 'Message sent successfully.',
-      errorMessage: 'An error occurred while sending the message.',
+      description: 'If you want to get in touch with me, feel free to drop me an email or follow me on social media.',
+      findMeOn: 'Find me on',
     },
     portfolio: {
       title: 'Portfolio',

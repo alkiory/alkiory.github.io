@@ -23,8 +23,9 @@ export default defineConfig({
     },
   },
 
-  // Configuración para Content Collections
-  collections: ['blog', 'work'],
+  // Las colecciones (blog, work) ahora se declaran en
+  // `src/content.config.ts` con el Content Layer API (loaders).
+  // En Astro 6 ya no se usa la opción `collections` en astro.config.
 
   vite: {
     plugins: [tailwindcss()],
