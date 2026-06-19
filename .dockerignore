@@ -63,10 +63,5 @@ docker-compose.*
 coverage
 .nyc_output
 
-# pnpm: el archivo <raíz>/pnpm-workspace.yaml es solo un README/notes
-# comentado (no es config de workspace válida). pnpm 9.15.4 detecta
-# el nombre y exige `packages:` -> error "packages field missing or empty".
-# Sacarlo del build context evita el falso positivo en Docker; en el repo
-# sigue como documentación.
-pnpm-workspace.yaml
-
+# pnpm-workspace.yaml: archivo válido de workspace que pnpm necesita para
+# `pnpm fetch` / `pnpm install --frozen-lockfile`. No excluir.

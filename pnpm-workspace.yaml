@@ -1,14 +1,9 @@
 packages:
   - '.'
 
-allowBuilds:
-  '@tailwindcss/oxide': set this to true or false
-  esbuild: set this to true or false
-  sharp: set this to true or false
-
 # Paquetes que necesitan ejecutar scripts de instalación (build nativo).
-# En pnpm 10+ este campo reemplaza al antiguo `pnpm.onlyBuiltDependencies`
-# del package.json.
+# En pnpm 9.9.0+ este campo vive en pnpm-workspace.yaml; antes de eso
+# se ubicaba en package.json bajo `pnpm.onlyBuiltDependencies`.
 onlyBuiltDependencies:
   - '@tailwindcss/oxide'
   - esbuild
