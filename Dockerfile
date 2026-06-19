@@ -1,15 +1,15 @@
 # ============================================================
 # Stage 1: deps - cache de dependencias con pnpm
 # ============================================================
-FROM node:20-alpine AS deps
+FROM node:22-alpine AS deps
 
 WORKDIR /app
 
 # Instala pnpm vía npm usando un ARG pinneado a 9.15.4 (mismo major
 # que el lockfile pnpm-lock.yaml, lockfileVersion: '9.0'). Se usa npm
 # en lugar de corepack porque la descarga automática de corepack está
-# deshabilitada en imágenes recientes de node:20-alpine. Para
-# sobreescribir desde el build:   docker build --build-arg PNPM_VER=X.Y.Z
+# deshabilitada en imágenes alpine recientes de node. Para sobreescribir
+# desde el build:   docker build --build-arg PNPM_VER=X.Y.Z
 ARG PNPM_VER=9.15.4
 RUN npm install -g pnpm@$PNPM_VER && pnpm --version
 
@@ -25,7 +25,7 @@ RUN pnpm fetch && \
 # ============================================================
 # Stage 2: builder - build estático de Astro
 # ============================================================
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 
