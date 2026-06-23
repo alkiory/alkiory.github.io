@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "label": {
+      "type": "string"
+    },
+    "variant": {
+      "type": "string",
+      "enum": [
+        "en",
+        "es"
+      ]
+    },
+    "diagram": {
+      "type": "string",
+      "enum": [
+        "architecture",
+        "user-navigation",
+        "cold-start"
+      ]
+    },
+    "$schema": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "label",
+    "variant",
+    "diagram"
+  ]
+}

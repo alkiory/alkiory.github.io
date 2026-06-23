@@ -7,6 +7,7 @@ import PortfolioPreview from "../../../components/portfolio-preview.astro";
 import Hero from "../../../components/ui/Hero.astro";
 import Grid from "../../../components/Grid.astro";
 import { getTranslations } from "../../../data/i18n";
+import { latest } from "../../../lib/content-helpers";
 
 export async function getStaticPaths() {
   const locales = ["es", "en"];
@@ -19,11 +20,8 @@ export async function getStaticPaths() {
 const lang = (Astro.url.pathname.split("/")[1] as "es" | "en") || "en";
 const t = getTranslations(lang);
 
-const allProjects = await getCollection("work", ({ id }) =>
-  id.startsWith(lang)
-);
-allProjects.sort(
-  (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
+const allProjects = latest(
+  await getCollection("work", ({ id }) => id.startsWith(lang)),
 );
 ---
 

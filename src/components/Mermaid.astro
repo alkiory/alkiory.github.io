@@ -1,0 +1,69 @@
+---
+// Hydrates the ` ```mermaid` code blocks emitted by Astro's markdown
+// pipeline (`<pre data-language="mermaid"><code>...</code></pre>` —
+// Astro 6 + Shiki puts the language as a data-* attribute on the
+// <pre>, not as a class on the <code>). For each block we call
+// mermaid.render() individually so a parse failure on one diagram
+// does not break the others. When parse fails we leave the <pre> in
+// place so its Shiki styling (overflow:auto, monospace) constrains
+// the body width — the alternative (replacing <pre> with the raw
+// source text before render failure) stretched the page downstream.
+//
+// TODO: re-run mermaid when the user toggles dark mode so the SVG
+// recolors (today the SVGs stay in the initial theme until reload).
+---
+
+<script>
+  import mermaid from "mermaid";
+
+  mermaid.initialize({
+    startOnLoad: false,
+    // Astro 6 SSG bundles `<script>` as a deferred ESM module, so by the
+    // time this runs MainHead's inline script has already set the
+    // `theme-dark` class on <html>. No `typeof document` guard needed.
+    theme: document.documentElement.classList.contains("theme-dark")
+      ? "dark"
+      : "default",
+    securityLevel: "loose",
+    fontFamily: "inherit",
+  });
+
+  const SOURCE_SELECTOR = 'pre[data-language="mermaid"]';
+
+  const renderMermaid = async (): Promise<void> => {
+    const pres = Array.from(
+      document.querySelectorAll<HTMLPreElement>(SOURCE_SELECTOR),
+    );
+    if (pres.length === 0) return;
+
+    // Per-block render: each `mermaid.render(id, source)` is a
+    // self-contained call that rejects on parse failure. Failures
+    // stay isolated to the affected <pre>, which we leave in place
+    // (plus a class for the SVG fallback badge in global.css).
+    for (const pre of pres) {
+      const source = (pre.querySelector("code")?.textContent ?? "").trim();
+      if (!source) continue;
+
+      const id = `mermaid-${Math.random().toString(36).slice(2, 8)}`;
+      try {
+        const { svg } = await mermaid.render(id, source);
+        const wrapper = document.createElement("div");
+        wrapper.className = "mermaid";
+        wrapper.innerHTML = svg;
+        pre.replaceWith(wrapper);
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error("[mermaid] render failed for block:", err);
+        pre.classList.add("mermaid-parse-error");
+        // Leave <pre> in place so its overflow:auto + monospace
+        // styling keeps the page from stretching on a bad diagram.
+      }
+    }
+  };
+
+  // Astro 6 ships `<script>` (with import) as a deferred ESM module, so
+  // by the time this line runs the DOM is fully parsed and the theme
+  // class on <html> is set by MainHead's inline script.
+  void renderMermaid();
+</script>
+

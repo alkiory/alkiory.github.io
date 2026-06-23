@@ -23,7 +23,7 @@ export default defineConfig({
     },
   },
 
-  // Las colecciones (blog, work) ahora se declaran en
+  // Las colecciones (blog, work) se declaran en
   // `src/content.config.ts` con el Content Layer API (loaders).
   // En Astro 6 ya no se usa la opción `collections` en astro.config.
 

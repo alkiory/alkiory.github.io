@@ -3,14 +3,22 @@ import "../styles/global.css";
 import MainHead from "../components/MainHead.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
+import Mermaid from "../components/Mermaid.astro";
 
 interface Props {
   title?: string | undefined;
   description?: string | undefined;
   lang?: string | undefined;
+  /**
+   * When true, the <Mermaid /> component is rendered and its ~500 KB
+   * mermaid client bundle is downloaded + executed for this page. Set
+   * this only on pages that contain `\`\`\`mermaid` code blocks so the
+   * home / about / contact / 404 pages stay light.
+   */
+  withMermaid?: boolean | undefined;
 }
 
-const { title, description, lang } = Astro.props;
+const { title, description, lang, withMermaid = false } = Astro.props;
 ---
 
 <html lang={lang}>
@@ -247,5 +255,6 @@ const { title, description, lang } = Astro.props;
         }
       }
     </style>
+    {withMermaid && <Mermaid />}
   </body>
 </html>

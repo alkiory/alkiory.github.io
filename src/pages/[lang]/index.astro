@@ -11,6 +11,7 @@ import { getCollection } from "astro:content";
 import Skills from "../../components/Skills.astro";
 import Btn from "../../components/ui/Btn.astro";
 import { ROUTE_NAMES } from "../../lib/routes-names";
+import { latest } from "../../lib/content-helpers";
 import { Image } from "astro:assets";
 
 export async function getStaticPaths() {
@@ -24,15 +25,12 @@ export async function getStaticPaths() {
 const lang = Astro.url.pathname.split("/")[1] as Lang;
 const t = getTranslations(lang);
 
-const allBlogsPost = (await getCollection("blog"))
-  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
-  .filter((_, index) => index % 2 !== 0)
-  .slice(0, 3);
+// Top 3 entries per collection; `latest()` defaults to descending
+// publishDate with `id` lex as a secondary tiebreaker for same-day
+// posts.
+const allBlogsPost = latest(await getCollection("blog"), 3);
 
-const allProjects = (await getCollection("work"))
-  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
-  .filter((_, index) => index % 2 !== 0)
-  .slice(1, 4);
+const allProjects = latest(await getCollection("work"), 3);
 ---
 
 <BaseLayout>

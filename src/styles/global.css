@@ -423,3 +423,39 @@ pre {
     padding: 6px 8px;
   }
 }
+
+/* Mermaid diagrams: the runtime hydrator (src/components/Mermaid.astro)
+   replaces each <pre data-language="mermaid"> with a <div class="mermaid">
+   whose body becomes an SVG. Center it, allow horizontal scroll on
+   narrow viewports, and ensure the SVG scales down. */
+.mermaid {
+  margin: 1.5rem auto;
+  text-align: center;
+  overflow-x: auto;
+  max-width: 100%;
+  padding: 0.5rem 0;
+}
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+  display: inline-block;
+}
+
+/* When mermaid fails to parse a block, the <pre> stays in place
+   with the .mermaid-parse-error class so the Shiki-rendered code
+   (overflow:auto, monospace) keeps the page width bounded. The
+   badge below makes the failure visible without breaking layout. */
+pre.mermaid-parse-error {
+  border-left: 3px solid #c0392b;
+}
+pre.mermaid-parse-error::before {
+  content: "⚠ Mermaid syntax error — original source shown below as fallback";
+  display: block;
+  background: #c0392b;
+  color: #fff;
+  padding: 0.5em 0.75em;
+  margin: 0 0 0.5em 0;
+  font-family: var(--font-system);
+  font-size: 0.85em;
+  font-weight: 600;
+}

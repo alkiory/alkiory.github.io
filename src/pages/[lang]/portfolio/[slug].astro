@@ -26,9 +26,45 @@ const lang = (Astro.url.pathname.split("/")[1] as Lang) || "en";
 
 const { project } = Astro.props;
 const { Content } = await render(project);
+
+// Only the portfolio detail pages that actually use ` ```mermaid` blocks
+// pay the cost of the mermaid client bundle; portfolio index pages stay
+// light. We sniff the raw markdown body for the fence rather than
+// parsing the rendered HTML.
+//
+// Anchored to line-start: matches a `\`\`\`mermaid` fence that begins at
+// column 0 of any line — which is where a real fenced block sits by
+// convention. Inline mid-paragraph mentions of the fence (e.g. "the
+// `\`\`\`mermaid` notation in prose") will NOT match. A literal mention
+// of the fence at column 0 inside *another* fenced block can still match,
+// but the work collection is author-controlled so this is acceptable.
+//
+// After the MDX refactor (work items now compose snippets via
+// `<arch.Content />` etc.) the literal fence lives in the snippet body,
+// not in `project.body`, so we also check loaded snippets for the
+// current language. The OR keeps the inline path alive for legacy `.md`
+// items that still embed fences directly.
+// Snippet bodies (loaded eagerly via import.meta.glob so vite inlines
+// raw file contents at build time) are scanned for the same fence
+// regex as the project body. Snippets live outside the `work` content
+// collection now that they are imported as Astro components in .mdx,
+// so we cannot query them via getCollection; the glob gives us the
+// raw string bodies the same way `project.body` exposes them.
+const snippetBodies = import.meta.glob<string>(
+  "../../../content/snippets/**/*.md",
+  { query: "?raw", import: "default", eager: true },
+);
+const mermaidFence = /^```mermaid\b/m;
+const hasMermaid =
+  mermaidFence.test(project.body ?? "") ||
+  Object.values(snippetBodies).some((body) => mermaidFence.test(body));
 ---
 
-<BaseLayout title={project.data.title} description={project.data.description}>
+<BaseLayout
+  title={project.data.title}
+  description={project.data.description}
+  withMermaid={hasMermaid}
+>
   <div class="stack gap-20">
     <div class="stack gap-15">
       <header>
