@@ -48,21 +48,14 @@ FROM nginx:1.27-alpine AS runner
 RUN addgroup -S -g 1001 appgroup && \
     adduser -S -u 1001 -G appgroup appuser
 
-# Configuración de Nginx con SPA fallback (override del default.conf)
+# Sustituye el nginx.conf del base image por el nuestro, optimizado para
+# correr como no-root. Ver la cabecera de nginx.conf para el rationale
+# completo (temp paths en /tmp, sin directiva `user`, PID en /tmp).
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Configuración del server block (SPA-aware) sobreescribiendo el
+# default.conf del base image y apuntando listen al puerto interno.
 COPY default.conf /etc/nginx/conf.d/default.conf
-
-# Reescribe el user directive del /etc/nginx/nginx.conf base para que
-# coincida con el UID no-root del contenedor (work explícito y a prueba
-# de cambios futuros de puerto a 80/443).
-RUN sed -i 's|^user .*;|user appuser;|' /etc/nginx/nginx.conf
-
-# Pre-crea los directorios temp/work que nginx.conf referencia y asigna
-# ownership al usuario no-root para evitar condiciones de carrera al
-# primer arranque.
-RUN mkdir -p /var/client_body /var/proxy_temp /var/fastcgi_temp \
-            /var/uwsgi_temp /var/scgi_temp && \
-    chown -R appuser:appgroup /var/client_body /var/proxy_temp \
-                               /var/fastcgi_temp /var/uwsgi_temp /var/scgi_temp
 
 # Entry point mínimo: arranca Nginx como usuario no-root.
 COPY docker-entrypoint.sh /app/docker-entrypoint.sh
@@ -71,13 +64,12 @@ RUN chmod +x /app/docker-entrypoint.sh
 # Copia el build estático de Astro a la raíz de Nginx
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Asigna permisos al usuario no-root
+# Asigna permisos al usuario no-root. Los temp paths y el PID de nginx viven
+# en /tmp (world-writable), por eso este RUN ya no pre-crea /var/*_temp.
 RUN chown -R appuser:appgroup /usr/share/nginx/html && \
     chown -R appuser:appgroup /var/cache/nginx && \
     chown -R appuser:appgroup /var/log/nginx && \
-    chown -R appuser:appgroup /etc/nginx/conf.d && \
-    touch /var/run/nginx.pid && \
-    chown appuser:appgroup /var/run/nginx.pid
+    chown -R appuser:appgroup /etc/nginx/conf.d
 
 USER appuser
 
