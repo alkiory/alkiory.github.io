@@ -1,10 +1,9 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getTranslations, type Lang } from "../../data/i18n";
-import BlogPreview from "../../components/blog-preview.astro";
+import CardPreview from "../../components/CardPreview.astro";
 import Grid from "../../components/Grid.astro";
 import Pill from "../../components/ui/Pill.astro";
-import PortfolioPreview from "../../components/portfolio-preview.astro";
 import Hero from "../../components/ui/Hero.astro";
 import Icon from "../../components/ui/icon.astro";
 import { getCollection } from "astro:content";
@@ -13,6 +12,9 @@ import Btn from "../../components/ui/Btn.astro";
 import { ROUTE_NAMES } from "../../lib/routes-names";
 import { latest } from "../../lib/content-helpers";
 import { Image } from "astro:assets";
+import StatusBadge from "../../components/StatusBadge.astro";
+import Timeline from "../../components/Timeline.astro";
+import { experience } from "../../data/companies";
 
 export async function getStaticPaths() {
   const locales = ["es", "en"];
@@ -22,7 +24,11 @@ export async function getStaticPaths() {
   }));
 }
 
-const lang = Astro.url.pathname.split("/")[1] as Lang;
+// `Astro.currentLocale` is set by the i18n config (see
+// astro.config.mjs). Fall back to the URL segment for paths that the
+// Astro runtime hasn't classified yet, and finally to the default
+// locale. This keeps us consistent with Nav.astro's pattern.
+const lang = (Astro.currentLocale ?? Astro.url.pathname.split("/")[1]) as Lang;
 const t = getTranslations(lang);
 
 // Top 3 entries per collection; `latest()` defaults to descending
@@ -44,6 +50,10 @@ const allProjects = latest(await getCollection("work"), 3);
             <Pill><Icon icon="game-controller" size="1.33em" /> Gamer</Pill>
             <Pill><Icon icon="pencil-line" size="1.33em" /> Video</Pill>
           </div>
+
+          <div style="margin-top: 1rem;">
+            <StatusBadge />
+          </div>
         </Hero>
 
         <Image
@@ -57,7 +67,38 @@ const allProjects = latest(await getCollection("work"), 3);
         />
       </header>
 
-      <Skills />
+      <!-- SKILLS AND STATISTICS -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20">
+        <Skills />
+
+        <div class="card p-8 flex flex-col justify-center" style="z-index: 10;">
+          <div class="grid grid-cols-2 gap-8 text-center">
+            <div>
+              <div
+                class="text-4xl font-bold text-[var(--accent-regular)] mb-2 font-brand"
+              >
+                9+
+              </div>
+              <p class="text-[var(--gray-400)] text-sm mt-2">
+                {t.home.yearsOfExperienceDesc || "Years of Experience"}
+              </p>
+              <div style="margin-top: 1rem;">
+                <StatusBadge />
+              </div>
+            </div>
+            <div>
+              <div
+                class="text-4xl font-bold text-[var(--accent-regular)] mb-2 font-brand"
+              >
+                67+
+              </div>
+              <p class="text-[var(--gray-400)] text-sm mt-2">
+                {t.home.projectsCompletedDesc || "Projects Completed"}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <main class="wrapper stack gap-20 lg:gap-48">
@@ -74,7 +115,7 @@ const allProjects = latest(await getCollection("work"), 3);
             {
               allProjects.map((project) => (
                 <li>
-                  <PortfolioPreview project={project} />
+                  <CardPreview entry={project} route={ROUTE_NAMES.WORK} />
                 </li>
               ))
             }
@@ -88,6 +129,7 @@ const allProjects = latest(await getCollection("work"), 3);
           </Btn>
         </div>
       </section>
+
       <section class="section with-background with-cta">
         <header class="section-header stack gap-2 lg:gap-4">
           <h3>{t.home.lastBlog}</h3>
@@ -101,7 +143,7 @@ const allProjects = latest(await getCollection("work"), 3);
             {
               allBlogsPost.map((blog) => (
                 <li>
-                  <BlogPreview blog={blog} />
+                  <CardPreview entry={blog} route={ROUTE_NAMES.BLOG} />
                 </li>
               ))
             }
@@ -116,49 +158,21 @@ const allProjects = latest(await getCollection("work"), 3);
         </div>
       </section>
 
+      <!-- EXPERIENCE SECTION -->
       <section class="section with-background bg-variant">
-        <header class="section-header stack gap-2 lg:gap-4">
-          <h3>{t.home.workExperience}</h3>
-          <p>
-            {t.home.workExperienceDesc}
+        <header class="section-header stack gap-2 lg:gap-4 mb-8">
+          <h3
+            class="text-3xl md:text-4xl font-bold text-[var(--gray-100)] font-brand"
+          >
+            {t.home.workExperience}
+          </h3>
+          <p class="text-xl text-[var(--gray-300)]">
+            {t.home.workExperienceDesc || "My professional journey"}
           </p>
         </header>
 
-        <div class="gallery">
-          <Grid variant="small">
-            {
-              [
-                {
-                  name: "Banco Santander",
-                  web: "https://www.santander.com/es/home",
-                },
-                { name: "Bchange", web: "https://bchange.es" },
-                { name: "Zemoga", web: "https://zemoga.com" },
-                { name: "Evolution Code", web: "https://evolutioncode.io" },
-                { name: "Liteyca", web: "https://www.liteyca.es" },
-                { name: "Optecom", web: "https://www.optecom.com.co" },
-                {
-                  name: "Devices & Technologies",
-                  web: "https://devitech.com.co",
-                },
-                {
-                  name: "Optimacom",
-                  web: "https://www.linkedin.com/company/optimacom-sas",
-                },
-                { name: "ITA", web: "https://ita-sa.com" },
-                {
-                  name: "Open Source and more...",
-                  web: "https://github.com/alkiory",
-                },
-              ].map((brand) => (
-                <li class="mention-card glow-on-hover">
-                  <a href={brand.web} class="brands" target="_blank">
-                    {brand.name}
-                  </a>
-                </li>
-              ))
-            }
-          </Grid>
+        <div class="gallery mx-auto max-w-4xl w-full">
+          <Timeline items={experience} lang={lang} />
         </div>
       </section>
     </main>
@@ -207,12 +221,6 @@ const allProjects = latest(await getCollection("work"), 3);
   }
 
   /* ====================================================== */
-
-  .brands {
-    text-decoration: none;
-    color: var(--gray-300);
-    transition: transform 0.2s;
-  }
 
   .section {
     display: grid;
@@ -293,102 +301,10 @@ const allProjects = latest(await getCollection("work"), 3);
     }
   }
 
-  /* ====================================================== */
-
-  .mention-card {
-    display: flex;
-    height: 7rem;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    border: 1px solid var(--accent-light);
+  .card {
+    background: var(--gradient-subtle);
+    border: 1px solid var(--gray-800);
     border-radius: 1.5rem;
-    color: var(--gray-300);
-    background: var(--accent-light);
     box-shadow: var(--shadow-sm);
-    transition: transform 0.2s;
-    box-shadow:
-      0 0 2px 2px #def2ff inset,
-      0 0 0 0 #def2ff;
-    -webkit-transition: all 150ms ease-in-out;
-    transition: all 150ms ease-in-out;
-    outline: none;
-    position: relative;
-    z-index: 0;
-  }
-
-  @media (min-width: 50em) {
-    .mention-card {
-      border-radius: 1.5rem;
-      height: 9.5rem;
-    }
-
-    .brands:hover {
-      transform: scale(1.2);
-    }
-  }
-
-  .mention-card:before {
-    content: "";
-    background: linear-gradient(
-      45deg,
-      #ff0000,
-      #ff7300,
-      #fffb00,
-      #48ff00,
-      #00ffd5,
-      #002bff,
-      #7a00ff,
-      #ff00c8,
-      #ff0000
-    );
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    background-size: 300%;
-    z-index: -1;
-    filter: blur(5px);
-    width: calc(100% + 4px);
-    height: calc(100% + 4px);
-    animation: glowing 20s linear infinite;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-    border-radius: 10px;
-  }
-
-  .mention-card:active {
-    color: var(--gray-0);
-  }
-
-  .mention-card:active:after {
-    background: transparent;
-  }
-
-  .mention-card:hover:before {
-    opacity: 1;
-  }
-
-  .mention-card:after {
-    z-index: -1;
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: var(--gray-900);
-    left: 0;
-    top: 0;
-    border-radius: 10px;
-  }
-
-  @keyframes glowing {
-    0% {
-      background-position: 0 0;
-    }
-    50% {
-      background-position: 400% 0;
-    }
-    100% {
-      background-position: 0 0;
-    }
   }
 </style>

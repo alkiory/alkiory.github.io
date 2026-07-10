@@ -12,6 +12,8 @@ export const translations = {
       sign: 'Hecho con ❤️ y ☕ por Alkiory | Construido con',
     },
     home: {
+      statusBadge: 'Disponible para proyectos',
+      viewDetails: '+ Ver detalles',
       welcome: '¡Bienvenido a mi Portafolio!',
       intro: 'Explora mis proyectos y artículos.',
       selectedWorks: 'Trabajos destacados',
@@ -30,6 +32,8 @@ export const translations = {
       workExperience: 'Experiencia laboral',
       workExperienceDesc: 'He tenido la suerte de trabajar con estas empresas y mas.',
       contact: 'Contacto',
+      yearsOfExperienceDesc: 'años escribiendo código en producción.',
+      projectsCompletedDesc: 'proyectos entregados y mantenidos, del boceto al deploy.',
     },
     blog: {
       title: 'Mi Blog Personal',
@@ -63,10 +67,10 @@ export const translations = {
       project3: 'Proyecto 3',
     },
     notFound: {
-    title: 'Página No Encontrada',
-    description: 'Lo sentimos, la página que buscas no existe o se ha movido.',
-    homeLinkText: 'Volver al Inicio',
-  },
+      title: 'Página No Encontrada',
+      description: 'Lo sentimos, la página que buscas no existe o se ha movido.',
+      homeLinkText: 'Volver al Inicio',
+    },
   },
   en: {
     navbar: {
@@ -81,6 +85,8 @@ export const translations = {
       sign: 'Made with ❤️ and ☕ by Alkiory | Built with',
     },
     home: {
+      statusBadge: 'Available for projects',
+      viewDetails: '+ View details',
       welcome: 'Welcome to my Portfolio!',
       intro: 'Explore my projects and articles.',
       selectedWorks: 'Featured Works',
@@ -98,6 +104,8 @@ export const translations = {
       interested: 'Interested in working with me?',
       workExperience: 'Work Experience',
       workExperienceDesc: 'I have been fortunate enough to work with this companies and more.',
+      yearsOfExperienceDesc: 'years writing code in production.',
+      projectsCompletedDesc: 'projects delivered and maintained, from concept to deployment.'
     },
     blog: {
       title: 'My Personal Blog',
@@ -105,13 +113,13 @@ export const translations = {
       readMore: 'Read more',
     },
     about: {
-  title: "About Me",
-  description: "I'm a developer passionate about creating innovative solutions. I enjoy learning and sharing my knowledge through this blog and by collaborating with other developers.",
-  introParagraph1: "Hi, I'm Sergio Campbell (Alkiory), a Software Developer with experience in building scalable and user-centric web solutions. I specialize in React, Angular, TypeScript, and cutting-edge technologies, with a focus on performance, usability, and SEO optimization. I implement and adapt to agile methodologies and collaborative environments, adding value by designing intuitive interfaces that drive business growth. I have successfully led the development of complex platforms, prioritizing innovation and continuous improvement.",
-  introParagraph2: "In this portfolio, I present some of my featured projects and recent articles. Explore and discover my skills and experience.",
-  introParagraph3: "If you have any questions or would like to collaborate, feel free to contact me. I'm always open to new opportunities and challenges.",
-  introParagraph4: "Thanks for visiting my portfolio—I hope you find something interesting!",
-  introParagraph5: "If you have any questions or want to collaborate, don't hesitate to contact me.",
+      title: "About Me",
+      description: "I'm a developer passionate about creating innovative solutions. I enjoy learning and sharing my knowledge through this blog and by collaborating with other developers.",
+      introParagraph1: "Hi, I'm Sergio Campbell (Alkiory), a Software Developer with experience in building scalable and user-centric web solutions. I specialize in React, Angular, TypeScript, and cutting-edge technologies, with a focus on performance, usability, and SEO optimization. I implement and adapt to agile methodologies and collaborative environments, adding value by designing intuitive interfaces that drive business growth. I have successfully led the development of complex platforms, prioritizing innovation and continuous improvement.",
+      introParagraph2: "In this portfolio, I present some of my featured projects and recent articles. Explore and discover my skills and experience.",
+      introParagraph3: "If you have any questions or would like to collaborate, feel free to contact me. I'm always open to new opportunities and challenges.",
+      introParagraph4: "Thanks for visiting my portfolio—I hope you find something interesting!",
+      introParagraph5: "If you have any questions or want to collaborate, don't hesitate to contact me.",
       education: "Education",
       techSkills: "Technical Skills",
       softSkills: "Soft Skills",
@@ -131,10 +139,10 @@ export const translations = {
       project3: 'Project 3',
     },
     notFound: {
-    title: 'Page Not Found',
-    description: 'Sorry, the page you are looking for does not exist or has been moved.',
-    homeLinkText: 'Back to Home',
-  },
+      title: 'Page Not Found',
+      description: 'Sorry, the page you are looking for does not exist or has been moved.',
+      homeLinkText: 'Back to Home',
+    },
   },
 };
 
@@ -144,7 +152,8 @@ export const getTranslations = (lang: Lang) => {
   return translations[lang];
 };
 
-export const getLangFromUrl = (url: URL) => {
-  const lang = url.pathname.split('/')[1];
-  return lang;
+export const getLangFromUrl = (url: URL): Lang | undefined => {
+  const lang = url.pathname.split("/")[1];
+  if (lang === "es" || lang === "en") return lang as Lang;
+  return undefined;
 };

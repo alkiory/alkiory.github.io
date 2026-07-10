@@ -1,6 +1,9 @@
 packages:
   - '.'
 
+allowBuilds:
+  esbuild: true
+
 # Paquetes que necesitan ejecutar scripts de instalación (build nativo).
 # En pnpm 9.9.0+ este campo vive en pnpm-workspace.yaml; antes de eso
 # se ubicaba en package.json bajo `pnpm.onlyBuiltDependencies`.

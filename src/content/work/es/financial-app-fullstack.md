@@ -1,8 +1,8 @@
 ---
 title: BudgetGenius arquitectura hexagonal y enfoque PWA
 publishDate: 2025-05-28 00:00:00
-img: https://www.photo-pick.com/online/api/v1/albums/efdbc017-11d2-4eaf-b71c-da8be94efaf2.jpg
-img_alt: Iridescent ripples of a bright blue and pink liquid
+img: https://private-user-images.githubusercontent.com/51247757/620083810-be56e660-951f-4049-86dd-edd547757f1b.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODM2OTU3NjQsIm5iZiI6MTc4MzY5NTQ2NCwicGF0aCI6Ii81MTI0Nzc1Ny82MjAwODM4MTAtYmU1NmU2NjAtOTUxZi00MDQ5LTg2ZGQtZWRkNTQ3NzU3ZjFiLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA3MTAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwNzEwVDE0NTc0NFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTk2ZWUzMWFkOTNlMjY3MTRlMjkwNjBmMmI2NWYyMzQwNjc3MGIwYjI2NWU3Yjc1NmFkYmVjZTRlZWI2MjVlMGYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.YmyzwPzEvyBrzdtjpIQ9MdyXDZZVlsnAKLDzjsZbknA
+img_alt: App description image
 description: BudgetGenius es una aplicación de finanzas personales construida desde cero como un MVP funcional, modular y escalable. En este post, te compartimos la arquitectura, decisiones técnicas clave, servicios construidos y el stack tecnológico usado, incluyendo soporte para PWA, autenticación OAuth2 y despliegue completo en la nube.
 tags:
   - TypeScript

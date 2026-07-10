@@ -1,0 +1,519 @@
+---
+import type { Experience } from "../data/companies";
+import type { Lang } from "../data/i18n";
+import { getTranslations } from "../data/i18n";
+
+interface Props {
+  items: Experience[];
+  lang: Lang;
+}
+
+const { items, lang } = Astro.props;
+const t = getTranslations(lang);
+---
+
+<div class="timeline-container relative mx-auto w-full max-w-4xl">
+  {
+    /* Base gray rail — anchored exactly on the horizontal center axis
+      (left: 50% + translateX(-50%)) so it stays centered on every
+      breakpoint and regardless of `mx-auto` / `max-w-*` of the parent. */
+  }
+  <div class="timeline-rail" aria-hidden="true"></div>
+
+  {
+    /* Scroll-driven fill rail. The CSS variable `--progress` (0..1) is
+      updated from JS on scroll; transform preserves the centering
+      translate so the fill never drifts off-axis. */
+  }
+  <div class="timeline-progress" aria-hidden="true" style="--progress: 0;">
+  </div>
+
+  <div class="timeline-items">
+    {
+      items.map((item, index) => (
+        <div
+          class:list={[
+            "timeline-item",
+            index % 2 === 0 ? "timeline-item--even" : "timeline-item--odd",
+          ]}
+          data-timeline-item
+        >
+          {/* Dot anchored strictly on the rail center. */}
+          <div class="timeline-dot" aria-hidden="true" />
+
+          <div class="timeline-card-wrap">
+            <div class="card p-6 h-full flex flex-col gap-2">
+              <span class="text-sm font-mono text-[var(--accent-dark)]">
+                {item.period}
+              </span>
+              <h3 class="text-xl font-bold text-[var(--gray-100)] font-brand">
+                {item.role}
+              </h3>
+              {item.link ? (
+                <a
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-lg font-medium text-[var(--gray-300)] hover:text-[var(--accent-regular)] transition-colors w-fit"
+                >
+                  {item.company} ↗
+                </a>
+              ) : (
+                <span class="text-lg font-medium text-[var(--gray-300)]">
+                  {item.company}
+                </span>
+              )}
+              <p class="text-[var(--gray-400)] mt-2">{item.summary[lang]}</p>
+
+              {item.details && (
+                <details
+                  class:list={[
+                    "timeline-details",
+                    index % 2 === 0 ? "md:text-left" : "md:text-right",
+                  ]}
+                >
+                  <summary class="timeline-details-summary">
+                    {t.home.viewDetails}
+                  </summary>
+                  <ul class="timeline-details-list">
+                    {item.details[lang].bullets.map((bullet) => (
+                      <li>{bullet}</li>
+                    ))}
+                  </ul>
+                </details>
+              )}
+            </div>
+          </div>
+
+          {/* Half-width spacer that keeps the alternating card grid
+              symmetric around the centered rail. Hidden on mobile. */}
+          <div class="timeline-spacer" aria-hidden="true" />
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  // Scroll-driven fill. We update a CSS custom property instead of the
+  // full transform string so the centering `translateX(-50%)` declared
+  // in the stylesheet is never overwritten. This is scoped per-instance
+  // (querySelectorAll) and throttled via rAF.
+  const fillTimelines = () => {
+    document
+      .querySelectorAll<HTMLElement>(".timeline-container")
+      .forEach((container) => {
+        const progress =
+          container.querySelector<HTMLElement>(".timeline-progress");
+        if (!progress) return;
+
+        const rect = container.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        const scrolled = windowHeight * 0.5 - rect.top;
+        const total = rect.height;
+
+        let ratio = scrolled / total;
+        if (ratio < 0) ratio = 0;
+        if (ratio > 1) ratio = 1;
+
+        progress.style.setProperty("--progress", ratio.toFixed(4));
+      });
+  };
+
+  let ticking = false;
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      fillTimelines();
+      ticking = false;
+    });
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  // Run once after layout settles so the fill is correct on first paint
+  // (e.g. when restoring scroll position).
+  setTimeout(fillTimelines, 100);
+
+  // Per-item fill: when a card enters the viewport, light up its dot
+  // and reveal the card body. Sticks lit once revealed so the
+  // timeline reads as "filled" from above. With no IO support we
+  // reveal everything immediately so the page is never blank.
+  const items = document.querySelectorAll<HTMLElement>("[data-timeline-item]");
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("timeline-item--visible");
+          }
+        }
+      },
+      { threshold: 0.3, rootMargin: "0px 0px -8% 0px" },
+    );
+    items.forEach((item) => io.observe(item));
+  } else {
+    items.forEach((item) => item.classList.add("timeline-item--visible"));
+  }
+</script>
+
+<style>
+  /* ─── Rail + progress ─────────────────────────────────────── */
+
+  .timeline-rail {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    background: var(--gray-800);
+    border-radius: 9999px;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .timeline-progress {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleY(var(--progress, 0));
+    transform-origin: top;
+    width: 3px;
+    background: linear-gradient(
+      to bottom,
+      #22d3ee 0%,
+      #a855f7 55%,
+      #c084fc 100%
+    );
+    border-radius: 9999px;
+    box-shadow:
+      0 0 6px rgba(168, 85, 247, 0.7),
+      0 0 14px rgba(168, 85, 247, 0.45);
+    z-index: 1;
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  /* Wider rail on desktop so the fill is unmistakably visible. */
+  @media (min-width: 50em) {
+    .timeline-rail,
+    .timeline-progress {
+      width: 4px;
+    }
+  }
+
+  /* ─── Items wrapper ───────────────────────────────────────── */
+
+  .timeline-items {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    position: relative;
+  }
+
+  /* ─── Each event row ──────────────────────────────────────── */
+
+  .timeline-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    /* Mobile: dot sits at top, leave breathing room so it doesn't
+       collide with the period/role text of the card. */
+    padding-top: 3.5rem;
+    /* Default = "not yet revealed". IO toggles --visible. */
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 0.5s ease-out,
+      transform 0.5s ease-out;
+  }
+
+  .timeline-item--visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── Dot ─────────────────────────────────────────────────── */
+
+  .timeline-dot {
+    position: absolute;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 18px;
+    border-radius: 9999px;
+    border: 4px solid var(--gray-999);
+    background: var(--accent-regular);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+    z-index: 10;
+    transition:
+      box-shadow 0.4s ease-out,
+      transform 0.4s ease-out,
+      background 0.45s ease-out;
+  }
+
+  /* When the card enters the viewport we both lift the dot ring and
+     shift its hue to the gradient palette of the progress bar — the
+     "fill animation" the user explicitly asked for. translateX(-50%)
+     is preserved inside the transform so the dot never drifts. */
+  .timeline-item--visible .timeline-dot {
+    background: linear-gradient(135deg, #22d3ee, #c084fc);
+    box-shadow:
+      0 0 0 3px var(--accent-overlay),
+      0 0 16px var(--accent-regular),
+      0 0 6px rgba(192, 132, 252, 0.85);
+    transform: translateX(-50%) scale(1.2);
+  }
+
+  /* ─── Card + spacer ───────────────────────────────────────── */
+
+  .timeline-card-wrap {
+    flex: 1 1 auto;
+    width: 100%;
+    text-align: center;
+  }
+
+  .timeline-spacer {
+    display: none;
+  }
+
+  @media (min-width: 50em) {
+    .timeline-item {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 2rem;
+      padding-top: 0;
+    }
+
+    /* On desktop the dot sits flush with the top of the card. */
+    .timeline-dot {
+      top: 0.5rem;
+    }
+
+    .timeline-card-wrap {
+      flex: 1 1 50%;
+      text-align: left;
+    }
+
+    .timeline-spacer {
+      display: block;
+      flex: 1 1 50%;
+    }
+
+    /* Alternation: even rows put the card on the right (default order),
+       odd rows put the card on the left (reverse the row so the rail
+       stays between card and spacer either way). */
+    .timeline-item--even {
+      flex-direction: row;
+    }
+    .timeline-item--odd {
+      flex-direction: row-reverse;
+      text-align: left;
+    }
+    .timeline-item--odd .timeline-card-wrap {
+      text-align: right;
+    }
+  }
+
+  .card {
+    background: var(--gray-999);
+    border: 1px solid var(--gray-800);
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--theme-transition);
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Decorative border layers MUST NOT capture pointer events,
+     otherwise the company <a> inside the card can be silently
+     blocked in some browsers. */
+  .card::before,
+  .card::after {
+    pointer-events: none;
+  }
+
+  .card::before {
+    content: "";
+    background: linear-gradient(45deg, #00ffff, #8a2be2, #00ffff, #8a2be2);
+    position: absolute;
+    inset: -2px;
+    background-size: 200%;
+    z-index: -1;
+    filter: blur(5px);
+    animation: timeline-glow 5s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    border-radius: 0.85rem;
+  }
+
+  .card:hover::before {
+    opacity: 1;
+  }
+
+  .card::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    background: var(--gradient-subtle);
+    border-radius: 0.7rem;
+    z-index: -1;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+  }
+
+  @keyframes timeline-glow {
+    0% {
+      background-position: 0 0;
+    }
+    50% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: 0 0;
+    }
+  }
+
+  .font-brand {
+    font-family: var(--font-brand);
+  }
+
+  /* ─── <details> expand (a11y + visuals from earlier rounds) ── */
+
+  .timeline-details {
+    margin-top: 0.75rem;
+  }
+
+  .timeline-details-summary {
+    cursor: pointer;
+    list-style: none;
+    color: var(--accent-regular);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.375rem;
+    /* Chevron always leads the label regardless of parent alignment. */
+    text-align: start;
+    transition:
+      color var(--theme-transition),
+      background-color var(--theme-transition);
+  }
+
+  /* Pure-CSS chevron (border-style triangle) — same metrics across
+     OS/fonts, unlike the Unicode ▸ glyph. */
+  .timeline-details-summary::before {
+    content: "";
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0.32em 0 0.32em 0.45em;
+    border-color: transparent transparent transparent currentColor;
+    transition: transform var(--theme-transition);
+  }
+
+  .timeline-details[open] .timeline-details-summary::before {
+    transform: rotate(90deg);
+  }
+
+  .timeline-details-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .timeline-details-summary:hover {
+    color: var(--accent-dark);
+    background-color: var(--accent-subtle-overlay);
+  }
+
+  /* WCAG 2.4.7 — visual focus indicator beyond color alone. */
+  .timeline-details-summary:focus-visible {
+    outline: 2px solid var(--accent-regular);
+    outline-offset: 2px;
+    color: var(--accent-dark);
+  }
+
+  .timeline-details[open] .timeline-details-summary {
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline-details-list {
+    list-style: disc;
+    padding-left: 1.25rem;
+    color: var(--gray-400);
+    font-size: var(--text-sm);
+    line-height: 1.55;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .timeline-details[open] .timeline-details-list {
+    text-align: left;
+  }
+
+  /* ─── Dark theme overrides ────────────────────────────────────────
+     In light theme the progress rail and the lit dot use a neon
+     cyan→purple palette (#22d3ee → #a855f7 → #c084fc). We swap
+     to the project's accent variables under :root.theme-dark so
+     the fill stays on-brand when the dark toggle is active; the
+     box-shadow halo is dimmed to avoid bloom against the dark
+     background. Selecting via :root.theme-dark (not prefers-color-
+     scheme) matches the project's class-based theme toggle in
+     MainHead.astro and avoids inheriting the OS preference when
+     the user has explicitly chosen the other mode. */
+
+  :root.theme-dark .timeline-progress {
+    background: linear-gradient(
+      to bottom,
+      var(--accent-regular) 0%,
+      var(--accent-dark) 100%
+    );
+    box-shadow:
+      0 0 6px rgba(118, 17, 166, 0.55),
+      0 0 14px rgba(118, 17, 166, 0.35);
+  }
+
+  :root.theme-dark .timeline-item--visible .timeline-dot {
+    background: linear-gradient(
+      135deg,
+      var(--accent-regular),
+      var(--accent-dark)
+    );
+    box-shadow:
+      0 0 0 3px var(--accent-overlay),
+      0 0 14px var(--accent-regular),
+      0 0 6px rgba(118, 17, 166, 0.85);
+  }
+
+  /* ─── Reduce-motion neutralises every animation/transformation ── */
+
+  @media (prefers-reduced-motion: reduce) {
+    .timeline-progress,
+    .timeline-dot,
+    .timeline-item,
+    .card,
+    .card::before,
+    .timeline-details-summary,
+    .timeline-details-summary::before {
+      transition: none !important;
+      animation: none !important;
+    }
+    /* Don't gate items behind IO under reduce-motion. */
+    .timeline-item {
+      opacity: 1;
+      transform: none;
+    }
+    /* Don't scale the dot under reduce-motion. */
+    .timeline-item--visible .timeline-dot {
+      transform: translateX(-50%);
+    }
+  }
+</style>

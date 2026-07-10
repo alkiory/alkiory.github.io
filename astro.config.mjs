@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
+import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
@@ -27,8 +28,19 @@ export default defineConfig({
   // `src/content.config.ts` con el Content Layer API (loaders).
   // En Astro 6 ya no se usa la opción `collections` en astro.config.
 
+  integrations: [
+    sitemap({
+      i18n: {
+        defaultLocale: 'en',
+        locales: {
+          en: 'en',
+          es: 'es',
+        },
+      },
+    }),
+  ],
+
   vite: {
     plugins: [tailwindcss()],
   },
-
 });

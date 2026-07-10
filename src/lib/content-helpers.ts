@@ -41,5 +41,5 @@ export function latest<T extends DatedEntry>(
         b.data.publishDate.getTime() - a.data.publishDate.getTime() ||
         a.id.localeCompare(b.id, "en"),
     )
-    .slice(1, n);
+    .slice(0, n);
 }

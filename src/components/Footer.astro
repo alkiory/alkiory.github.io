@@ -1,6 +1,7 @@
 ---
 import Icon from "../components/ui/icon.astro";
 import { getTranslations } from "../data/i18n";
+import { socials } from "../data/socials";
 
 const lang = (Astro.url.pathname.split("/")[1] as "es" | "en") || "en";
 const t = getTranslations(lang);
@@ -19,7 +20,7 @@ const currentYear = new Date().getFullYear();
     >
       <p class="flex items-center gap-1">
         {t?.footer.sign}
-        <a href="https://astro.build/" class="footer-link">Astro</a>
+        <a href="https://astro.build/" class="footer-link" target="_blank" rel="noopener noreferrer">Astro</a>
         <Icon icon="rocket-launch" size="1.2em" />
       </p>
       <p class="footer-copyright">
@@ -28,13 +29,13 @@ const currentYear = new Date().getFullYear();
     </div>
 
     <div class="footer-socials flex justify-center md:justify-end gap-4 flex-wrap">
-      <a href="https://twitter.com/alkiory" class="footer-link" target="_blank" rel="noopener noreferrer">Twitter</a>
-      <a href="https://github.com/alkiory" class="footer-link" target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a
-        href="https://www.linkedin.com/in/iamsergiocampbell"
-        class="footer-link"
-        target="_blank"
-        rel="noopener noreferrer">Linkedin</a>
+      {
+        socials.map(({ href, label }) => (
+          <a href={href} class="footer-link" target="_blank" rel="noopener noreferrer">
+            {label}
+          </a>
+        ))
+      }
     </div>
   </div>
 </footer>
