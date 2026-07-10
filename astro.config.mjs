@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://alkiory.web.app',
+  site: 'https://alkiory.com',
 
   // Forzar output deterministico: cada pagina se emite como
   // dist/<lang>/<path>/index.html (terminado en /). Esto es crítico

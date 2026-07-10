@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="Alkiory Portfolio — blog index preview">
+  <title>Alkiory Portfolio — blog index preview</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3f4f7" />
+      <stop offset="1" stop-color="#ffffff" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c561f6" />
+      <stop offset="0.55" stop-color="#7611a6" />
+      <stop offset="1" stop-color="#1c0056" />
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" />
+      <stop offset="1" stop-color="#f3f4f7" />
+    </linearGradient>
+    <linearGradient id="thumb1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c561f6" />
+      <stop offset="1" stop-color="#7611a6" />
+    </linearGradient>
+    <linearGradient id="thumb2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#22d3ee" />
+      <stop offset="1" stop-color="#a855f7" />
+    </linearGradient>
+    <linearGradient id="thumb3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7611a6" />
+      <stop offset="1" stop-color="#1c0056" />
+    </linearGradient>
+    <linearGradient id="thumb4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a3acc8" />
+      <stop offset="1" stop-color="#6474a2" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#1c0056" flood-opacity="0.08" />
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)" />
+
+  <!-- NAV -->
+  <g font-family="Rubik, system-ui, sans-serif">
+    <g transform="translate(40, 28)">
+      <rect x="0" y="-12" width="22" height="22" rx="5" fill="#7611a6" />
+      <rect x="5" y="-7" width="12" height="2" fill="#ffffff" />
+      <rect x="5" y="-3" width="9" height="2" fill="#ffffff" />
+      <text x="32" y="0" font-size="16" font-weight="700" fill="#1c0056">Alkiory Dev</text>
+    </g>
+
+    <g transform="translate(420, 22)">
+      <rect x="0" y="0" width="360" height="32" rx="16" fill="#ffffff" stroke="#e3e6ee" filter="url(#shadow)" />
+      <text x="60" y="20" font-size="11" font-weight="500" fill="#283044" text-anchor="middle">Home</text>
+      <text x="120" y="20" font-size="11" font-weight="500" fill="#283044" text-anchor="middle">Portfolio</text>
+      <rect x="148" y="4" width="48" height="24" rx="12" fill="#7611a6" />
+      <text x="172" y="20" font-size="11" font-weight="600" fill="#ffffff" text-anchor="middle">Blog</text>
+      <text x="240" y="20" font-size="11" font-weight="500" fill="#283044" text-anchor="middle">About</text>
+      <text x="300" y="20" font-size="11" font-weight="500" fill="#283044" text-anchor="middle">Contact</text>
+    </g>
+
+    <g transform="translate(1070, 22)" font-size="11">
+      <circle cx="10" cy="8" r="14" fill="#ffffff" stroke="#e3e6ee" />
+      <text x="10" y="12" font-weight="600" fill="#283044" text-anchor="middle">EN</text>
+      <circle cx="50" cy="8" r="14" fill="#ffffff" stroke="#e3e6ee" />
+      <path d="M50 1 a7 7 0 0 1 0 14 z" fill="#1c0056" />
+    </g>
+  </g>
+
+  <!-- HERO -->
+  <g transform="translate(70, 100)" font-family="Rubik, system-ui, sans-serif">
+    <text font-size="11" font-weight="700" letter-spacing="2" fill="#6474a2">BLOG</text>
+    <text y="44" font-size="40" font-weight="700" fill="#283044">Articles about software,</text>
+    <text y="84" font-size="40" font-weight="700" fill="#283044">design and the work behind.</text>
+    <text y="116" font-size="14" font-weight="500" fill="#6474a2">Lessons I wish I had read before starting projects.</text>
+  </g>
+
+  <!-- CARDS: blog posts (offset grid) -->
+  <!-- Card 1 -->
+  <g transform="translate(70, 280)" filter="url(#shadow)">
+    <rect width="540" height="120" rx="20" fill="url(#card)" stroke="#e3e6ee" />
+    <rect x="16" y="16" width="120" height="88" rx="12" fill="url(#thumb1)" />
+    <text x="156" y="34" font-size="14" font-weight="700" fill="#283044" font-family="Rubik">Microfrontends, demystified</text>
+    <text x="156" y="56" font-size="11" fill="#6474a2">12 min · 2024-11-04</text>
+    <text x="156" y="78" font-size="11" fill="#3d4663">A practical take on splitting a</text>
+    <text x="156" y="92" font-size="11" fill="#3d4663">monolith without losing your team.</text>
+    <g transform="translate(156, 96)">
+      <rect width="56" height="14" rx="7" fill="url(#accent)" opacity="0.18" />
+      <text x="28" y="10" font-size="9" font-weight="600" fill="#7611a6" text-anchor="middle">architecture</text>
+    </g>
+    <g transform="translate(220, 96)">
+      <rect width="46" height="14" rx="7" fill="url(#accent)" opacity="0.18" />
+      <text x="23" y="10" font-size="9" font-weight="600" fill="#7611a6" text-anchor="middle">frontend</text>
+    </g>
+  </g>
+
+  <!-- Card 2 -->
+  <g transform="translate(640, 290)" filter="url(#shadow)">
+    <rect width="480" height="120" rx="20" fill="url(#card)" stroke="#e3e6ee" />
+    <rect x="16" y="16" width="120" height="88" rx="12" fill="url(#thumb2)" />
+    <text x="156" y="34" font-size="14" font-weight="700" fill="#283044" font-family="Rubik">Cold-start reasoning</text>
+    <text x="156" y="56" font-size="11" fill="#6474a2">8 min · 2024-10-22</text>
+    <text x="156" y="78" font-size="11" fill="#3d4663">Why the first render of a server-</text>
+    <text x="156" y="92" font-size="11" fill="#3d4663">less app still matters at scale.</text>
+    <g transform="translate(156, 96)">
+      <rect width="40" height="14" rx="7" fill="url(#accent)" opacity="0.18" />
+      <text x="20" y="10" font-size="9" font-weight="600" fill="#7611a6" text-anchor="middle">perf</text>
+    </g>
+    <g transform="translate(204, 96)">
+      <rect width="46" height="14" rx="7" fill="url(#accent)" opacity="0.18" />
+      <text x="23" y="10" font-size="9" font-weight="600" fill="#7611a6" text-anchor="middle">serverless</text>
+    </g>
+  </g>
+
+  <!-- Card 3 -->
+  <g transform="translate(140, 420)" filter="url(#shadow)">
+    <rect width="500" height="120" rx="20" fill="url(#card)" stroke="#e3e6ee" />
+    <rect x="16" y="16" width="120" height="88" rx="12" fill="url(#thumb3)" />
+    <text x="156" y="34" font-size="14" font-weight="700" fill="#283044" font-family="Rubik">Tolerance and programmer ego</text>
+    <text x="156" y="56" font-size="11" fill="#6474a2">6 min · 2024-09-12</text>
+    <text x="156" y="78" font-size="11" fill="#3d4663">A short essay on giving and</text>
+    <text x="156" y="92" font-size="11" fill="#3d4663">receiving technical critique.</text>
+    <g transform="translate(156, 96)">
+      <rect width="44" height="14" rx="7" fill="url(#accent)" opacity="0.18" />
+      <text x="22" y="10" font-size="9" font-weight="600" fill="#7611a6" text-anchor="middle">people</text>
+    </g>
+    <g transform="translate(208, 96)">
+      <rect width="44" height="14" rx="7" fill="url(#accent)" opacity="0.18" />
+      <text x="22" y="10" font-size="9" font-weight="600" fill="#7611a6" text-anchor="middle">process</text>
+    </g>
+  </g>
+
+  <!-- Card 4 -->
+  <g transform="translate(680, 430)" filter="url(#shadow)">
+    <rect width="450" height="120" rx="20" fill="url(#card)" stroke="#e3e6ee" />
+    <rect x="16" y="16" width="120" height="88" rx="12" fill="url(#thumb4)" />
+    <text x="156" y="34" font-size="14" font-weight="700" fill="#283044" font-family="Rubik">People over stack</text>
+    <text x="156" y="56" font-size="11" fill="#6474a2">9 min · 2024-08-30</text>
+    <text x="156" y="78" font-size="11" fill="#3d4663">Why team shape beats tooling</text>
+    <text x="156" y="92" font-size="11" fill="#3d4663">when shipping software at scale.</text>
+    <g transform="translate(156, 96)">
+      <rect width="46" height="14" rx="7" fill="url(#accent)" opacity="0.18" />
+      <text x="23" y="10" font-size="9" font-weight="600" fill="#7611a6" text-anchor="middle">culture</text>
+    </g>
+  </g>
+
+  <!-- Page indicator -->
+  <g transform="translate(1100, 580)" font-family="system-ui">
+    <circle cx="0" cy="0" r="5" fill="#7611a6" />
+    <circle cx="20" cy="0" r="4" fill="#c3cadb" />
+    <circle cx="40" cy="0" r="4" fill="#c3cadb" />
+    <text x="20" y="22" font-size="9" fill="#6474a2" text-anchor="middle">14 articles · EN locale</text>
+  </g>
+
+  <text x="1180" y="618" font-size="9" fill="#a3acc8" text-anchor="end" font-family="system-ui">SVG mock — replace with `pnpm screenshots`</text>
+</svg>
