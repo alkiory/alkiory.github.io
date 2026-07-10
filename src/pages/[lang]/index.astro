@@ -10,7 +10,7 @@ import { getCollection } from "astro:content";
 import Skills from "../../components/Skills.astro";
 import Btn from "../../components/ui/Btn.astro";
 import { ROUTE_NAMES } from "../../lib/routes-names";
-import { latest } from "../../lib/content-helpers";
+import { entriesForLang } from "../../lib/content-helpers";
 import { Image } from "astro:assets";
 import StatusBadge from "../../components/StatusBadge.astro";
 import Timeline from "../../components/Timeline.astro";
@@ -31,12 +31,15 @@ export async function getStaticPaths() {
 const lang = (Astro.currentLocale ?? Astro.url.pathname.split("/")[1]) as Lang;
 const t = getTranslations(lang);
 
-// Top 3 entries per collection; `latest()` defaults to descending
-// publishDate with `id` lex as a secondary tiebreaker for same-day
-// posts.
-const allBlogsPost = latest(await getCollection("blog"), 3);
-
-const allProjects = latest(await getCollection("work"), 3);
+// Top 3 entries per collection, scoped to the current `lang`.
+// `entriesForLang()` centralizes the lang filter + sort + slice so
+// the home/preview/match the `/portfolio` and `/blog` index pages
+// behavior. Without the lang filter the Content Layer loader
+// (`content.config.ts`) would return both `es/...` and `en/...` for
+// each entry and the top slice could surface the same project twice
+// instead of two distinct ones.
+const allBlogsPost = entriesForLang(await getCollection("blog"), lang, 3);
+const allProjects = entriesForLang(await getCollection("work"), lang, 3);
 ---
 
 <BaseLayout>
@@ -73,6 +76,7 @@ const allProjects = latest(await getCollection("work"), 3);
 
         <div class="card p-8 flex flex-col justify-center" style="z-index: 10;">
           <div class="grid grid-cols-2 gap-8 text-center">
+            <!-- years of experience -->
             <div>
               <div
                 class="text-4xl font-bold text-[var(--accent-regular)] mb-2 font-brand"
@@ -82,10 +86,8 @@ const allProjects = latest(await getCollection("work"), 3);
               <p class="text-[var(--gray-400)] text-sm mt-2">
                 {t.home.yearsOfExperienceDesc || "Years of Experience"}
               </p>
-              <div style="margin-top: 1rem;">
-                <StatusBadge />
-              </div>
             </div>
+            <!-- projects completed -->
             <div>
               <div
                 class="text-4xl font-bold text-[var(--accent-regular)] mb-2 font-brand"
@@ -96,6 +98,11 @@ const allProjects = latest(await getCollection("work"), 3);
                 {t.home.projectsCompletedDesc || "Projects Completed"}
               </p>
             </div>
+          </div>
+
+          <!-- status badge -->
+          <div class="text-center" style="margin-top: 1rem;">
+            <StatusBadge />
           </div>
         </div>
       </div>
@@ -159,7 +166,9 @@ const allProjects = latest(await getCollection("work"), 3);
       </section>
 
       <!-- EXPERIENCE SECTION -->
-      <section class="section with-background bg-variant">
+      <section
+        class="section with-background bg-variant grid justify-items-center"
+      >
         <header class="section-header stack gap-2 lg:gap-4 mb-8">
           <h3
             class="text-3xl md:text-4xl font-bold text-[var(--gray-100)] font-brand"

@@ -1,9 +1,9 @@
 /**
  * Any Astro content entry variant that exposes an `id` and a
- * `data.publishDate: Date`. Lets `latest()` accept either `blog` or
- * `work` CollectionEntry arrays (and any future collection that has
- * the same shape) without re-declaring the generic parameter at
- * every call site.
+ * `data.publishDate: Date`. Lets `latest()` and `entriesForLang()`
+ * accept either `blog` or `work` CollectionEntry arrays (and any
+ * future collection that has the same shape) without re-declaring
+ * the generic parameter at every call site.
  */
 type DatedEntry = {
   id: string;
@@ -42,4 +42,41 @@ export function latest<T extends DatedEntry>(
         a.id.localeCompare(b.id, "en"),
     )
     .slice(0, n);
+}
+
+/**
+ * Central "scope to current lang + sort newest-first + optional slice"
+ * used by the home, portfolio and blog index routes. Single source of
+ * truth for filtering Astro content collections by language.
+ *
+ * Why this lives here instead of inline at each call site:
+ *   The Content Layer loader (`src/content.config.ts`) globs every
+ *   `*.md` under `src/content/{blog|work}`, producing one entry per
+ *   file with the id pattern `<lang>/<file>` (e.g.
+ *   `es/face-recognition`, `en/face-recognition`). Without filtering
+ *   by lang the collection returns both language variants of the
+ *   same content and `latest()`'s top slice would surface the same
+ *   project twice instead of two distinct ones — a bug we already
+ *   tripped on in `pages/[lang]/index.astro`. Centralizing the
+ *   filter here means the home, portfolio and blog previews can't
+ *   drift.
+ *
+ * Behavior:
+ *   - Filter entries whose `id` starts with `lang`. The filter is
+ *     intentionally string-prefix rather than `id === lang` because
+ *     the loader always appends `/` after the lang segment.
+ *   - Delegate sorting and slicing to `latest()`. If `n` is omitted
+ *     `latest()`'s default returns every matching entry in date
+ *     order.
+ *
+ * Pure: returns a new array via `Array.prototype.filter` and
+ * `latest()`'s spread+slice so the caller's collection is never
+ * mutated.
+ */
+export function entriesForLang<T extends DatedEntry>(
+  entries: readonly T[],
+  lang: string,
+  n?: number,
+): T[] {
+  return latest(entries.filter(({ id }) => id.startsWith(lang)), n);
 }

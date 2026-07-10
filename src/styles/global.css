@@ -25,6 +25,10 @@
 	--gray-999_40: hsla(var(--gray-999-basis), 0.4);
 	--gray-999: #ffffff;
 
+	--cyan-regular: #00c2ff;
+	--cyan-light: #00ffff;
+	--cyan-dark: #00a3cc;
+
 	--accent-light: #c561f6;
 	--accent-regular: #7611a6;
 	--accent-dark: #1c0056;

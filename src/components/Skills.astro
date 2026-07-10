@@ -7,31 +7,63 @@ const i18n = getTranslations(lang);
 
 <section class="box skills">
   <div class="stack gap-2 lg:gap-4">
-    <Icon
-      icon="terminal-window"
-      color="var(--accent-regular)"
-      size="2.5rem"
-      gradient
-    />
+    <div
+      class="icon-wrapper"
+      data-tooltip={i18n.home.fullstackTooltip}
+      title={i18n.home.fullstackTooltip}
+      tabindex="0"
+    >
+      <span class="icon-stage">
+        <Icon
+          icon="terminal-window"
+          color="var(--accent-regular)"
+          size="2.5rem"
+          gradient
+        />
+      </span>
+    </div>
     <h2>{i18n.home.fullstack}</h2>
     <p>
       {i18n.home.fullstackDesc}
     </p>
   </div>
   <div class="stack gap-2 lg:gap-4">
-    <Icon icon="trophy" color="var(--accent-regular)" size="2.5rem" gradient />
+    <div
+      class="icon-wrapper"
+      data-tooltip={i18n.home.teamLeaderTooltip}
+      title={i18n.home.teamLeaderTooltip}
+      tabindex="0"
+    >
+      <span class="icon-stage">
+        <Icon
+          icon="trophy"
+          color="var(--accent-regular)"
+          size="2.5rem"
+          gradient
+        />
+      </span>
+    </div>
     <h2>{i18n.home.teamLeader}</h2>
     <p>
       {i18n.home.teamLeaderDesc}
     </p>
   </div>
   <div class="stack gap-2 lg:gap-4">
-    <Icon
-      icon="strategy"
-      color="var(--accent-regular)"
-      size="2.5rem"
-      gradient
-    />
+    <div
+      class="icon-wrapper"
+      data-tooltip={i18n.home.strategyTooltip}
+      title={i18n.home.strategyTooltip}
+      tabindex="0"
+    >
+      <span class="icon-stage">
+        <Icon
+          icon="strategy"
+          color="var(--accent-regular)"
+          size="2.5rem"
+          gradient
+        />
+      </span>
+    </div>
     <h2>{i18n.home.strategy}</h2>
     <p>
       {i18n.home.strategyDesc}
@@ -60,6 +92,109 @@ const i18n = getTranslations(lang);
 
   .skills p {
     color: var(--gray-400);
+  }
+
+  /* Subtle hover tooltip wrapping each card icon to reinforce
+     adaptability / collaboration / strategy on hover. */
+  .icon-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-self: flex-start;
+    cursor: help;
+    border-radius: 0.25rem;
+  }
+
+  .icon-wrapper:focus-visible {
+    outline: 2px solid var(--accent-regular);
+    outline-offset: 4px;
+  }
+
+  /* Inner stage that hosts the SVG. Animations live here so the
+     wrapper's `:after`/`:before` pseudo-elements (the tooltip and
+     caret) stay anchored to the same position — the icon lifts and
+     glows while the tooltip points to the original anchor. */
+  .icon-stage {
+    display: inline-flex;
+    transform-origin: center;
+    transition:
+      transform 0.18s ease-out,
+      filter 0.18s ease-out;
+  }
+
+  .icon-wrapper:hover .icon-stage,
+  .icon-wrapper:focus-visible .icon-stage {
+    transform: scale(1.06) translateY(-2px);
+    filter: drop-shadow(0 6px 12px var(--accent-subtle-overlay));
+    will-change: transform;
+  }
+
+  .icon-wrapper::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 0.55rem);
+    left: 50%;
+    transform: translate(-50%, 6px);
+    padding: 0.35rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--gray-999);
+    background: var(--gray-50);
+    border-radius: 0.4rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: var(--shadow-md);
+    transition:
+      opacity 0.18s ease,
+      transform 0.18s ease;
+    z-index: 5;
+  }
+
+  .icon-wrapper::before {
+    content: "";
+    position: absolute;
+    bottom: calc(100% + 0.25rem);
+    left: 50%;
+    transform: translate(-50%, 6px);
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-top-color: var(--gray-50);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 0.18s ease,
+      transform 0.18s ease;
+    z-index: 6;
+  }
+
+  .icon-wrapper:hover::after,
+  .icon-wrapper:focus-visible::after {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  .icon-wrapper:hover::before,
+  .icon-wrapper:focus-visible::before {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  /* Respect users who opt out of motion. */
+  @media (prefers-reduced-motion: reduce) {
+    .icon-wrapper::after,
+    .icon-wrapper::before,
+    .icon-stage {
+      transition: none;
+    }
+
+    .icon-wrapper:hover .icon-stage,
+    .icon-wrapper:focus-visible .icon-stage {
+      transform: none;
+      filter: none;
+      will-change: auto;
+    }
   }
 
   @media (min-width: 50em) {

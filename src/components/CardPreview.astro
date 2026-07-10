@@ -5,7 +5,7 @@ import type { CollectionEntry } from "astro:content";
 // the `astro check` hint and keeps the dependency surface minimal.
 import { slugFromId } from "../lib/routes-names";
 import { Image } from "astro:assets";
-import type { Lang } from "../data/i18n";
+import { getTranslations, type Lang } from "../data/i18n";
 
 interface Props {
   entry: CollectionEntry<"blog"> | CollectionEntry<"work">;
@@ -15,6 +15,7 @@ interface Props {
 const { entry, route } = Astro.props;
 const { data, id } = entry;
 const lang = Astro.url.pathname.split("/")[1] as Lang;
+const t = getTranslations(lang);
 ---
 
 <a
@@ -24,7 +25,13 @@ const lang = Astro.url.pathname.split("/")[1] as Lang;
   class="card"
   href={`/${lang}${route}/${slugFromId(id)}/`}
 >
-  <span class="title">{data.title}</span>
+  <span
+    class="title"
+    data-tooltip={t.home.viewDetails}
+    title={t.home.viewDetails}
+  >
+    {data.title}
+  </span>
   <Image
     src={data.img}
     alt={data.img_alt || ""}
@@ -56,14 +63,105 @@ const lang = Astro.url.pathname.split("/")[1] as Lang;
     box-shadow: var(--shadow-md);
   }
 
+  .card:focus-visible {
+    outline: 2px solid var(--accent-regular);
+    outline-offset: 4px;
+  }
+
   .title {
     grid-area: 1 / 1 / 2 / 2;
-    z-index: 1;
+    z-index: 2;
     margin: 0.5rem;
     padding: 0.5rem 1rem;
     background: var(--gray-999);
     color: var(--gray-200);
     border-radius: 0.375rem;
+    /* Anchor the tooltip pseudo-elements + host the hover animation.
+       The scale/glow stays on this pill (not on the whole card) so it
+       doesn't conflict with the third-party `data-tilt` parallax that
+       already animates the .card itself. */
+    position: relative;
+    display: inline-block;
+    align-self: flex-start;
+    transition:
+      transform 0.18s ease-out,
+      filter 0.18s ease-out;
+  }
+
+  .title::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: calc(100% + 0.55rem);
+    left: 50%;
+    transform: translate(-50%, -6px);
+    padding: 0.35rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--gray-999);
+    background: var(--gray-50);
+    border-radius: 0.4rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: var(--shadow-md);
+    transition:
+      opacity 0.18s ease,
+      transform 0.18s ease;
+    z-index: 5;
+  }
+
+  .title::before {
+    content: "";
+    position: absolute;
+    top: calc(100% + 0.25rem);
+    left: 50%;
+    transform: translate(-50%, -6px);
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-bottom-color: var(--gray-50);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 0.18s ease,
+      transform 0.18s ease;
+    z-index: 6;
+  }
+
+  /* Trigger the lift+glow on title AND the tooltip from any hover/focus
+     on the card itself (image, title pill, anywhere inside). This keeps
+     the card visually unified with `Skills.astro`: one trigger, one
+     timing, one set of effects. */
+  .card:hover .title,
+  .card:focus-visible .title {
+    transform: scale(1.06) translateY(-2px);
+    filter: drop-shadow(0 6px 12px var(--accent-subtle-overlay));
+    will-change: transform;
+  }
+
+  .card:hover .title::after,
+  .card:focus-visible .title::after,
+  .card:hover .title::before,
+  .card:focus-visible .title::before {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  /* Respect users who opt out of motion. */
+  @media (prefers-reduced-motion: reduce) {
+    .title,
+    .title::after,
+    .title::before {
+      transition: none;
+    }
+
+    .card:hover .title,
+    .card:focus-visible .title {
+      transform: none;
+      filter: none;
+      will-change: auto;
+    }
   }
 
   img {

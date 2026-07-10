@@ -5,7 +5,7 @@ import Grid from "../../../components/Grid.astro";
 import Hero from "../../../components/ui/Hero.astro";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { getTranslations } from "../../../data/i18n";
-import { latest } from "../../../lib/content-helpers";
+import { entriesForLang } from "../../../lib/content-helpers";
 
 export async function getStaticPaths() {
   const locales = ["es", "en"];
@@ -18,9 +18,9 @@ export async function getStaticPaths() {
 const lang = (Astro.url.pathname.split("/")[1] as "es" | "en") || "en";
 const t = getTranslations(lang);
 
-const allBlogPost = latest(
-  await getCollection("blog", ({ id }) => id.startsWith(lang)),
-);
+// Full list scoped to current `lang`, newest-first. Same filter
+// contract as the home page (see `lib/content-helpers.ts`).
+const allBlogPost = entriesForLang(await getCollection("blog"), lang);
 ---
 
 <BaseLayout title={t.blog.title} description={t.blog.description}>

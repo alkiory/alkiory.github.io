@@ -6,7 +6,9 @@ const lang = (Astro.url.pathname.split("/")[1] as Lang) || "en";
 const t = getTranslations(lang);
 ---
 
-<div class="status-badge glow-on-hover inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border border-[var(--gray-800)] bg-[var(--gray-999)] shadow-sm">
+<div
+  class="status-badge glow-on-hover inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium border border-[var(--gray-800)] bg-[var(--gray-999)] shadow-sm"
+>
   <span class="status-dot"></span>
   <span class="text-[var(--gray-100)]">{t.home.statusBadge}</span>
 </div>
@@ -22,7 +24,7 @@ const t = getTranslations(lang);
   .status-badge::after {
     border-radius: 999px;
   }
-  
+
   .status-dot {
     width: 8px;
     height: 8px;
@@ -31,20 +33,20 @@ const t = getTranslations(lang);
     position: relative;
     box-shadow: 0 0 8px var(--accent-regular);
   }
-  
+
   .status-dot::after {
-    content: '';
+    content: "";
     position: absolute;
     top: -4px;
     left: -4px;
     right: -4px;
     bottom: -4px;
     border-radius: 50%;
-    border: 2px solid var(--accent-regular);
+    border: 2px solid var(--cyan-dark);
     animation: pulse 2s infinite ease-out;
     opacity: 0.8;
   }
-  
+
   @keyframes pulse {
     0% {
       transform: scale(0.5);
