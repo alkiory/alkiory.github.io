@@ -1,4 +1,9 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+// Zod is no longer re-exported by `astro:content` in Astro 6; install
+// it directly and import from the package. This silently removes the
+// "deprecated z" hint flagged by `astro check` while keeping the same
+// `z.*` schema calls (Zod 4 keeps `z.object/string/array/coerce.date`).
+import { z } from 'zod';
 import { glob } from 'astro/loaders';
 
 // Content Layer API (Astro 5+). El layout de archivos sigue siendo

@@ -1,6 +1,9 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { ROUTE_NAMES, slugFromId } from "../lib/routes-names";
+// `ROUTE_NAMES` was previously imported here but never used — the card
+// receives the route via the `route` prop. Removing the import silences
+// the `astro check` hint and keeps the dependency surface minimal.
+import { slugFromId } from "../lib/routes-names";
 import { Image } from "astro:assets";
 import type { Lang } from "../data/i18n";
 
