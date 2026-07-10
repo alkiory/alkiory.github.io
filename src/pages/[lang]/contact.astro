@@ -14,30 +14,15 @@ export async function getStaticPaths() {
 const lang = (Astro.url.pathname.split("/")[1] as Lang) || "en";
 const t = getTranslations(lang);
 
-// Reutilizamos las mismas redes sociales declaradas en el Nav para que
-// la página de contacto se mantenga sincronizada con un solo punto de
-// cambio.
+// `socials` mirrors `src/data/socials.ts` so the contact page stays
+// in sync with the Nav/Footer. Twitter / CodePen / YouTube were
+// removed per the request to trim the social list.
 const socials: { label: string; href: string; icon: IconProps["icon"] }[] = [
   { label: "GitHub", href: "https://github.com/alkiory", icon: "github-logo" },
   {
     label: "LinkedIn",
     href: "https://www.linkedin.com/in/iamsergiocampbell",
     icon: "linkedin-logo",
-  },
-  {
-    label: "YouTube",
-    href: "https://www.youtube.com/@iamsergiocampbell",
-    icon: "youtube-logo",
-  },
-  {
-    label: "CodePen",
-    href: "https://codepen.io/sergiocampbell",
-    icon: "codepen-logo",
-  },
-  {
-    label: "Twitter",
-    href: "https://twitter.com/alkiory",
-    icon: "twitter-logo",
   },
 ];
 
@@ -52,6 +37,110 @@ const email = "sergiocampbelldev@gmail.com";
     </header>
 
     <section class="contact-card stack gap-6">
+      {/*
+        Contact form. No backend — the submit handler (see <script>
+        below) reads the values, builds a `mailto:` URL with the
+        fields pre-filled, and sets `window.location.href` so the
+        user's email client opens. The recipient + body labels are
+        carried via `data-*` so the script doesn't have to be coupled
+        to i18n strings.
+      */}
+      <form
+        id="contact-form"
+        class="contact-form"
+        data-target-email={email}
+        data-subject-prefix={t.contact.formSubjectPrefix}
+        data-name-label={t.contact.formBodyName}
+        data-budget-label={t.contact.formBodyBudget}
+        data-description-label={t.contact.formBodyDescription}
+      >
+        <p class="contact-form-title">{t.contact.formTitle}</p>
+
+        {/*
+          Honeypot anti-spam. Real users never see this input — it
+          sits 10km off-screen, can't receive keyboard focus
+          (`tabindex="-1"`), and isn't announced (`aria-hidden`).
+          Bots that auto-fill every input will write something here,
+          which signals "spam" and the submit script silently bails
+          without opening the user's email client. NEVER use
+          `display: none` or `visibility: hidden` — those make the
+          field opt-outable by smarter bots that check for them.
+        */}
+        <div class="contact-honeypot" aria-hidden="true">
+          <label for="contact-form-company">{t.contact.formHoneypotLabel}</label>
+          <input
+            type="text"
+            id="contact-form-company"
+            name="company"
+            tabindex="-1"
+            autocomplete="off"
+          />
+        </div>
+
+        <label class="contact-field">
+          <span class="contact-field-label">{t.contact.formName}</span>
+          <input
+            type="text"
+            name="name"
+            required
+            autocomplete="name"
+            placeholder={t.contact.formNamePlaceholder}
+            class="contact-field-input"
+          />
+        </label>
+
+        <label class="contact-field">
+          <span class="contact-field-label">{t.contact.formBudget}</span>
+          <select name="budget" required class="contact-field-input">
+            <option value="" disabled selected hidden>
+              {t.contact.formBudgetPlaceholder}
+            </option>
+            {
+              t.contact.formBudgetOptions.map((opt) => (
+                <option value={opt.value}>{opt.label}</option>
+              ))
+            }
+          </select>
+        </label>
+
+        <label class="contact-field">
+          <span class="contact-field-label">{t.contact.formDescription}</span>
+          <textarea
+            name="description"
+            required
+            rows="5"
+            placeholder={t.contact.formDescriptionPlaceholder}
+            class="contact-field-input"></textarea>
+        </label>
+
+        <button type="submit" class="contact-form-submit">
+          <Icon icon="paper-plane-tilt" size="1.2em" />
+          <span>{t.contact.formSubmit}</span>
+        </button>
+      </form>
+
+      {/*
+        Post-submit thank-you panel. Lives in the same slot as the
+        form so users keep their place in the page; the submit
+        script hides `#contact-form` and removes the `hidden`
+        attribute on this panel. We use the HTML `hidden` attribute
+        (not just `display: none`) so screen-readers and the DOM
+        skip the panel until it's revealed.
+      */}
+      <div
+        id="contact-thanks"
+        class="contact-thanks stack gap-4"
+        role="status"
+        aria-live="polite"
+        hidden
+      >
+        <Icon icon="check-circle" size="2rem" />
+        <p class="contact-thanks-title">{t.contact.formThanksTitle}</p>
+        <p class="contact-thanks-message">{t.contact.formThanksMessage}</p>
+      </div>
+
+      <div class="contact-divider" role="presentation"></div>
+
       <a class="contact-email" href={`mailto:${email}`}>
         <Icon icon="envelope" size="1.5em" />
         <span>{email}</span>
@@ -189,6 +278,232 @@ const email = "sergiocampbelldev@gmail.com";
     transform: translateY(-1px);
   }
 
+  /* ===================================================================
+     Contact form — sits at the top of `.contact-card`. Built so it
+     stays visually aligned with the existing email/divider/socials
+     rhythm, uses the same theme tokens, and respects reduced-motion.
+     =================================================================== */
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .contact-form-title {
+    font-size: var(--text-lg);
+    color: var(--gray-0);
+    font-weight: 600;
+    font-family: var(--font-brand);
+  }
+
+  .contact-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .contact-field-label {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--gray-300);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .contact-field-input {
+    /* `font-family: inherit` keeps the input using Public Sans rather
+       than UA defaults; we DON'T override button/select fonts since
+       those use their own UA styles in some browsers. */
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--gray-999);
+    border: 1px solid var(--gray-800);
+    border-radius: 0.5rem;
+    color: var(--gray-100);
+    font-family: inherit;
+    font-size: var(--text-base);
+    line-height: 1.4;
+    transition:
+      border-color var(--theme-transition),
+      box-shadow var(--theme-transition);
+  }
+
+  /* Honeypot — visually outside the viewport but still in the DOM
+     so naive bots auto-fill it. `!important` ensures no other rule
+     can override the hide. Resetting width/height to 1px prevents
+     some browsers from preventing the field from being tabbed
+     (despite `tabindex="-1"`). */
+  .contact-honeypot {
+    position: absolute !important;
+    left: -10000px !important;
+    top: -10000px !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  .contact-field-input::placeholder {
+    color: var(--gray-400);
+  }
+
+  .contact-field-input:hover {
+    border-color: var(--gray-700);
+  }
+
+  /*
+   * `:focus-visible` (NOT `:focus`) so mouse clicks don't paint a
+   * ring on every tap. Both the `outline` AND the soft `box-shadow`
+   * ring are kept together — `outline` survives `forced-colors`
+   * mode where `box-shadow` is suppressed, so keyboard users still
+   * get a visible focus indicator under any theming.
+   */
+  .contact-field-input:focus-visible {
+    border-color: var(--accent-regular);
+    outline: 2px solid var(--accent-regular);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px var(--accent-overlay);
+  }
+
+  textarea.contact-field-input {
+    resize: vertical;
+    min-height: 7rem;
+  }
+
+  /* Native <select> chevron via two CSS gradients so the look is
+     consistent across OSes/browsers without shipping an SVG. */
+  select.contact-field-input {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--gray-400) 50%),
+      linear-gradient(135deg, var(--gray-400) 50%, transparent 50%);
+    background-position:
+      calc(100% - 18px) 50%,
+      calc(100% - 12px) 50%;
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+    padding-right: 2.5rem;
+  }
+
+  .contact-form-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1.25rem;
+    background: var(--gradient-accent-orange);
+    color: var(--accent-text-over);
+    border: none;
+    border-radius: 999rem;
+    font-weight: 600;
+    font-size: var(--text-lg);
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    transition:
+      transform var(--theme-transition),
+      box-shadow var(--theme-transition),
+      opacity var(--theme-transition);
+  }
+
+  .contact-form-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /*
+   * `:focus-visible` style. `box-shadow` alone is unreliable in
+   * `forced-colors: active` (Windows High Contrast Mode) — the
+   * shadow is suppressed, which would leave the button with no
+   * visible focus indicator. We stack BOTH an explicit `outline`
+   * (which HCM renders via system colours) AND a soft `box-shadow`
+   * ring, so the focus cue is preserved in every rendering mode.
+   */
+  .contact-form-submit:focus-visible {
+    transform: translateY(-2px);
+    outline: 2px solid var(--accent-regular);
+    outline-offset: 2px;
+    box-shadow:
+      var(--shadow-lg),
+      0 0 0 3px var(--accent-overlay);
+  }
+
+  .contact-form-submit:active {
+    transform: translateY(0);
+  }
+
+  /* ===================================================================
+     Post-submit thank-you panel. Replaces the form after a successful
+     submit (the <script> swaps `hidden` between #contact-form and
+     #contact-thanks). Uses the same rhythm/gap tokens as the form so
+     the page height stays predictable when the swap happens (no
+     layout jump unrelated to the content change).
+     =================================================================== */
+
+  .contact-thanks {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 1.25rem 1.25rem;
+    background: var(--gray-999);
+    border: 1px solid var(--accent-overlay);
+    border-radius: 0.75rem;
+    color: var(--accent-regular);
+    /* Fades in on swap, never on initial render (`hidden` keeps it
+       out of the box until JS reveals it). */
+    animation: contact-thanks-fade var(--theme-transition);
+  }
+
+  .contact-thanks-title {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    font-family: var(--font-brand);
+    color: var(--gray-0);
+    line-height: 1.2;
+  }
+
+  .contact-thanks-message {
+    font-size: var(--text-base);
+    color: var(--gray-300);
+    line-height: 1.5;
+  }
+
+  @keyframes contact-thanks-fade {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .contact-field-input,
+    .contact-form-submit {
+      transition: none;
+    }
+
+    .contact-form-submit:hover,
+    .contact-form-submit:focus-visible {
+      transform: none;
+    }
+
+    /* The thank-you panel fades in on swap — disable that for
+       users who opted out of motion so the swap is instant. */
+    .contact-thanks {
+      animation: none;
+    }
+  }
+
   @media (min-width: 50em) {
     .contact-title {
       font-size: var(--text-5xl);
@@ -199,3 +514,57 @@ const email = "sergiocampbelldev@gmail.com";
     }
   }
 </style>
+
+<script>
+  // Contact form — no backend. Reads the form values, builds a
+  // `mailto:` URL with the fields pre-filled (subject + body), and
+  // sets `window.location.href` so the user's email client opens.
+  // Locale-aware labels are carried on the form via `data-*`, so
+  // this script doesn't need to know the current language.
+const form = document.getElementById("contact-form");
+const thanksPanel = document.getElementById("contact-thanks");
+if (form instanceof HTMLFormElement && thanksPanel instanceof HTMLElement) {
+  const targetEmail = form.dataset.targetEmail;
+  const subjectPrefix = form.dataset.subjectPrefix ?? "Inquiry";
+  const nameLabel = form.dataset.nameLabel ?? "Name";
+  const budgetLabel = form.dataset.budgetLabel ?? "Budget";
+  const descriptionLabel =
+    form.dataset.descriptionLabel ?? "Project description";
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const data = new FormData(form);
+
+    // Honeypot: the hidden `company` field is invisible to humans
+    // (`.contact-honeypot` pushes it 10km off-screen + `tabindex="-1"`
+    // + `aria-hidden`). Any value here means a bot auto-filled it,
+    // so we silently bail — no mailto opens, no feedback in the
+    // UI (telling the bot would let it learn the trap).
+    const honeypot = String(data.get("company") ?? "").trim();
+    if (honeypot) return;
+
+    const name = String(data.get("name") ?? "").trim();
+    const budget = String(data.get("budget") ?? "").trim();
+    const description = String(data.get("description") ?? "").trim();
+
+    // `required` on the inputs already blocks empty submissions in
+    // supported browsers — this is belt-and-suspenders for any
+    // browser that lets an empty form through.
+    if (!name || !description || !targetEmail) return;
+
+    const subject = encodeURIComponent(`${subjectPrefix} — ${name}`);
+    const body = encodeURIComponent(
+      `${nameLabel}: ${name}\n${budgetLabel}: ${budget}\n\n` +
+        `${descriptionLabel}\n${description}`,
+    );
+    window.location.href =
+      `mailto:${targetEmail}?subject=${subject}&body=${body}`;
+
+    // Swap the form for the thank-you panel. We keep the email
+    // link + socials below intact so the user has a fallback path
+    // if their mail client didn't open the mailto.
+    form.hidden = true;
+    thanksPanel.hidden = false;
+  });
+}
+</script>

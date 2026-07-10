@@ -1,10 +1,19 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getTranslations } from "../../data/i18n";
+import { getTranslations, getLangFromUrl, type Lang } from "../../data/i18n";
 import Hero from "../../components/ui/Hero.astro";
 import Grid from "../../components/Grid.astro";
+import Pill from "../../components/ui/Pill.astro";
+import Icon from "../../components/ui/icon.astro";
 import { Image } from "astro:assets";
-import { techSkills, softSkills, languages, certifications } from "../../data/skills";
+import {
+  techSkills,
+  techSkillKeys,
+  softSkills,
+  languages,
+  certifications,
+  education,
+} from "../../data/skills";
 
 export async function getStaticPaths() {
   const locales = ["es", "en"];
@@ -13,8 +22,10 @@ export async function getStaticPaths() {
   }));
 }
 
-const lang = (Astro.url.pathname.split("/")[1] as "es" | "en") || "en";
-const t = getTranslations(lang as "es" | "en");
+// Use the runtime-safe URL helper so an unexpected segment (e.g. an
+// empty path or a future locale) doesn't lie about its type.
+const lang: Lang = getLangFromUrl(Astro.url) ?? (Astro.currentLocale as Lang) ?? "en";
+const t = getTranslations(lang);
 ---
 
 <BaseLayout title={t.about.title} description={t.about.description}>
@@ -30,6 +41,9 @@ const t = getTranslations(lang as "es" | "en");
         />
       </Hero>
 
+      <!-- Intro — keep the original paragraphs so the page still reads
+           like the existing portfolio; tone was revised in i18n.ts for
+           warmth only where it didn't change meaning. -->
       <section>
         <h2 class="section-title">{t.about.title}</h2>
         <div class="content">
@@ -40,58 +54,134 @@ const t = getTranslations(lang as "es" | "en");
         </div>
       </section>
 
-      <section>
-        <h2 class="section-title">{t.about.techSkills}</h2>
-        <div class="content">
-          <Grid variant="small">
-            {techSkills.map((brand) => <li class="mention-card">{brand}</li>)}
-          </Grid>
-          <hr />
-        </div>
-      </section>
-
-      <section>
-        <h2 class="section-title">{t.about.education}</h2>
-        <div class="content">
-          <p>Politecnico de las Costa Atlántica University.</p>
-          <p class="mb-4">Sena Colombo Aleman.</p>
-          <hr />
-        </div>
-      </section>
-
+      <!-- SOFT SKILLS — same icon + title + description pattern used
+           by Skills.astro on the home page so the two pages share the
+           same visual language. Each card carries an explanatory
+           sentence so the section reads like context, not buzzwords. -->
       <section>
         <h2 class="section-title">{t.about.softSkills}</h2>
         <div class="content">
-          <Grid variant="small">
-            {softSkills.map((brand) => <li class="mention-card">{brand}</li>)}
-          </Grid>
+          <div class="box soft-skills">
+            {
+              softSkills.map((skill) => {
+                const text = t.about.softSkillItems[skill.id];
+                return (
+                  <div class="stack gap-2 lg:gap-4">
+                    <div
+                      class="icon-wrapper"
+                      data-tooltip={text.title}
+                      title={text.title}
+                      tabindex="0"
+                    >
+                      <span class="icon-stage">
+                        <Icon
+                          icon={skill.icon}
+                          color="var(--accent-regular)"
+                          size="2.5rem"
+                          gradient
+                        />
+                      </span>
+                    </div>
+                    <h3>{text.title}</h3>
+                    <p>{text.desc}</p>
+                  </div>
+                );
+              })
+            }
+          </div>
           <hr />
         </div>
       </section>
 
+      <!-- TECHNICAL SKILLS — grouped by domain so the reader sees
+           Frontend/Backend/DevOps at a glance instead of a single
+           heap of words. Pills reuse the same component as the hero
+           "roles" row on the home page. We iterate `techSkillKeys`
+           (not `Object.entries(techSkills)`) so the i18n lookup is
+           strictly type-safe without losing the fallback. -->
+      <section>
+        <h2 class="section-title">{t.about.techSkills}</h2>
+        <div class="content">
+          <div class="tech-categories">
+            {
+              techSkillKeys.map((category) => (
+                <div class="tech-category">
+                  <h3 class="category-title">
+                    {t.about.techSkillCategories[category]}
+                  </h3>
+                  <div class="pills">
+                    {techSkills[category].map((tech) => <Pill>{tech}</Pill>)}
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+          <hr />
+        </div>
+      </section>
+
+      <!-- EDUCATION — degree, institution, dates, focus. Hover lifts
+           the card and brightens the border, mirroring hover affordance
+           on the rest of the page (border, not background). -->
+      <section>
+        <h2 class="section-title">{t.about.education}</h2>
+        <div class="content">
+          <div class="education-list">
+            {
+              education.map((edu) => (
+                <article class="education-card">
+                  <h3 class="degree">{edu.degree[lang]}</h3>
+                  <p class="institution">{edu.institution[lang]}</p>
+                  <p class="dates">{edu.dates}</p>
+                  <p class="focus">{edu.focus[lang]}</p>
+                </article>
+              ))
+            }
+          </div>
+          <hr />
+        </div>
+      </section>
+
+      <!-- LANGUAGES — compact cards with the language name and the
+           CEFR-style level. Hover lights up the card border. -->
       <section>
         <h2 class="section-title">{t.about.languages}</h2>
         <div class="content">
           <Grid variant="small">
-            {languages.map((brand) => (
-              <li class="mention-card">{brand}</li>
-            ))}
+            {
+              languages.map((entry) => (
+                <li class="mention-card lang-card">
+                  <span class="lang-name">{entry.language}</span>
+                  <span class="lang-level">{entry.level}</span>
+                </li>
+              ))
+            }
           </Grid>
           <hr />
         </div>
       </section>
 
+      <!-- CERTIFICATIONS — clickable cards pointing to the issuing
+           institution. Hover highlights the border to convey the link
+           affordance clearly without a background swap. -->
       <section>
         <h2 class="section-title">{t.about.certifications}</h2>
         <div class="content">
           <Grid variant="small">
-            {certifications.map((brand) => (
-              <li class="mention-card glow-on-hover">
-                <a href={brand.web} class="brands" target="_blank" rel="noopener noreferrer">
-                  {brand.name}
-                </a>
-              </li>
-            ))}
+            {
+              certifications.map((cert) => (
+                <li class="mention-card cert-card">
+                  <a
+                    href={cert.web}
+                    class="cert-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {cert.name}
+                  </a>
+                </li>
+              ))
+            }
           </Grid>
           <hr />
         </div>
@@ -108,6 +198,11 @@ const t = getTranslations(lang as "es" | "en");
 </BaseLayout>
 
 <style>
+  /* ===================================================================
+     Page-level layout — preserved from the previous version so the
+     desktop two-column "label + content" rhythm stays intact.
+     =================================================================== */
+
   .about {
     display: flex;
     flex-direction: column;
@@ -158,34 +253,355 @@ const t = getTranslations(lang as "es" | "en");
     text-decoration-color: currentColor;
   }
 
+  /* ===================================================================
+     Soft skills — mirrored from src/components/Skills.astro so the
+     `box skills` look is consistent with the home page. The icon stage
+     scales on hover/focus with the same drop-shadow accent.
+     =================================================================== */
+
+  .soft-skills {
+    border: 1px solid var(--gray-800);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    background-color: var(--gray-999_40);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .soft-skills > * {
+    color: var(--gray-200);
+  }
+
+  .soft-skills h3 {
+    font-size: var(--text-lg);
+    color: var(--gray-100);
+  }
+
+  .soft-skills p {
+    color: var(--gray-400);
+  }
+
+  .icon-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-self: flex-start;
+    cursor: help;
+    border-radius: 0.25rem;
+  }
+
+  .icon-wrapper:focus-visible {
+    outline: 2px solid var(--accent-regular);
+    outline-offset: 4px;
+  }
+
+  .icon-stage {
+    display: inline-flex;
+    transform-origin: center;
+    transition:
+      transform 0.18s ease-out,
+      filter 0.18s ease-out;
+  }
+
+  .icon-wrapper:hover .icon-stage,
+  .icon-wrapper:focus-visible .icon-stage {
+    transform: scale(1.06) translateY(-2px);
+    filter: drop-shadow(0 6px 12px var(--accent-subtle-overlay));
+    will-change: transform;
+  }
+
+  /* ===================================================================
+     Technical skills — categorized groups; each category has an
+     accent-colored heading followed by a row of Pill components.
+     =================================================================== */
+
+  .tech-categories {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .tech-category {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .category-title {
+    font-size: var(--text-md);
+    color: var(--accent-regular);
+    font-family: var(--font-brand);
+    font-weight: 600;
+  }
+
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  /* ===================================================================
+     Education cards — degree / institution / dates / focus. Hover
+     lights up a gradient halo around the border (mirrors the
+     `.card` hover on `src/components/Timeline.astro`).
+     =================================================================== */
+
+  .education-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .education-card {
+    position: relative;
+    /* `z-index: 1` (matching `.mention-card`) creates a stacking
+       context so the `::before` halo with `z-index: -1` is contained
+       inside the card — without it the halo escapes behind the
+       page on this card. */
+    z-index: 1;
+    border: 1px solid var(--gray-800);
+    border-radius: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    background-color: var(--gray-999_40);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--theme-transition);
+  }
+
+  .education-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .education-card .degree {
+    font-size: var(--text-lg);
+    color: var(--gray-0);
+    margin-bottom: 0.25rem;
+  }
+
+  .education-card .institution {
+    color: var(--accent-regular);
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .education-card .dates {
+    font-size: var(--text-sm);
+    color: var(--gray-500);
+    margin-bottom: 0.5rem;
+    font-family: var(--font-brand);
+  }
+
+  .education-card .focus {
+    color: var(--gray-300);
+    line-height: 1.5;
+  }
+
+  /* ===================================================================
+     `.mention-card` (languages & certifications) + `.education-card`
+     gradient border halo on hover/focus-within.
+     ---------------------------------------------------------------------
+     Mirrors the `.card::before` halo pattern in
+     `src/components/Timeline.astro` so `.mention-card` (used by
+     languages & certifications) and `.education-card` read as the
+     same component family as the work-experience cards on the home
+     page. Only the BORDER is highlighted — the inner content stays
+     calm, no background swap, just a slow cyan→purple aurora
+     running along the edge.
+     =================================================================== */
+
   .mention-card {
     display: flex;
     padding: 0.75rem 1rem;
     justify-content: center;
     align-items: center;
     text-align: center;
-    border: 1px solid var(--accent-light);
+    border: 1px solid var(--gray-800);
     border-radius: 0.5rem;
     color: var(--gray-300);
-    background: var(--accent-light);
+    background: var(--gray-999_40);
     box-shadow: var(--shadow-sm);
-    transition: transform 0.2s;
+    transition:
+      color var(--theme-transition),
+      transform var(--theme-transition);
     outline: none;
     position: relative;
-    z-index: 0;
+    z-index: 1;
     font-size: var(--text-sm);
   }
-  
-  .mention-card:hover {
+
+  /* Decorative border layers MUST NOT capture pointer events,
+     otherwise the link inside `.cert-card` can be silently blocked. */
+  .mention-card::before,
+  .mention-card::after,
+  .education-card::before,
+  .education-card::after {
+    pointer-events: none;
+  }
+
+  /* Aurora halo: lives OUTSIDE the card (inset: -2px), blurred so the
+     edge reads as a glow rather than a 2px stripe. background-size:200%
+     + the `about-card-glow` animation give a slow color shift, same
+     metrics as Timeline.astro's `.card::before`. */
+  .mention-card::before,
+  .education-card::before {
+    content: "";
+    background: linear-gradient(45deg, #00ffff, #8a2be2, #00ffff, #8a2be2);
+    position: absolute;
+    inset: -2px;
+    background-size: 200%;
+    z-index: -1;
+    filter: blur(5px);
+    animation: about-card-glow 5s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  /* Inner mask: keeps the halo readable as a ring instead of bleeding
+     into the card body. `var(--gradient-subtle)` is theme-aware so the
+     mask stays correct in light + dark mode. */
+  .mention-card::after,
+  .education-card::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    background: var(--gradient-subtle);
+    z-index: -1;
+  }
+
+  /* Border-radius: the halo's outer radius is +0.1rem vs the card so
+     the rounded corners of the glow don't clip the card corners. The
+     inner mask uses the card radius minus the 1px inset. */
+  .mention-card::before {
+    border-radius: 0.6rem;
+  }
+  .mention-card::after {
+    border-radius: 0.45rem;
+  }
+  .education-card::before {
+    border-radius: 0.85rem;
+  }
+  .education-card::after {
+    border-radius: 0.7rem;
+  }
+
+  /* Hover & focus-within turn the halo on. Keyboard users get the
+     same visual feedback as mouse users thanks to `:focus-within`. */
+  .mention-card:hover::before,
+  .mention-card:focus-within::before,
+  .education-card:hover::before {
+    opacity: 1;
+  }
+
+  /* Brighten the text on hover so the link affordance carries
+     through the halo. */
+  .mention-card:hover,
+  .mention-card:focus-within {
     color: var(--gray-0);
-    background: var(--accent-regular);
+    transform: translateY(-2px);
   }
-  
-  .brands {
+
+  /* Native keyboard focus ring — `.mention-card` removes the default
+     outline, so we provide a high-contrast ring for keyboard-only
+     navigation that complements the halo. `:has(:focus-visible)`
+     matches when a keyboard-focused descendant is in the wrapper,
+     which is the case for `.cert-link`. */
+  .mention-card:has(:focus-visible) {
+    outline: 2px solid var(--accent-regular);
+    outline-offset: 4px;
+  }
+
+  .mention-card :global(a:hover),
+  .mention-card :global(a:focus) {
     text-decoration: none;
-    color: var(--gray-300);
-    transition: transform 0.2s;
   }
+
+  /* Languages — name + level stacked left-aligned. */
+  .lang-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 0.15rem;
+    padding: 0.85rem 1rem;
+  }
+
+  .lang-name {
+    font-weight: 600;
+    font-size: var(--text-md);
+    color: var(--gray-100);
+  }
+
+  .lang-level {
+    font-size: var(--text-sm);
+    color: var(--gray-400);
+    font-family: var(--font-brand);
+  }
+
+  /* Certifications — fill the card with the link so clicks anywhere
+     inside the card open the URL. */
+  .cert-card {
+    padding: 0;
+  }
+
+  .cert-link {
+    display: block;
+    width: 100%;
+    padding: 0.85rem 1rem;
+    text-decoration: none;
+    color: inherit;
+    line-height: 1.4;
+  }
+
+  .cert-link:focus-visible {
+    outline: 2px solid var(--accent-regular);
+    outline-offset: 4px;
+  }
+
+  /* Slow gradient shift that keeps the halo alive even when the
+     pointer isn't moving. Identical 0/50/100% keyframe stops as
+     Timeline.astro's `timeline-glow` so both halo families pulse
+     in sync when both are on screen at once. */
+  @keyframes about-card-glow {
+    0% {
+      background-position: 0 0;
+    }
+    50% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: 0 0;
+    }
+  }
+
+  /* ===================================================================
+     Reduced-motion — keep parity with Skills.astro so the page respects
+     users who opted out of motion.
+     =================================================================== */
+
+  @media (prefers-reduced-motion: reduce) {
+    .icon-stage,
+    .mention-card,
+    .education-card,
+    .mention-card::before,
+    .education-card::before {
+      transition: none;
+      animation: none;
+    }
+
+    .icon-wrapper:hover .icon-stage,
+    .icon-wrapper:focus-visible .icon-stage,
+    .mention-card:hover,
+    .mention-card:focus-within,
+    .education-card:hover {
+      transform: none;
+      filter: none;
+    }
+  }
+
+  /* ===================================================================
+     Desktop layout — label column on the left, content on the right,
+     plus deeper padding for the soft-skills box.
+     =================================================================== */
 
   @media (min-width: 50em) {
     .about {
@@ -199,6 +615,24 @@ const t = getTranslations(lang as "es" | "en");
 
     section {
       display: contents;
+      font-size: var(--text-lg);
+    }
+
+    .soft-skills {
+      border-radius: 1.5rem;
+      padding: 2.5rem;
+      gap: 5rem;
+    }
+
+    .soft-skills h3 {
+      font-size: var(--text-2xl);
+    }
+
+    .tech-categories {
+      gap: 2rem;
+    }
+
+    .category-title {
       font-size: var(--text-lg);
     }
   }

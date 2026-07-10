@@ -28,7 +28,20 @@ const { title, description, lang = "en", withMermaid = false } = Astro.props;
   <body>
     <div class="stack backgrounds">
       <Nav />
-      <slot />
+      {/*
+        Wrap the page slot in a flex-grow container so the footer stays
+        glued to the bottom of the visible viewport even on short pages
+        like `/[lang]/contact`. Without this wrapper, the previous
+        `mt-auto` on `<Footer />` only worked while
+        `nav + slot + footer` summed below the viewport — on short
+        pages the footer ended up sitting where the content ended,
+        which looked like "halfway up" relative to the rendered page.
+        `flex: 1 1 0%` lets the wrapper grow to fill the leftover
+        vertical space regardless of content height, and `stack`
+        keeps the inner flow vertical for pages that put a `<main>`
+        or wrapper `<div>` in the slot.
+      */}
+      <div class="stack flex-1"><slot /></div>
       <Footer />
     </div>
 
