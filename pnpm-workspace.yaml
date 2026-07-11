@@ -1,13 +1,17 @@
 packages:
   - '.'
 
+# Builds aprobados explícitamente. pnpm 10+ endurece defaults de seguridad
+# y bloquea los scripts de instalación de cualquier paquete que no esté
+# listado aquí (ERR_PNPM_IGNORED_BUILDS). En pnpm ≤9.8 este control vivía
+# como `pnpm.onlyBuiltDependencies` en package.json; en pnpm 9.9+ migró a
+# `onlyBuiltDependencies` dentro de pnpm-workspace.yaml; en pnpm 10+ la
+# fuente de verdad es `allowBuilds` (admite también comandos concretos y
+# reglas por repo git, ver pnpm release #c70e33e). Mantener sharp y
+# @tailwindcss/oxide alineados con el antiguo onlyBuiltDependencies para
+# no romper el build nativo (sharp=descarga libvips, esbuild=postinstall,
+# @tailwindcss/oxide=binding nativo de Rust).
 allowBuilds:
+  '@tailwindcss/oxide': true
   esbuild: true
-
-# Paquetes que necesitan ejecutar scripts de instalación (build nativo).
-# En pnpm 9.9.0+ este campo vive en pnpm-workspace.yaml; antes de eso
-# se ubicaba en package.json bajo `pnpm.onlyBuiltDependencies`.
-onlyBuiltDependencies:
-  - '@tailwindcss/oxide'
-  - esbuild
-  - sharp
+  sharp: true
