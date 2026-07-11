@@ -6,7 +6,16 @@ export const iconPaths = {
 	'paper-plane-tilt': `<path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="M210.3 35.9 23.9 88.4a8 8 0 0 0-1.2 15l85.6 40.5a7.8 7.8 0 0 1 3.8 3.8l40.5 85.6a8 8 0 0 0 15-1.2l52.5-186.4a7.9 7.9 0 0 0-9.8-9.8Zm-99.4 109.2 45.2-45.2"/>`,
 	envelope: `<rect x="24" y="56" width="208" height="144" rx="8" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="m224 80-90.6 62.3a8.3 8.3 0 0 1-10.8 0L32 80" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>`,
 	'arrow-right': `<path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="M40 128h176m-72-72 72 72-72 72"/>`,
+  // Upward chevron used by the floating scroll-to-top button.
+  // Stroke-width mirrors the rest of the Phosphor set so icons line
+  // up when paired in the same layout.
+  'arrow-up': `<path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="M208 152a8 8 0 0 1-11.3 0L128 83.3l-68.7 68.7a8 8 0 0 1-11.3-11.3l74.3-74.3a8 8 0 0 1 11.3 0l74.4 74.4a8 8 0 0 1 0 11.2Z"/>`,
 	'arrow-left': `<path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="M216 128H40m72-72-72 72 72 72"/>`,
+	// Circle + check mark used by the contact-form post-submit
+	// thank-you panel. Same multi-element pattern as `strategy` and
+	// `users` so the stroke inherited from the parent <svg> applies to
+	// both subpaths.
+	'check-circle': `<circle cx="128" cy="128" r="96" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><polyline points="86.1 134.2 117.9 165 169.9 100.2" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>`,
 	code: `<path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="m64 88-48 40 48 40m128-80 48 40-48 40M160 40 96 216"/>`,
 	'microphone-stage': `<circle cx="168" cy="88" r="64" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" d="m213.3 133.3-90.6-90.6M100 156l-12 12m16.8-70.1L28.1 202.5a7.9 7.9 0 0 0 .8 10.4l14.2 14.2a7.9 7.9 0 0 0 10.4.8l104.6-76.7"/>`,
 	// Two-people silhouette used for the "Collaboration" soft-skill card.

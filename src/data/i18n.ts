@@ -11,6 +11,12 @@ export const translations = {
     footer: {
       sign: 'Hecho con ❤️ y ☕ por Alkiory | Construido con',
     },
+    // UI-level strings that don't belong to any specific section
+    // (navbar, footer, page). Used by components that aren't tied to
+    // a route, like the floating scroll-to-top button.
+    ui: {
+      backToTop: 'Volver arriba',
+    },
     home: {
       statusBadge: 'Disponible para proyectos',
       viewDetails: 'Ver detalles',
@@ -160,6 +166,11 @@ export const translations = {
     },
     footer: {
       sign: 'Made with ❤️ and ☕ by Alkiory | Built with',
+    },
+    // UI-level strings for components that aren't tied to a route.
+    // See the Spanish `ui` block for the rationale.
+    ui: {
+      backToTop: 'Back to top',
     },
     home: {
       statusBadge: 'Available for projects',

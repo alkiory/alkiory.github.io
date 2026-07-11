@@ -4,6 +4,7 @@ import MainHead from "../components/MainHead.astro";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 import Mermaid from "../components/Mermaid.astro";
+import ScrollToTop from "../components/ScrollToTop.astro";
 
 interface Props {
   title?: string | undefined;
@@ -28,7 +29,8 @@ const { title, description, lang = "en", withMermaid = false } = Astro.props;
   <body>
     <div class="stack backgrounds">
       <Nav />
-      {/*
+      {
+        /*
         Wrap the page slot in a flex-grow container so the footer stays
         glued to the bottom of the visible viewport even on short pages
         like `/[lang]/contact`. Without this wrapper, the previous
@@ -40,14 +42,16 @@ const { title, description, lang = "en", withMermaid = false } = Astro.props;
         vertical space regardless of content height, and `stack`
         keeps the inner flow vertical for pages that put a `<main>`
         or wrapper `<div>` in the slot.
-      */}
+      */
+      }
       <div class="stack flex-1"><slot /></div>
       <Footer />
+      <ScrollToTop />
     </div>
 
     <script>
       addEventListener("load", () =>
-        document.documentElement.classList.add("loaded")
+        document.documentElement.classList.add("loaded"),
       );
     </script>
 
@@ -137,8 +141,9 @@ const { title, description, lang = "en", withMermaid = false } = Astro.props;
         }
       }
     </style>
-    <script is:inline src="https://unpkg.com/vanilla-tilt@1.7.0/dist/vanilla-tilt.js"></script>
+    <script
+      is:inline
+      src="https://unpkg.com/vanilla-tilt@1.7.0/dist/vanilla-tilt.js"></script>
     {withMermaid && <Mermaid />}
   </body>
 </html>
-

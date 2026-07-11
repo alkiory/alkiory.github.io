@@ -126,12 +126,20 @@
 		0px 7px 7px rgba(255, 255, 255, 0.05), 0px 2px 4px rgba(255, 255, 255, 0.06);
 	--shadow-lg: 0px 62px 25px rgba(255, 255, 255, 0.01), 0px 35px 21px rgba(255, 255, 255, 0.05),
 		0px 16px 16px rgba(255, 255, 255, 0.1), 0px 4px 9px rgba(255, 255, 255, 0.12);
-}
-
+}/*
+ * `min-height: 100vh` on html and body uses viewport units directly so
+ * both fill the viewport at minimum regardless of html's height
+ * computation. `overflow-x: hidden` on html (only) clips horizontal
+ * page overflow from wide code blocks or long URLs without forcing
+ * body to become its own scroll container — which would steal the
+ * scroll from the viewport and break `window.scrollY` / `window.scrollTo`.
+ */
 html,
 body {
-	height: 100%;
-	overflow-x: hidden;
+  min-height: 100vh;
+}
+html {
+  overflow-x: hidden;
 }
 
 ::selection {
