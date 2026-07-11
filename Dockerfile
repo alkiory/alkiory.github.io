@@ -5,12 +5,18 @@ FROM node:22-alpine AS deps
 
 WORKDIR /app
 
-# Instala pnpm vía npm usando un ARG pinneado a 9.15.4 (mismo major
-# que el lockfile pnpm-lock.yaml, lockfileVersion: '9.0'). Se usa npm
-# en lugar de corepack porque la descarga automática de corepack está
-# deshabilitada en imágenes alpine recientes de node. Para sobreescribir
-# desde el build:   docker build --build-arg PNPM_VER=X.Y.Z
-ARG PNPM_VER=9.15.4
+# Instala pnpm vía npm usando un ARG pinneado a 11.11.0 (latest estable de
+# la línea 11 que satisface `engines.pnpm >=11.5.1` de package.json). Se
+# usa npm en lugar de corepack porque la descarga automática de corepack
+# está deshabilitada en imágenes alpine recientes de node.
+#
+# NOTA sobre reproducibilidad: el lockfile actual tiene lockfileVersion
+# '9.0' (generado originalmente con pnpm 9). Si pnpm 11.11 decide migrar
+# el formato al instalar, `pnpm install --frozen-lockfile` fallará y
+# habrá que regenerar el lockfile localmente con la misma versión y
+# commitearlo. Para sobreescribir desde el build:
+#   docker build --build-arg PNPM_VER=X.Y.Z
+ARG PNPM_VER=11.11.0
 RUN npm install -g pnpm@$PNPM_VER && pnpm --version
 
 # Copia solo los manifiestos primero para aprovechar la caché de Docker
@@ -29,8 +35,10 @@ FROM node:22-alpine AS builder
 
 WORKDIR /app
 
-# Reinstala pnpm en builder stage (capa cacheada si PNPM_VER no cambia)
-ARG PNPM_VER=9.15.4
+# Reinstala pnpm en builder stage (capa cacheada si PNPM_VER no cambia
+# — debe coincidir con la versión del stage deps para que el árbol de
+# node_modules sea bit-idéntico)
+ARG PNPM_VER=11.11.0
 RUN npm install -g pnpm@$PNPM_VER && pnpm --version
 
 # Reutiliza node_modules cacheado desde la stage anterior
