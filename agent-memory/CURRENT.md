@@ -86,3 +86,10 @@ Local commands:
 - No automated tests anywhere in the project. `latest(entries, n)` in `src/lib/content-helpers.ts` is the most reasonable first unit-test target (add Vitest).
 - `pnpm exec astro check` reports 18 hints, not warnings: deprecated `z` usage in `src/content.config.ts` and one unused `ROUTE_NAMES` import in `src/components/CardPreview.astro`. Clean up opportunistically.
 - `ROUTE_NAMES` enum does not include `HOME = ''` — Nav hand-builds `/${lang}/`. The asymmetry is intentional but easy to mistake for a bug unless you know.
+
+## Docker/nginx gotchas (locked — change with care)
+
+- **Port injection in redirects (`:3000` leak)**: nginx defaults to `port_in_redirect on;`, which makes `return 301 /en/;` materialize as `Location: https://alkiory.com:3000/en/` when the Host header has no explicit port. Behind Nginx Proxy Manager the Host header arrives as `alkiory.com` (no port), so nginx falls back to its `listen 3000`. The fix is `port_in_redirect off;` inside the `server {}` block of `default.conf`. Without it, Docker diverge de Firebase (whose CDN sólo emite redirects relativos sin perturbar al Host).
+- **No `user` directive in `nginx.conf`**: nginx master ya corre como `appuser` (uid 1001) vía `USER appuser` en el Dockerfile. Re-setear el user vía directiva falla con `Operation not permitted`.
+- **`pid /tmp/nginx.pid` y `*_temp_path /tmp/...`**: `/var/run` y `/var/lib/nginx` son root-owned en la imagen base. Usar `/tmp` (world-writable) evita tener que `chown` esos paths durante el build.
+- **El `dist/index.html` meta-refresh de Astro es limpio**: cuando Astro SSG genera `<meta http-equiv="refresh" content="2;url=/en/">`, el URL es siempre relativo. NO es culpable del leak de `:3000`; ese viene 100% de `port_in_redirect`.
