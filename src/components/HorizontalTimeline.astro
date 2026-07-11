@@ -463,6 +463,110 @@ for (let i = 0; i < items.length; i += rowSize) {
     margin: 0.5rem 0 0 0;
   }
 
+  /* ─── Mobile vertical layout ──────────────────────────────── */
+  /* On viewports below the desktop breakpoint the timeline flips
+     from a horizontal scroll-snap track to a vertical stack of cards
+     with a centered vertical rail, mirroring Timeline.astro's mobile
+     visual (`.timeline-rail` + `.timeline-items` column).
+
+     Geometry swap:
+       • `.h-tl-row-inner`           flex row → flex column
+       • `.h-tl-item`                flex 0 0 78vw → 1 1 auto (stacked, full-width)
+       • `.h-tl-rail-layer`          horizontal top band → vertical centered band
+       • `.h-tl-rail` / progress     calc(dot/2 − rail/2) horizontal → inset: 0 vertical
+       • gradient direction          to right → to bottom (same color stops)
+       • reveal transform            scaleX origin:left → scaleY origin:top
+
+     The dots stay at the top of each item with `align-self: center`,
+     which resolves to the row-inner's horizontal center (= 50%) —
+     matching the rail-layer's centered x via `left: 50%` +
+     `translateX(-50%)`. The IntersectionObserver trigger and the
+     per-item stagger `--i` are unchanged (see the <script> block
+     above), so scroll-reveal still fires on viewport entry with
+     identical pacing. */
+  @media (max-width: 49.99em) {
+    .h-tl-row {
+      margin: 0;
+      padding: 0;
+      overflow: visible;
+      scroll-snap-type: none;
+    }
+
+    .h-tl-row-inner {
+      flex-direction: column;
+      width: auto;
+      gap: 2rem;
+    }
+
+    .h-tl-item {
+      flex: 1 1 auto;
+      max-width: none;
+      scroll-snap-align: none;
+    }
+
+    /* Rail-layer swaps from "top band of the row" to "centered
+       vertical band". Width now equals `--rail-height` (rail
+       thickness) and height spans the row-inner so the rail
+       follows every row's local content. `translateX(-50%)` puts
+       its centerline on x=50%, the same axis as the dots. */
+    .h-tl-rail-layer {
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: var(--rail-height);
+      height: auto;
+    }
+
+    /* Rail + progress now fill the rail-layer end-to-end (inset:0),
+       so the rail runs the full height of the row. The original
+       `top: calc(var(--timeline-dot-size) / 2 - var(--rail-height)
+       / 2)` math was only needed for the horizontal layout where
+       the rail sat at each dot's vertical center; in vertical
+       layout the rail and dots are decoupled along the row-inner's
+       vertical axis (rail = full column, dots float at the top of
+       each card). */
+    .h-tl-rail,
+    .h-tl-progress {
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: auto;
+      height: auto;
+    }
+
+    /* Gradient rotates horizontal → vertical; same stops
+       (`#22d3ee 0% → #a855f7 55% → #c084fc 100%`). The reveal fills
+       top-to-bottom (transform-origin: top center), so the visual
+       matches Timeline.astro's `.timeline-progress`. */
+    .h-tl-progress {
+      background: linear-gradient(
+        to bottom,
+        #22d3ee 0%,
+        #a855f7 55%,
+        #c084fc 100%
+      );
+      transform: scaleY(0);
+      transform-origin: top center;
+    }
+
+    .h-tl--visible .h-tl-progress {
+      transform: scaleY(1);
+    }
+
+    /* Mirror the rotated gradient for theme-dark; same accent vars,
+       just `to bottom` direction. Box-shadow halo stays as the
+       outer theme-dark rule already declared in the base. */
+    :root.theme-dark .h-tl-progress {
+      background: linear-gradient(
+        to bottom,
+        var(--accent-regular) 0%,
+        var(--accent-dark) 100%
+      );
+    }
+  }
+
   /* ─── Desktop ───────────────────────────────────────────────── */
   /* Per-row grid override. The column count comes from
      `--row-cols` (declared inline on each `.h-tl-row` from the
