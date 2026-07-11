@@ -14,6 +14,8 @@ import {
   certifications,
   education,
 } from "../../data/skills";
+import { experience } from "../../data/companies";
+import Timeline from "../../components/Timeline.astro";
 
 export async function getStaticPaths() {
   const locales = ["es", "en"];
@@ -24,7 +26,8 @@ export async function getStaticPaths() {
 
 // Use the runtime-safe URL helper so an unexpected segment (e.g. an
 // empty path or a future locale) doesn't lie about its type.
-const lang: Lang = getLangFromUrl(Astro.url) ?? (Astro.currentLocale as Lang) ?? "en";
+const lang: Lang =
+  getLangFromUrl(Astro.url) ?? (Astro.currentLocale as Lang) ?? "en";
 const t = getTranslations(lang);
 ---
 
@@ -64,7 +67,7 @@ const t = getTranslations(lang);
           <div class="box soft-skills">
             {
               softSkills.map((skill) => {
-                const text = t.about.softSkillItems[skill.id];
+                const text = t.about.softSkillItems[skill.id as keyof typeof t.about.softSkillItems];
                 return (
                   <div class="stack gap-2 lg:gap-4">
                     <div
@@ -110,7 +113,9 @@ const t = getTranslations(lang);
                     {t.about.techSkillCategories[category]}
                   </h3>
                   <div class="pills">
-                    {techSkills[category].map((tech) => <Pill>{tech}</Pill>)}
+                    {techSkills[category].map((tech) => (
+                      <Pill>{tech}</Pill>
+                    ))}
                   </div>
                 </div>
               ))
@@ -183,6 +188,20 @@ const t = getTranslations(lang);
               ))
             }
           </Grid>
+          <hr />
+        </div>
+      </section>
+
+      <!-- WORK EXPERIENCE — full timeline rendered here so the home
+           page can stay focused on the top 3 most-recent roles + a
+           "Ver todo" CTA. Reuses the existing Timeline component. -->
+      <section class="experience-section">
+        <h2 class="section-title">{t.about.experience}</h2>
+        <div class="content">
+          <p class="mb-4">{t.about.experienceDesc}</p>
+          <div class="experience-timeline mx-auto max-w-4xl w-full">
+            <Timeline items={experience} lang={lang} />
+          </div>
           <hr />
         </div>
       </section>

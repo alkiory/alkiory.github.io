@@ -13,7 +13,7 @@ import { ROUTE_NAMES } from "../../lib/routes-names";
 import { entriesForLang } from "../../lib/content-helpers";
 import { Image } from "astro:assets";
 import StatusBadge from "../../components/StatusBadge.astro";
-import Timeline from "../../components/Timeline.astro";
+import HorizontalTimeline from "../../components/HorizontalTimeline.astro";
 import { experience } from "../../data/companies";
 
 export async function getStaticPaths() {
@@ -109,6 +109,43 @@ const allProjects = entriesForLang(await getCollection("work"), lang, 3);
     </div>
 
     <main class="wrapper stack gap-20 lg:gap-48">
+      <!-- EXPERIENCE SECTION — horizontal timeline of the 3 most
+           recent roles + a "Ver todo" CTA that funnels into the full
+           Timeline on /[lang]/about/. HorizontalTimeline owns the
+           rail / dots / card visuals — its mobile fallback is
+           horizontal scroll-snap, desktop is a 3-column grid above
+           the same rail. -->
+      <section
+        class="section with-background with-cta bg-variant grid justify-items-center"
+      >
+        <header class="section-header stack gap-2 lg:gap-4 mb-8">
+          <h3
+            class="text-3xl md:text-4xl font-bold text-[var(--gray-100)] font-brand"
+          >
+            {t.home.workExperience}
+          </h3>
+          <p class="text-xl text-[var(--gray-300)]">
+            {t.home.workExperienceDesc || "A glance at my recent roles"}
+          </p>
+        </header>
+
+        <div class="gallery">
+          <HorizontalTimeline
+            items={experience.slice(0, 3)}
+            lang={lang}
+            href={`/${lang}${ROUTE_NAMES.ABOUT}/`}
+          />
+        </div>
+
+        <div class="cta">
+          <Btn href={`/${lang}${ROUTE_NAMES.ABOUT}/`}>
+            {t.home.viewAll}
+            <Icon icon="arrow-right" size="1.2em" />
+          </Btn>
+        </div>
+      </section>
+
+      <!-- PROJECTS SECTION -->
       <section class="section with-background with-cta">
         <header class="section-header stack gap-2 lg:gap-4">
           <h3>{t.home.selectedWorks}</h3>
@@ -137,6 +174,7 @@ const allProjects = entriesForLang(await getCollection("work"), lang, 3);
         </div>
       </section>
 
+      <!-- BLOG SECTION -->
       <section class="section with-background with-cta">
         <header class="section-header stack gap-2 lg:gap-4">
           <h3>{t.home.lastBlog}</h3>
@@ -162,26 +200,6 @@ const allProjects = entriesForLang(await getCollection("work"), lang, 3);
             {t.home.viewAll}
             <Icon icon="arrow-right" size="1.2em" />
           </Btn>
-        </div>
-      </section>
-
-      <!-- EXPERIENCE SECTION -->
-      <section
-        class="section with-background bg-variant grid justify-items-center"
-      >
-        <header class="section-header stack gap-2 lg:gap-4 mb-8">
-          <h3
-            class="text-3xl md:text-4xl font-bold text-[var(--gray-100)] font-brand"
-          >
-            {t.home.workExperience}
-          </h3>
-          <p class="text-xl text-[var(--gray-300)]">
-            {t.home.workExperienceDesc || "My professional journey"}
-          </p>
-        </header>
-
-        <div class="gallery mx-auto max-w-4xl w-full">
-          <Timeline items={experience} lang={lang} />
         </div>
       </section>
     </main>

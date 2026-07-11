@@ -1,0 +1,538 @@
+---
+import type { Experience } from "../data/companies";
+import type { Lang } from "../data/i18n";
+
+interface Props {
+  items: Experience[];
+  lang: Lang;
+  /**
+   * Destination of every card click. On the home preview we pass
+   * `/${lang}/about/` so users funnel into the full Timeline —
+   * the same affordance the standalone "Ver todo" CTA provides.
+   */
+  href: string;
+  /**
+   * Maximum cards per row. Each chunk becomes its own DOM row
+   * container with its OWN rail-layer, so the dot-rail alignment
+   * is structurally enforced per row rather than hardcoded for a
+   * particular total-item count. Default 3 matches the desktop
+   * 3-col grid; passing `rowSize={2}` with the current 3 items
+   * yields a "2+1" two-row layout where each row gets its own
+   * rail — the structural capability the user explicitly asked
+   * for ("currently 2 rows, should work for 3+ rows in future").
+   */
+  rowSize?: number;
+}
+
+const { items, lang, href, rowSize = 3 } = Astro.props;
+
+/* Chunk items into rows of `rowSize`. The previous single-rail
+   design only worked because there happened to be one row; with
+   multiple rows the global rail left later rows without any line
+   to land their dots on. Chunking into rows gives every row its
+   own rail-layer positioned absolutely within that row's local
+   coordinate space, so the dot-rail alignment is correct
+   regardless of how many rows the layout produces. */
+const rows: Experience[][] = [];
+for (let i = 0; i < items.length; i += rowSize) {
+  rows.push(items.slice(i, i + rowSize));
+}
+---
+
+<div class="h-tl">
+  {
+    rows.map((row, rowIdx) => (
+      <div
+        class="h-tl-row"
+        data-row={rowIdx}
+        style={`--row-cols: ${row.length};`}
+      >
+        <div class="h-tl-row-inner">
+          {/* Each row gets its OWN rail-layer positioned absolutely at
+             the top of that row's content box. Because both the rail
+             AND the dots are children of the same row-inner, the
+             alignment is row-local — independently correct for any
+             row count, including partial last rows (1 or 2 cards). */}
+          <div class="h-tl-rail-layer" aria-hidden="true">
+            <div class="h-tl-rail" />
+            <div class="h-tl-progress" />
+          </div>
+
+          {row.map((item, itemIdx) => {
+            /* Global index across all rows so the per-item stagger
+               animation continues across rows if there's more than
+               one (rather than restarting per row). */
+            const globalIdx = rowIdx * rowSize + itemIdx;
+            return (
+              <a class="h-tl-item" href={href} style={`--i: ${globalIdx};`}>
+                <span class="h-tl-dot" aria-hidden="true" />
+                <article class="h-tl-card">
+                  <span class="h-tl-period">{item.period}</span>
+                  <h3 class="h-tl-role">{item.role}</h3>
+                  <span class="h-tl-company">{item.company}</span>
+                  <p class="h-tl-summary">{item.summary[lang]}</p>
+                </article>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  // Reveal trigger: when the timeline container enters the viewport,
+  // add `--visible` so items stagger in left-to-right (via the
+  // per-item transition-delay built off the global `--i`) and the
+  // progress rail scales from 0 → 100% on its own delay. Single IO
+  // entry per `.h-tl` triggers the whole timeline; with multi-row
+  // layouts this still fires once when any row enters viewport and
+  // cascades `--visible` to all descendants (rows enter together
+  // since they're stacked vertically with normal scroll).
+  const timelines = document.querySelectorAll<HTMLElement>(".h-tl");
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("h-tl--visible");
+          }
+        }
+      },
+      { threshold: 0.2, rootMargin: "0px 0px -8% 0px" },
+    );
+    timelines.forEach((tl) => io.observe(tl));
+  } else {
+    // No-IO fallback: reveal everything immediately so the page is
+    // never blank. Dots keep their default `--accent-regular` color
+    // (no neon fill) but the cards are still tappable.
+    timelines.forEach((tl) => tl.classList.add("h-tl--visible"));
+  }
+</script>
+
+<style>
+  /* ─── Outer container ──────────────────────────────────────── */
+  /* The outer wrapper is just a vertical stack of independent rows.
+     No overflow, no rail of its own — every row owns its own
+     scroll/grid container and its own rail, so the alignment math
+     is row-local rather than hardcoded for a single row. */
+  .h-tl {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  /* ─── Per-row container ─────────────────────────────────────── */
+  /* Each row is independent: its own `--rail-height`,
+     `--row-cols`, scroll/grid layout, and absolute rail-layer. The
+     `--rail-height` is the mobile default (3px); @media below
+     overrides to 4px on desktop. */
+  .h-tl-row {
+    position: relative;
+    --rail-height: 3px;
+    /* Mobile: each row is a horizontal scroll-snap track that scrolls
+       independently. Negative horizontal margin bleeds the row to
+       the section edges while keeping the rail layer centered over
+       the cards' actual scroll content. The rail-layer's left/right
+       anchors resolve to the row-inner's intrinsic
+       `width: max-content` width — i.e. the SCROLL-CONTENT width,
+       not the visible viewport width — so the rail tracks every
+       snap position to stay locked between dots. */
+    margin: 0 -1.5rem;
+    padding: 0 1.5rem 1.5rem;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .h-tl-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* ─── Per-row inner container ───────────────────────────────── */
+  /* Mobile: `display: flex; width: max-content` so the row's
+     intrinsic width = items + gaps (the scroll content width).
+     Desktop: `display: grid; grid-template-columns: repeat(N, 1fr)`
+     where N comes from `--row-cols` declared inline per row, so
+     partial rows (e.g. last row with only 2 leftover items) get a
+     2-col grid rather than being stretched across 3 cols. */
+  .h-tl-row-inner {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 1.25rem;
+    width: max-content;
+  }
+
+  /* ─── Rail layer (per-row) ───────────────────────────────────── */
+  /* `position: absolute` so it doesn't displace items in the flex
+     flow. `left: 0; right: 0` resolves to the row-inner's intrinsic
+     width (max-content on mobile, full parent width on desktop
+     grid) — i.e. it spans the actual scroll-content width, so dots
+     are always aligned with the rail regardless of snap position.
+     `height: var(--timeline-dot-size)` matches the dot's outer box,
+     so the rail's vertical position aligns with the dot's center
+     via the formula in the rail rules below. */
+  .h-tl-rail-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--timeline-dot-size);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ─── Rail + progress (math derivation per row) ────────────── */
+  /* Under the project's global `box-sizing: border-box`, the dot's
+     OUTER box is exactly `--timeline-dot-size` — border is inside
+     the declared size, so its visual center sits at half that.
+     The rail (whose own height is `--rail-height`, 3px mobile / 4px
+     desktop) sits with its center at the dot's center, so rail top
+     = (dot-half-height) − (rail-half-height) =
+     `calc(var(--timeline-dot-size) / 2 - var(--rail-height) / 2)`.
+     Because this is purely derived metric, changing
+     `--timeline-dot-size` in :root or `--rail-height` on
+     `.h-tl-row` automatically keeps the rail locked on each row's
+     dot center regardless of row count. */
+  .h-tl-rail,
+  .h-tl-progress {
+    position: absolute;
+    top: calc(var(--timeline-dot-size) / 2 - var(--rail-height) / 2);
+    left: 0;
+    right: 0;
+    height: var(--rail-height);
+    border-radius: 9999px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .h-tl-rail {
+    background: var(--gray-800);
+  }
+
+  .h-tl-progress {
+    background: linear-gradient(
+      to right,
+      #22d3ee 0%,
+      #a855f7 55%,
+      #c084fc 100%
+    );
+    box-shadow:
+      0 0 6px rgba(168, 85, 247, 0.7),
+      0 0 14px rgba(168, 85, 247, 0.45);
+    /* No translateY here — the absolute `top` (derived from
+       --timeline-dot-size) already pins the rail to each dot's
+       vertical center, so the fill animation only needs `scaleX`. */
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s;
+    will-change: transform;
+  }
+
+  .h-tl--visible .h-tl-progress {
+    transform: scaleX(1);
+  }
+
+  :root.theme-dark .h-tl-progress {
+    background: linear-gradient(
+      to right,
+      var(--accent-regular) 0%,
+      var(--accent-dark) 100%
+    );
+    box-shadow:
+      0 0 6px rgba(118, 17, 166, 0.55),
+      0 0 14px rgba(118, 17, 166, 0.35);
+  }
+
+  /* ─── Item (card link) ──────────────────────────────────────── */
+  /* z-index: 2 is REQUIRED — not optional. The entrance animation
+     `transform: translateY(8px)` (and the hover `translateY(-2px)`
+     on `.h-tl-card`) creates a stacking context on `.h-tl-item` per
+     CSS spec ("transform other than none" forms a stacking context).
+     A stacking-context element at z-auto paints BELOW any
+     positioned sibling at z > 0 — so without an explicit z-index
+     here, `.h-tl-rail-layer` (position:absolute; z-index:1) would
+     paint OVER the entire item, partially hiding the dot even
+     though the dot itself declares z-index:2 internally. The
+     explicit z-index:2 lifts the item's stacking context above
+     the rail-layer's, so the dot (and the card's hover halo) render
+     cleanly in front of the rail. */
+  .h-tl-item {
+    flex: 0 0 78vw;
+    max-width: 380px;
+    scroll-snap-align: center;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 0.55s ease-out calc(0.35s + var(--i, 0) * 0.18s),
+      transform 0.55s ease-out calc(0.35s + var(--i, 0) * 0.18s);
+  }
+
+  .h-tl--visible .h-tl-item {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── Dot on the rail ───────────────────────────────────────── */
+  /* The dot is the FIRST flex-column child of each item, sitting at
+     the top of that item. Its width/height come from
+     `--timeline-dot-size` declared in :root so the rail's `top`
+     formula above auto-tracks any future dot resize. Border at
+     4px is kept hardcoded — that border is INSIDE the declared
+     size under the project's `box-sizing: border-box`, so it
+     doesn't change the visual-center math. The reveal-state
+     `background` and `box-shadow` are applied in the next rule
+     (`.h-tl--visible .h-tl-dot`) so this base rule stays focused on
+     sizing + the pre-reveal flat-purple look. */
+  .h-tl-dot {
+    align-self: center;
+    width: var(--timeline-dot-size);
+    height: var(--timeline-dot-size);
+    flex: 0 0 var(--timeline-dot-size);
+    margin-bottom: 1rem;
+    border-radius: 9999px;
+    border: 4px solid var(--gray-999);
+    background: var(--accent-regular);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+    position: relative;
+    z-index: 2;
+    transition:
+      box-shadow 0.4s ease-out calc(0.55s + var(--i, 0) * 0.18s),
+      transform 0.4s ease-out calc(0.55s + var(--i, 0) * 0.18s),
+      background 0.45s ease-out calc(0.55s + var(--i, 0) * 0.18s);
+  }
+
+  /* Revealed-state gradient + halo, driven by the timeline glow
+     palette in :root (`--timeline-glow-color-1/3` for the
+     cyan→purple fill, `--timeline-dot-halo` for the same bloom
+     radius the gradient rail uses). Visually identical to
+     Timeline.astro's `.timeline-dot` after that component's
+     container-scoped cascade fires. */
+  .h-tl--visible .h-tl-dot {
+    background: linear-gradient(
+      135deg,
+      var(--timeline-glow-color-1),
+      var(--timeline-glow-color-3)
+    );
+    box-shadow: var(--timeline-dot-halo);
+    transform: scale(1.2);
+  }
+
+  :root.theme-dark .h-tl--visible .h-tl-dot {
+    background: linear-gradient(
+      135deg,
+      var(--accent-regular),
+      var(--accent-dark)
+    );
+    /* Timeline.astro dims the dot's halo box-shadow under .theme-dark
+       (16px→14px main blur, RGBA 192,132,252→118,17,166) so the bloom
+       doesn't fight the dark background. Without this re-declaration
+       the bright light-mode halo would carry into dark mode and
+       break visual parity with the /about/ timeline's dots. */
+    box-shadow: var(--timeline-dot-halo-dark);
+  }
+
+  .h-tl-item:hover .h-tl-dot,
+  .h-tl-item:focus-visible .h-tl-dot {
+    background: linear-gradient(
+      135deg,
+      var(--timeline-glow-color-1),
+      var(--timeline-glow-color-3)
+    );
+    box-shadow: var(--timeline-dot-halo);
+    transform: scale(1.2);
+  }
+
+  :root.theme-dark .h-tl-item:hover .h-tl-dot,
+  :root.theme-dark .h-tl-item:focus-visible .h-tl-dot {
+    background: linear-gradient(
+      135deg,
+      var(--accent-regular),
+      var(--accent-dark)
+    );
+    box-shadow: var(--timeline-dot-halo-dark);
+  }
+
+  /* ─── Card visuals ─────────────────────────────────────────── */
+  .h-tl-card {
+    background: var(--gray-999);
+    border: 1px solid var(--gray-800);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 2;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--theme-transition);
+    font-size: 1rem;
+  }
+
+  /* Decorative layered border MUST NOT capture pointer events —
+     otherwise the in-card link can be silently blocked in some
+     browsers. */
+  .h-tl-card::before,
+  .h-tl-card::after {
+    pointer-events: none;
+  }
+
+  .h-tl-card::before {
+    content: "";
+    background: linear-gradient(45deg, #00ffff, #8a2be2, #00ffff, #8a2be2);
+    position: absolute;
+    inset: -2px;
+    background-size: 200%;
+    z-index: -1;
+    filter: blur(5px);
+    animation: h-tl-glow 5s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    border-radius: 0.85rem;
+  }
+
+  .h-tl-card::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    background: var(--gradient-subtle);
+    border-radius: 0.7rem;
+    z-index: -1;
+  }
+
+  .h-tl-item:hover .h-tl-card,
+  .h-tl-item:focus-visible .h-tl-card {
+    transform: translateY(-2px);
+  }
+
+  .h-tl-item:hover .h-tl-card::before,
+  .h-tl-item:focus-visible .h-tl-card::before {
+    opacity: 1;
+  }
+
+  @keyframes h-tl-glow {
+    0% {
+      background-position: 0 0;
+    }
+    50% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: 0 0;
+    }
+  }
+
+  /* ─── Card typography (Timeline.astro parity) ──────────────── */
+  .h-tl-period {
+    font-size: 0.875rem;
+    font-family:
+      ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    color: var(--accent-dark);
+  }
+
+  .h-tl-role {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--gray-100);
+    line-height: 1.2;
+    margin: 0;
+    font-family: var(--font-brand);
+  }
+
+  .h-tl-company {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--gray-300);
+    font-family: var(--font-brand);
+  }
+
+  .h-tl-summary {
+    color: var(--gray-400);
+    line-height: 1.5;
+    margin: 0.5rem 0 0 0;
+  }
+
+  /* ─── Desktop ───────────────────────────────────────────────── */
+  /* Per-row grid override. The column count comes from
+     `--row-cols` (declared inline on each `.h-tl-row` from the
+     Astro template). A full row gets 3 cols; a partial last row
+     (e.g. 2 leftover items) gets 2 cols and is centered via the
+     parent's `justify-items`. This way the cards in each row are
+     equally-spaced without a hardcoded "3-col fill" stretching
+     partial rows across the full width. */
+  @media (min-width: 50em) {
+    .h-tl {
+      gap: 3rem;
+    }
+
+    .h-tl-row {
+      margin: 0;
+      padding: 0;
+      overflow: visible;
+      scroll-snap-type: none;
+      --rail-height: 4px;
+    }
+
+    .h-tl-row-inner {
+      display: grid;
+      grid-template-columns: repeat(var(--row-cols, 3), 1fr);
+      width: auto;
+      gap: 2rem;
+    }
+
+    .h-tl-item {
+      flex: initial;
+      max-width: none;
+    }
+
+    .h-tl-card {
+      padding: 1.75rem 2rem;
+    }
+  }
+
+  /* ─── Focus ring ───────────────────────────────────────────── */
+  .h-tl-item:focus-visible {
+    outline: 2px solid var(--accent-regular);
+    outline-offset: 6px;
+    border-radius: 0.85rem;
+  }
+
+  /* ─── Reduce-motion neutralize ─────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .h-tl-progress,
+    .h-tl-dot,
+    .h-tl-item,
+    .h-tl-card,
+    .h-tl-card::before {
+      transition: none !important;
+      animation: none !important;
+    }
+    .h-tl-item {
+      opacity: 1;
+      transform: none;
+    }
+    .h-tl-progress {
+      transform: scaleX(1);
+    }
+    .h-tl--visible .h-tl-dot,
+    .h-tl-item:hover .h-tl-dot,
+    .h-tl-item:focus-visible .h-tl-dot {
+      transform: none;
+    }
+    .h-tl-item:hover .h-tl-card,
+    .h-tl-item:focus-visible .h-tl-card {
+      transform: none;
+    }
+  }
+</style>

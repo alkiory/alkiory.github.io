@@ -1,7 +1,7 @@
 ---
 title: BudgetGenius Hexagonal Architecture and PWA Approach
 publishDate: 2025-05-28 00:00:00
-img: https://www.photo-pick.com/online/api/v1/albums/efdbc017-11d2-4eaf-b71c-da8be94efaf2.jpg
+img: https://i.postimg.cc/K8h51prz/Captura-de-pantalla-2026-07-10-165516.png
 img_alt: Iridescent ripples of a bright blue and pink liquid
 description: |
   BudgetGenius is a personal finance application built from scratch as a functional, modular, and scalable MVP. In this post, we share its architecture, key technical decisions, services built, and the technology stack used, including PWA support, OAuth2 authentication, and full cloud deployment.
@@ -34,14 +34,16 @@ Interactive charts for visual insights.
 
 We applied the hexagonal architecture pattern to decouple domains from infrastructure and prepare the code for scalability and testing.
 
+```mermaid
 graph LR
-  A[Controllers (Adapters)] --> B[Application Services]
-  B --> C[Domain (Entities, Use Cases)]
-  B --> D[Ports (Interfaces)]
-  D --> E[Repositories (Adapters)]
-  D --> F[External APIs (Google, Redis)]
+  A["Controllers (Adapters)"] --> B[Application Services]
+  B --> C["Domain (Entities, Use Cases)"]
+  B --> D["Ports (Interfaces)"]
+  D --> E["Repositories (Adapters)"]
+  D --> F["External APIs (Google, Redis)"]
   E --> G[PostgreSQL]
-  
+```
+
 This structure allows us to:
 
 Easily test business rules (pure domain).
@@ -77,6 +79,7 @@ CORS, CSRF, and environment-controlled security.
 
 🧭 General Navigation Flow
 
+```mermaid
 graph LR
   A[Login con Google] --> B[Callback Backend]
   B --> C[Generar Tokens]
@@ -86,15 +89,18 @@ graph LR
   F --> G[Consulta de gastos]
   F --> H[Crear/editar transacción]
   F --> I[Ver breakdown de categorías]
+```
 
 🧪 Key Use Cases
 
+```mermaid
 graph LR
   A[Usuario autenticado] --> B[GET /overview]
   A --> C[GET /categories]
   A --> D[POST /transaction]
   A --> E[PUT /transaction/:id]
   A --> F[DELETE /transaction/:id]
+```
 
 #### 🔐 Key Technical Decisions
 

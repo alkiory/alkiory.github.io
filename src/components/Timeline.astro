@@ -166,7 +166,19 @@ const t = getTranslations(lang);
     left: 50%;
     transform: translateX(-50%);
     width: 3px;
-    background: var(--gray-800);
+    /* Base rail now shares the cyan→purple palette with
+       `.timeline-progress` (the scroll-driven fill rail above it)
+       so the vertical line reads as a single continuous gradient
+       from page-load, instead of gray-base + thin purple fill
+       (which read as visually disconnected). The literal hex
+       values match `.timeline-progress`'s gradient so both rails
+       blend into one line. */
+    background: linear-gradient(
+      to bottom,
+      #22d3ee 0%,
+      #a855f7 55%,
+      #c084fc 100%
+    );
     border-radius: 9999px;
     z-index: 0;
     pointer-events: none;
