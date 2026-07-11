@@ -1,7 +1,6 @@
 ---
 import Icon from "../components/ui/icon.astro";
 import { getTranslations } from "../data/i18n";
-import { socials } from "../data/socials";
 
 const lang = (Astro.url.pathname.split("/")[1] as "es" | "en") || "en";
 const t = getTranslations(lang);
@@ -9,9 +8,6 @@ const currentYear = new Date().getFullYear();
 ---
 
 <footer class="site-footer flex flex-col gap-12 py-6 px-8 text-center text-sm">
-  <!-- Línea de gradiente superior: usa variables CSS que ya flipean con :root.theme-dark -->
-  <div class="footer-gradient-line" aria-hidden="true"></div>
-
   <div
     class="flex flex-col md:flex-row gap-4 md:gap-8 items-center justify-center"
   >
@@ -36,16 +32,13 @@ const currentYear = new Date().getFullYear();
 </footer>
 
 <style>
-  /* El footer usa SOLO CSS variables del proyecto (ya flipean con
-     :root.theme-dark). Antes dependía de las variantes `bg-white` /
-     `dark:bg-slate-950` de Tailwind, que NO responden a `.theme-dark`
-     y por eso se invertían cuando el OS y el toggle no coincidían. */
   .site-footer {
     background-color: var(--gray-999);
     color: var(--gray-300);
     border-top: 1px solid var(--gray-800);
     position: relative;
     overflow: hidden;
+    top: 75px;
   }
 
   .footer-copyright {
@@ -66,50 +59,5 @@ const currentYear = new Date().getFullYear();
   .footer-link:focus {
     color: var(--gray-100);
     text-decoration-color: currentColor;
-  }
-
-  /* Banda de gradiente superior de 4px. Usa `--gradient-accent`, que
-     ya está definida en `src/styles/global.css` y re-asigna sus stops
-     bajo :root.theme-dark, por lo que alterna de tono al cambiar el
-     tema sin necesidad de variantes `dark:` de Tailwind. */
-  .footer-gradient-line {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background-image: var(--gradient-accent);
-    background-size: 200% 100%;
-    background-position: 0% 50%;
-    animation: footer-gradient-pan 9s ease-in-out infinite;
-  }
-
-  /* Respeto a usuarios que prefieren reducir movimiento. */
-  @media (prefers-reduced-motion: reduce) {
-    .footer-gradient-line {
-      animation: none;
-    }
-  }
-
-  @keyframes footer-gradient-pan {
-    0%,
-    100% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-  }
-
-  /* Forzar-colors: en Windows High Contrast los gradientes no se
-     reproducen, pero conservamos el alto de la banda (4px) cambiándola
-     a un color de sistema sólido y desactivando la animación. Esto
-     evita layout shift respecto al modo normal. */
-  @media (forced-colors: active) {
-    .footer-gradient-line {
-      background-image: none;
-      background-color: CanvasText;
-      animation: none;
-    }
   }
 </style>

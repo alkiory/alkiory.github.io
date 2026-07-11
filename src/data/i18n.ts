@@ -44,8 +44,8 @@ export const translations = {
       readMore: 'Leer más',
     },
     about: {
-      title: 'Sobre Mí',
-      description: 'Desarrollador de software construyendo soluciones web escalables junto a equipos. Aprendo con la comunidad y comparto lo que descubro — este blog es una forma de devolver lo aprendido.',
+      title: 'Quién Soy',
+      description: 'Desarrollador de software construyendo soluciones web escalables junto a equipos. Aprendo con la comunidad y comparto lo que descubro.',
       introParagraph1: 'Soy Sergio Campbell (Alkiory), desarrollador de software que construye soluciones web escalables centradas en las personas. Trabajo principalmente con React, Angular y TypeScript, y estoy tan cómodo adoptando cualquier herramienta que el equipo necesite como manteniendo las que ya dominamos — rendimiento, accesibilidad, usabilidad y SEO siempre están sobre la mesa. Me desenvolví bien en metodologías ágiles y entornos colaborativos, y diseño arquitecturas que ayudan al equipo a entregar su mejor versión. A lo largo de los años he liderado plataformas complejas junto a equipos grandes y pequeños, donde la innovación y la mejora continua han sido siempre un esfuerzo compartido.',
       introParagraph2: 'En este portafolio te comparto algunos de mis proyectos destacados y artículos recientes — adquiere los que te llamen la atención y descubre lo que he ido aprendiendo en el camino.',
       introParagraph3: 'Si tienes alguna pregunta o quieres colaborar, no dudes en contactarme. Estoy siempre abierto a nuevas oportunidades y desafíos.',
@@ -193,8 +193,8 @@ export const translations = {
       readMore: 'Read more',
     },
     about: {
-      title: "About Me",
-      description: "Software developer building scalable web solutions alongside teams. I learn with the community and share what I discover — this blog is one of those ways to give back.",
+      title: "Who I Am",
+      description: "Software developer building scalable web solutions alongside teams. I learn with the community and share what I discover.",
       introParagraph1: "I'm Sergio Campbell (Alkiory), a software developer who builds scalable, people-centered web solutions. I work mostly with React, Angular, and TypeScript — but I'm equally at home adopting whatever tool the team needs, as long as performance, accessibility, usability, and SEO keep their seat at the table. I thrive in agile, collaborative environments, and I design architectures that help the team ship their best work. Over the years I've led complex platforms alongside teams of all sizes, where innovation and continuous improvement have always been a shared effort.",
       introParagraph2: "In this portfolio I share some of my featured projects and recent articles — pick whatever catches your eye and discover what I've been learning along the way.",
       introParagraph3: "If you have any questions or want to collaborate, feel free to get in touch. I'm always open to new opportunities and challenges.",
