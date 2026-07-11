@@ -16,7 +16,7 @@ services:
     networks:
       - npm_network
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:3000/"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:3000/en/"]
       interval: 10s
       timeout: 3s
       retries: 5

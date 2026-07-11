@@ -1,9 +1,13 @@
 ---
 const defaultLang = "en";
 
-// Si Astro.url.pathname es simplemente '/', redirige.
-// Si ya estás en una ruta multilenguaje (ej. /es/blog), no redirige aquí.
-if (!Astro.url.pathname.startsWith(`/${defaultLang}/`)) {
+// src/pages/index.astro solo matchea la raíz exacta `/` por routing
+// de archivos de Astro, así que basta con comprobar `=== '/'`. La
+// capa `location = / { return 301 /en/; }` de `default.conf`
+// (y el bloque `redirects` de `firebase.json`) ya neutralizan este
+// HTML en producción/preview — este archivo es solo un fallback
+// para `astro dev` y otros hosts sin redirect configurado.
+if (Astro.url.pathname === "/") {
   return Astro.redirect(`/${defaultLang}/`);
 }
 ---
