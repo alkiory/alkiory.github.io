@@ -13,7 +13,7 @@ export const translations = {
     },
     home: {
       statusBadge: 'Disponible para proyectos',
-      viewDetails: '+ Ver detalles',
+      viewDetails: 'Ver detalles',
       welcome: '¡Bienvenido a mi Portafolio!',
       intro: 'Construyo, aprendo y comparto — conoce mis proyectos y artículos recientes.',
       selectedWorks: 'Proyectos destacados',
@@ -163,7 +163,7 @@ export const translations = {
     },
     home: {
       statusBadge: 'Available for projects',
-      viewDetails: '+ View details',
+      viewDetails: 'View details',
       welcome: 'Welcome to my Portfolio!',
       intro: 'Build, learn, share. Explore my latest projects and articles.',
       selectedWorks: 'Featured Projects',

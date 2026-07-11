@@ -67,11 +67,14 @@ const t = getTranslations(lang);
           <div class="box soft-skills">
             {
               softSkills.map((skill) => {
-                const text = t.about.softSkillItems[skill.id as keyof typeof t.about.softSkillItems];
+                const text =
+                  t.about.softSkillItems[
+                    skill.id as keyof typeof t.about.softSkillItems
+                  ];
                 return (
-                  <div class="stack gap-2 lg:gap-4">
+                  <div class="stack gap-2">
                     <div
-                      class="icon-wrapper"
+                      class="icon-wrapper flex gap-2 items-center"
                       data-tooltip={text.title}
                       title={text.title}
                       tabindex="0"
@@ -80,12 +83,14 @@ const t = getTranslations(lang);
                         <Icon
                           icon={skill.icon}
                           color="var(--accent-regular)"
-                          size="2.5rem"
+                          size="1.5rem"
                           gradient
                         />
                       </span>
+                      <h4 style="font-weight: 200; font-size: larger;">
+                        {text.title}
+                      </h4>
                     </div>
-                    <h3>{text.title}</h3>
                     <p>{text.desc}</p>
                   </div>
                 );
