@@ -132,19 +132,6 @@ Esta forma nos permite:
 - **class-validator** + **class-transformer** para validar la forma
   de los inputs en cada argumento de resolver.
 
-🛠️ Infraestructura
-
-- **Docker Compose** orquestando tres servicios: `backend`,
-  `frontend`, `mongo`.
-- **Nginx** dentro del contenedor del frontend, sirviendo el build de
-  Vite de forma estática y proxeando el endpoint GraphQL hacia el
-  backend dentro de la misma red de Compose.
-- **Jest** + **Vitest** repartidos entre backend (smoke + integración)
-  y frontend (tests de componentes con Vitest).
-- Un smoke test `verify-stack.sh` que ejecuta **6 fases
-  end-to-end**: stack-up, los 3 resolvers GraphQL, rate-limiting y la
-  expiración del TTL en Mongo.
-
 #### 🔐 Decisiones técnicas clave
 
 ✅ 1. GraphQL como contrato, REST como upstream
@@ -174,17 +161,39 @@ capa de resolvers oculta los casos *frío* y *de abuso*. Juntos
 mantienen al proyecto bien dentro de los límites de la API pública
 de REE sin sacrificar la respuesta del frontend.
 
-✅ 4. Stack de un comando pineado por healthchecks de Compose
+✅ 4. El smoke test es posible end-to-end gracias al stack healthchecked de Compose
 
-Una persona consumiendo el frontend debería poder preguntar
-"¿este stack sigue corriendo end-to-end?" con un único comando. El
-Compose de 3 servicios pasa el orden de arranque vía healthchecks,
-así `docker-compose up -d --build` siempre converge en un stack
-consultable, no en uno levantado a medias.
+El **contrato end-to-end de 6 fases** que ejecuta `verify-stack.sh`
+(cubierto arriba en `📦`) solo funciona porque el Compose de 3
+servicios pinea el orden de arranque en healthchecks — sin ese
+gate, CI vería `up --build` como "running" antes de que el backend
+terminara de arrancar, y el smoke test mentiría.
 
-#### 🚀 Cómo correrlo
+#### 📦 Infraestructura y despliegue
 
-Dos caminos que producen la misma app.
+El proyecto entero se entrega como un Compose de Docker de 3
+servicios, y el mismo stack también se puede levantar en modo dev
+local con dos terminales `pnpm dev` para tener hot reload en cada
+lado.
+
+- **`docker-compose.yml`** orquestando tres servicios — `backend`
+  (NestJS), `frontend` (build estático de Vite servido por Nginx),
+  `mongo` (MongoDB 6 con volumen persistente, DB `energy-balance`) —
+  con healthchecks pineando el orden de arranque, así
+  `docker-compose up -d --build` siempre converge en un stack
+  consultable end-to-end, no en uno levantado a medias.
+- **Frontend servido por Nginx** dentro del contenedor `frontend`
+  en `http://localhost:80`, con un reverse-proxy pass hacia el
+  endpoint `/graphql` del backend en la misma red de Compose.
+- **Configurable vía env**: whitelist `CORS_ORIGINS` para el
+  resolver GraphQL, `MONGODB_URI` para la base (por defecto el
+  contenedor `mongo` del stack), `THROTTLE_TTL_MS` /
+  `THROTTLE_LIMIT` para el rate-limit global, `VITE_API_URL`
+  inyectado en build time apuntando la SPA al backend.
+- **Smoke test**: un script `verify-stack.sh` que ejercita las **6
+  fases end-to-end** (stack-up, los 3 resolvers GraphQL,
+  rate-limiting y expiración del TTL en Mongo) — útil como sanity
+  check después de cada cambio en el contrato.
 
 **Dev local** (dos terminales, hot reload en ambos lados):
 
@@ -211,10 +220,6 @@ docker-compose up -d --build
 # MongoDB   → mongodb://localhost:27017     (DB: energy-balance)
 ```
 
-Una vez arriba, el smoke test `verify-stack.sh` corre las **6 fases
-end-to-end** mencionadas — un sanity check útil después de cada cambio
-en el contrato.
-
 #### 📈 Resultado actual
 
 ✔️ Visualizador fullstack desplegable con un único
@@ -223,8 +228,8 @@ en el contrato.
 ✔️ Caché read-through que mantiene plano el tráfico contra REE durante
 sesiones exploratorias intensas, con TTL de 24h regulable por env.
 
-✔️ Smoke test pasando las 6 fases end-to-end — stack-up, cada resolver,
-el guard de rate-limit y el TTL en Mongo.
+✔️ Smoke test pasando las 6 fases end-to-end — stack-up, cada resolver
+y el guard de rate-limit.
 
 ✔️ Frontend utilizable contra un backend mockeado en dev, así el
 loop de UI nunca se bloquea esperando a la API pública.

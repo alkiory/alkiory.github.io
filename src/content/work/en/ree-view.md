@@ -124,19 +124,6 @@ This shape lets us:
 - **class-validator** + **class-transformer** for input shape
   validation on every resolver argument.
 
-🛠️ Infrastructure
-
-- **Docker Compose** orchestrating three services: `backend`,
-  `frontend`, `mongo`.
-- **Nginx** in the frontend container serving the Vite build
-  statically and proxying the GraphQL endpoint to the backend on the
-  same Compose network.
-- **Jest** + **Vitest** split between the backend (smoke +
-  integration) and the frontend (Vitest component tests).
-- A `verify-stack.sh` smoke test exercising **6 end-to-end phases**:
-  stack-up, the three GraphQL resolvers, rate-limiting and the Mongo
-  TTL expiry.
-
 #### 🔐 Key Technical Decisions
 
 ✅ 1. GraphQL as the contract, REST as the upstream
@@ -165,17 +152,37 @@ layer hides the *cold* and *abuse* cases. Together they keep the
 project well within REE's public API limits without sacrificing
 responsiveness on the frontend.
 
-✅ 4. One-command stack pinned by Compose healthchecks
+✅ 4. The smoke test is end-to-end possible because of the healthchecked Compose stack
 
-A frontend consumer should be able to ask *"is this stack still
-running end-to-end?"* with one command. The 3-service Compose file
-passes its startup ordering through healthchecks, so
-`docker-compose up -d --build` always converges on a stack that is
-queryable, not one that is half up.
+The **6-phase end-to-end contract** exercised by `verify-stack.sh`
+(covered under `📦` above) only works because the 3-service Compose
+file gates its startup ordering on healthchecks — without that gate,
+CI would happily see `up --build` as "running" before the backend had
+finished booting, and the smoke test would lie.
 
-#### 🚀 Running it
+#### 📦 Infrastructure and Deployment
 
-Two paths that produce the same app.
+The whole stack ships as a 3-service Docker Compose file, and the
+same stack can also be brought up locally with two `pnpm dev`
+terminals for hot reload on each side.
+
+- **`docker-compose.yml`** orchestrating three services — `backend`
+  (NestJS), `frontend` (Vite build served by Nginx), `mongo`
+  (MongoDB 6 with a persistent volume, DB `energy-balance`) — with
+  healthchecks pinning startup ordering so `docker-compose up -d
+  --build` always converges on a queryable stack, not one half up.
+- **Frontend served by Nginx** inside the `frontend` container at
+  `http://localhost:80`, with a reverse-proxy pass to the backend's
+  `/graphql` endpoint on the same Compose network.
+- **Configurable via env**: `CORS_ORIGINS` whitelist for the
+  GraphQL resolver, `MONGODB_URI` for the database (defaults to the
+  in-stack `mongo` container), `THROTTLE_TTL_MS` /
+  `THROTTLE_LIMIT` for the global rate-limit, `VITE_API_URL`
+  injected at build time pointing the SPA at the backend.
+- **Smoke test**: a `verify-stack.sh` script exercises the **6
+  end-to-end phases** (stack-up, the three GraphQL resolvers,
+  rate-limiting and the Mongo TTL expiry) — useful as a sanity
+  check after every change to the contract.
 
 **Local dev** (two terminals, hot reload on both ends):
 
@@ -202,10 +209,6 @@ docker-compose up -d --build
 # MongoDB   → mongodb://localhost:27017     (DB: energy-balance)
 ```
 
-After the stack is up, the `verify-stack.sh` smoke test exercises
-the **6 end-to-end phases** above — a useful sanity check after
-every change to the contract.
-
 #### 📈 Current Outcome
 
 ✔️ Full-stack visualizer deployable with a single
@@ -215,7 +218,7 @@ every change to the contract.
 exploratory sessions, with a 24h TTL knob tunable via env.
 
 ✔️ Smoke test passing the 6 end-to-end phases — stack-up, every
-resolver, the rate-limit guard and the Mongo TTL.
+resolver and the rate-limit guard.
 
 ✔️ Frontend usable against a mocked backend in dev so the UI loop
 never blocks on the public API.
