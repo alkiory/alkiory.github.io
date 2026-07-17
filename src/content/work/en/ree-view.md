@@ -241,3 +241,5 @@ Want to read the source or run it locally with your own REE API
 credentials?
 
 - 🔗 [Repository](https://github.com/alkiory/ree-view/)
+
+-🔗 [Live demo](https://alkiory.github.io/ree-view/)
