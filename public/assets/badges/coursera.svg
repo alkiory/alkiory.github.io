@@ -1,0 +1,14 @@
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="courseraGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2F5597;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3B6FA8;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow-sm" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect x="4" y="4" width="72" height="72" rx="10" fill="url(#courseraGrad)" filter="url(#shadow-sm)"/>
+  <path d="M 22 58 L 30 30 L 40 42 L 50 30 L 58 58" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="40" y="70" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="6" font-weight="bold" opacity="0.9">COURSERA</text>
+</svg>

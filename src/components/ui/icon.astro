@@ -7,13 +7,15 @@ export interface Props {
   color?: string;
   gradient?: boolean;
   size?: string;
+  class?: string;
 }
 
-const { color = "currentcolor", gradient, icon, size } = Astro.props;
+const { color = "currentcolor", gradient, icon, size, class: className } = Astro.props;
 const iconPath = iconPaths[icon];
 
 const attrs: HTMLAttributes<"svg"> = {};
 if (size) attrs.style = { "--size": size };
+if (className) attrs.class = className;
 
 const gradientId =
   "icon-gradient-" + Math.round(Math.random() * 10e12).toString(36);

@@ -41,6 +41,8 @@ export const translations = {
       workExperience: 'Experiencia laboral',
       workExperienceDesc: 'Un vistazo a mis roles recientes. Conoce más sobre mi trayectoria.',
       contact: 'Contacto',
+      certifications: 'Certificaciones',
+      certificationsDesc: 'Credenciales profesionales y badges obtenidos.',
       yearsOfExperienceDesc: 'años escribiendo código en producción.',
       projectsCompletedDesc: 'proyectos entregados y mantenidos, del boceto al deploy.',
     },
@@ -64,6 +66,13 @@ export const translations = {
       softSkills: 'Habilidades Blandas',
       languages: 'Idiomas',
       certifications: 'Certificaciones',
+      certIBM: 'IBM Systems and Solutions Architect',
+      certCloudNative: 'Cloud Native, Microservices & DevOps',
+      certIntroArch: 'Introducción a la Arquitectura de Sistemas',
+      certDataArch: 'Arquitectura y Operaciones de Datos Empresariales',
+      certBusinessProcess: 'Modelado y Análisis de Procesos de Negocio',
+      certITSystems: 'Diseño y Análisis de Sistemas de IT',
+      certAgile: 'Procesos de Software y Prácticas Ágiles',
       // Sub-headings + descriptions for the soft-skill cards. Each entry
       // matches a `softSkill.id` in src/data/skills.ts so the page can
       // map over the data and pick the right translation by id.
@@ -195,6 +204,8 @@ export const translations = {
       interested: 'Interested in working with me?',
       workExperience: 'Work Experience',
       workExperienceDesc: 'A glance at my recent roles. Discover more about my journey.',
+      certifications: 'Certifications',
+      certificationsDesc: 'Professional credentials and badges earned.',
       yearsOfExperienceDesc: 'years writing code in production.',
       projectsCompletedDesc: 'projects delivered and maintained, from concept to deployment.'
     },
@@ -218,6 +229,13 @@ export const translations = {
       softSkills: "Soft Skills",
       languages: "Languages",
       certifications: "Certifications",
+      certIBM: "IBM Systems and Solutions Architect",
+      certCloudNative: "Cloud Native, Microservices & DevOps",
+      certIntroArch: "Introduction to Systems Architecture",
+      certDataArch: "Enterprise Data Architecture & Operations",
+      certBusinessProcess: "Business Process Modeling & Analysis",
+      certITSystems: "IT Systems Design & Analysis",
+      certAgile: "Software Processes & Agile Practices",
       softSkillItems: {
         leadership: {
           title: "Hands-on leadership",

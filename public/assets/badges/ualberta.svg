@@ -1,0 +1,20 @@
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="ualbertaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A235A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6C3483;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow-sm" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+  <rect x="4" y="4" width="72" height="72" rx="10" fill="url(#ualbertaGrad)" filter="url(#shadow-sm)"/>
+  <!-- University-style emblem - open book -->
+  <path d="M 26 26 Q 40 20 54 26 L 54 50 Q 40 56 26 50 Z" fill="none" stroke="#fff" stroke-width="2.5"/>
+  <path d="M 40 24 L 40 52" stroke="#fff" stroke-width="1.5" stroke-dasharray="2 2"/>
+  <!-- Graduation cap -->
+  <path d="M 40 28 L 22 40 L 40 52 L 58 40 Z" fill="#fff" opacity="0.95"/>
+  <rect x="26" y="40" width="28" height="2" fill="#fff"/>
+  <circle cx="40" cy="28" r="3" fill="#4A235A"/>
+  <text x="40" y="66" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="5.5" font-weight="bold" opacity="0.9">U OF ALBERTA</text>
+</svg>

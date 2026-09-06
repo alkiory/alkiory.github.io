@@ -1,0 +1,343 @@
+---
+import type { Lang } from "../data/i18n";
+import { getTranslations } from "../data/i18n";
+import { certifications } from "../data/skills";
+import Icon from "./ui/icon.astro";
+
+const lang = (Astro.url.pathname.split("/")[1] as Lang) || "en";
+const t = getTranslations(lang);
+
+// Featured cert (IBM Systems & Solutions Architect)
+const featured = certifications.find((c) => c.featured);
+// Other certs with badges
+const badgeCerts = certifications.filter((c) => c.badge && !c.featured);
+---
+
+<section class="section certs-section">
+  <header class="section-header stack gap-2 lg:gap-4 mb-8">
+    <h3
+      class="text-3xl md:text-4xl font-bold text-[var(--gray-100)] font-brand"
+    >
+      {t.home.certifications || "Certifications"}
+    </h3>
+    <p class="text-xl text-[var(--gray-300)]">
+      {t.home.certificationsDesc || "Professional credentials and badges"}
+    </p>
+  </header>
+
+  <div class="certs-grid">
+    <!-- Featured cert — large card -->
+    {
+      featured && (
+        <a
+          href={featured.web}
+          class="cert-featured-card"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="cert-featured-badge">
+            <img
+              src={featured.badge}
+              alt={featured.name}
+              width="80"
+              height="80"
+            />
+          </div>
+          <div class="cert-featured-info">
+            <span class="cert-featured-issuer">{featured.issuer}</span>
+            <h4 class="cert-featured-title">{featured.name}</h4>
+            <span class="cert-featured-date">{featured.date}</span>
+          </div>
+          <Icon icon="arrow-right" size="1.5em" class="cert-featured-arrow" />
+        </a>
+      )
+    }
+
+    <!-- Badge grid — compact cards -->
+    <div class="cert-badge-grid">
+      {
+        badgeCerts.map((cert) => (
+          <a
+            href={cert.web}
+            class="cert-badge-card"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src={cert.badge!}
+              alt={cert.name}
+              width="48"
+              height="48"
+              class="cert-badge-img"
+            />
+            <span class="cert-badge-name">{cert.name}</span>
+            <span class="cert-badge-issuer">{cert.issuer}</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .certs-section {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .section-header {
+    justify-self: center;
+    text-align: center;
+    max-width: 50ch;
+    font-size: var(--text-md);
+    color: var(--gray-300);
+  }
+
+  .section-header h3 {
+    font-size: var(--text-2xl);
+  }
+
+  .certs-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  /* Featured certification card — matches HorizontalTimeline hover effect */
+  .cert-featured-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    border: 1px solid var(--gray-800);
+    border-radius: 1rem;
+    background: var(--gradient-subtle);
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    z-index: 1;
+    transition: transform var(--theme-transition);
+  }
+
+  .cert-featured-card:hover,
+  .cert-featured-card:focus-visible {
+    transform: translateY(-3px);
+  }
+
+  /* Decorative gradient halo — matches HorizontalTimeline .h-tl-card::before */
+  .cert-featured-card::before,
+  .cert-badge-card::before {
+    pointer-events: none;
+  }
+
+  .cert-featured-card::before,
+  .cert-badge-card::before {
+    content: "";
+    background: linear-gradient(45deg, #00ffff, #8a2be2, #00ffff, #8a2be2);
+    position: absolute;
+    inset: -2px;
+    background-size: 200%;
+    z-index: -1;
+    filter: blur(5px);
+    animation: certs-glow 5s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .cert-featured-card::after,
+  .cert-badge-card::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    background: var(--gradient-subtle);
+    z-index: -1;
+  }
+
+  .cert-featured-card::before {
+    border-radius: 1.1rem;
+  }
+  .cert-featured-card::after {
+    border-radius: 0.9rem;
+  }
+
+  .cert-featured-card:hover::before,
+  .cert-featured-card:focus-visible::before {
+    opacity: 1;
+  }
+
+  .cert-featured-badge img {
+    width: 80px;
+    height: 80px;
+    border-radius: 0.75rem;
+    object-fit: contain;
+    box-shadow: var(--shadow-sm);
+    flex-shrink: 0;
+  }
+
+  .cert-featured-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .cert-featured-issuer {
+    font-size: var(--text-sm);
+    color: var(--accent-regular);
+    font-weight: 600;
+    font-family: var(--font-brand);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .cert-featured-title {
+    font-size: var(--text-lg);
+    color: var(--gray-0);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .cert-featured-date {
+    font-size: var(--text-sm);
+    color: var(--gray-400);
+    font-family: var(--font-brand);
+  }
+
+  .cert-featured-arrow {
+    margin-left: auto;
+    color: var(--gray-400);
+    transition:
+      color var(--theme-transition),
+      transform var(--theme-transition);
+    flex-shrink: 0;
+  }
+
+  .cert-featured-card:hover .cert-featured-arrow {
+    color: var(--accent-regular);
+    transform: translateX(4px);
+  }
+
+  /* Badge grid — matches HorizontalTimeline hover effect */
+  .cert-badge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .cert-badge-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    border: 1px solid var(--gray-800);
+    border-radius: 0.75rem;
+    background: var(--gradient-subtle);
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    z-index: 1;
+    transition: transform var(--theme-transition);
+  }
+
+  .cert-badge-card:hover,
+  .cert-badge-card:focus-visible {
+    transform: translateY(-2px);
+  }
+
+  .cert-badge-card::before {
+    border-radius: 0.85rem;
+  }
+  .cert-badge-card::after {
+    border-radius: 0.7rem;
+  }
+
+  .cert-badge-card:hover::before,
+  .cert-badge-card:focus-visible::before {
+    opacity: 1;
+  }
+
+  .cert-badge-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 0.5rem;
+    object-fit: contain;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .cert-badge-name {
+    font-size: var(--text-sm);
+    color: var(--gray-100);
+    text-align: center;
+    line-height: 1.3;
+    font-weight: 500;
+  }
+
+  .cert-badge-issuer {
+    font-size: var(--text-xs);
+    color: var(--gray-400);
+    font-family: var(--font-brand);
+  }
+
+  @media (min-width: 50em) {
+    .certs-section {
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .section-header {
+      grid-column: 1 / -1;
+    }
+
+    .certs-grid {
+      grid-column: 1 / -1;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .cert-badge-grid {
+      grid-column: 1 / -1;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+
+    .cert-featured-card {
+      grid-column: 1 / 2;
+      grid-row: 1 / 3;
+    }
+
+    .cert-badge-grid {
+      grid-column: 2 / 3;
+      grid-row: 1 / 3;
+    }
+  }
+
+  @keyframes certs-glow {
+    0% {
+      background-position: 0 0;
+    }
+    50% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: 0 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cert-featured-card,
+    .cert-badge-card,
+    .cert-featured-card::before,
+    .cert-badge-card::before {
+      transition: none;
+      animation: none;
+    }
+
+    .cert-featured-card:hover,
+    .cert-featured-card:focus-visible,
+    .cert-badge-card:hover,
+    .cert-badge-card:focus-visible {
+      transform: none;
+    }
+  }
+</style>

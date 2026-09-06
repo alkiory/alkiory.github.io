@@ -1,0 +1,22 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="ibmBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0530AD;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1F6FEB;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <rect x="5" y="5" width="110" height="110" rx="12" fill="url(#ibmBlue)" filter="url(#shadow)"/>
+  <rect x="10" y="10" width="100" height="100" rx="8" fill="none" stroke="#fff" stroke-opacity="0.3" stroke-width="1"/>
+  <!-- IBM logo simplified - 8 bars -->
+  <g fill="#fff">
+    <rect x="28" y="28" width="8" height="64"/>
+    <rect x="38" y="28" width="8" height="64"/>
+    <path d="M 48 28 L 56 28 L 56 44 L 52 44 L 52 54 L 56 54 L 56 64 L 52 64 L 52 76 L 56 76 L 56 88 L 48 88 L 48 76 L 52 76 L 52 64 L 48 64 L 48 54 L 52 54 L 52 44 L 48 44 Z"/>
+    <rect x="60" y="28" width="8" height="64"/>
+    <rect x="70" y="28" width="8" height="64"/>
+  </g>
+  <text x="60" y="105" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="8" font-weight="bold">IBM</text>
+</svg>

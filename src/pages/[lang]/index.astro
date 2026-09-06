@@ -15,6 +15,8 @@ import { Image } from "astro:assets";
 import StatusBadge from "../../components/StatusBadge.astro";
 import HorizontalTimeline from "../../components/HorizontalTimeline.astro";
 import { experience } from "../../data/companies";
+import { certifications } from "../../data/skills";
+import CertBadges from "../../components/CertBadges.astro";
 
 export async function getStaticPaths() {
   const locales = ["es", "en"];
@@ -144,6 +146,9 @@ const allProjects = entriesForLang(await getCollection("work"), lang, 3);
           </Btn>
         </div>
       </section>
+
+      <!-- CERTIFICATIONS SECTION -->
+      <CertBadges />
 
       <!-- PROJECTS SECTION -->
       <section class="section with-background with-cta">

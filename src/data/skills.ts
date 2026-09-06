@@ -1,4 +1,4 @@
-/**
+/** 
  * Skill data for the About page.
  *
  * - `techSkills` is grouped by domain so the page can render each category
@@ -67,22 +67,72 @@ export const languages = [
   { language: "Spanish", level: "Native" },
 ];
 
-export const certifications = [
+// Certification entry — supports optional badge SVG, issuer, date, and
+// a `featured` flag so the home page can single out the primary
+// IBM Systems & Solutions Architect certificate.
+export type Certification = {
+  name: string;
+  web: string;
+  badge?: string;     // optional SVG badge path
+  issuer?: string;
+  date?: string;
+  featured?: boolean;
+};
+
+export const certifications: Certification[] = [
+  // IBM Systems and Solutions Architect Professional Certificate — the main one
   {
-    name: "Liderazgo para el desarrollo de proyectos de software",
-    web: "https://www.linkedin.com/learning/certificates/fdc291aa371b819963965130d2e1babbba62b3601acb0d2bb3c00ef1f938d6a9",
+    name: "IBM Systems and Solutions Architect Professional Certificate",
+    web: "https://www.coursera.org/account/accomplishments/professional-cert/TXAU4QH2YPA8",
+    badge: "/assets/badges/ibm-logo.svg",
+    issuer: "IBM",
+    date: "Sept. 2026",
+    featured: true,
+  },
+  // Credly badges
+  {
+    name: "Cloud Native, Microservices, Containers, DevOps, and Agile",
+    web: "https://www.credly.com/badges/a6335c91-df87-4ea9-afc7-e021464b82c6",
+    badge: "/assets/badges/cloud-native-devops.png",
+    issuer: "IBM",
+    date: "Sept. 2026",
   },
   {
-    name: "Software Architecture: Domain Driven Design",
-    web: "https://www.linkedin.com/learning/certificates/1d9a4306ed5ea970ebd5819b0ccc7f26704b94bbb50f371caaf7c1982e583b6b?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_certifications_details%3BIQut0IYCSf%2BiguDpES9cdQ%3D%3D",
+    name: "Introduction to Systems Architecture",
+    web: "https://www.credly.com/badges/018035dc-1402-455b-8e8d-e6a1c6210135",
+    badge: "/assets/badges/intro-systems-architecture.png",
+    issuer: "IBM",
+    date: "Aug. 2026",
   },
   {
-    name: "English B2",
-    web: "https://cert.efset.org/Dbe3Y5",
+    name: "Software Systems: Testing, Deployment, and Maintenance (V2)",
+    web: "https://www.credly.com/badges/8c78a312-44be-4541-8102-8e88c38124bf",
+    badge: "/assets/badges/software-systems-testing.png",
+    issuer: "IBM",
+    date: "Sept. 2026",
+  },
+  // Coursera / SkillUp Online (IBM is partner, use IBM logo)
+  {
+    name: "Business Process Modeling, Analysis, and Improvement",
+    web: "https://coursera.org/share/9b22e18c35620224d9685b0ba05cb05f",
+    badge: "/assets/badges/ibm-logo.svg",
+    issuer: "SkillUp Online",
+    date: "Sept. 2026",
   },
   {
-    name: "Fundamentos de Ingeniería de Software",
-    web: "https://platzi.com/p/iamsergiocampbell/curso/1195-fundamentos-appsco/diploma/detalle/",
+    name: "IT Systems Design and Analysis",
+    web: "https://coursera.org/share/8d00378a220aa349fd5f5963fb014a18",
+    badge: "/assets/badges/ibm-logo.svg",
+    issuer: "SkillUp Online",
+    date: "Aug. 2026",
+  },
+  // University of Alberta
+  {
+    name: "Software Processes and Agile Practices",
+    web: "https://coursera.org/share/c42432aa370e50eb5448c6cf75b3d024",
+    badge: "/assets/badges/ualberta.png",
+    issuer: "University of Alberta",
+    date: "Sept. 2026",
   },
 ];
 
