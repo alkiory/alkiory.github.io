@@ -85,11 +85,9 @@ JavaScript frameworks and libraries have profoundly influenced software developm
 
 As the JavaScript ecosystem continues to evolve, staying informed about the latest trends and advancements will ensure that you can take full advantage of these powerful tools in your development projects.
 
----
+#### Sources & Further Reading
 
-*Sources:*
-
-1. [React Official Documentation](https://reactjs.org/docs/getting-started.html)
-2. [Angular Official Documentation](https://angular.io/docs)
-3. [Vue.js Official Documentation](https://vuejs.org/v2/guide/)
-4. [Node.js Official Documentation](https://nodejs.org/en/docs/)
+1. [React Official Documentation](https://react.dev/learn)
+2. [Angular Official Documentation](https://angular.dev/)
+3. [Vue.js Official Documentation](https://vuejs.org/guide/introduction.html)
+4. [Node.js Official Documentation](https://nodejs.org/docs/latest/api/)

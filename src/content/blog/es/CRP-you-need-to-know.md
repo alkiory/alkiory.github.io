@@ -50,7 +50,7 @@ El navegador comienza parseando el documento HTML para construir el **DOM**. El 
 
 - **Árbol DOM:**
 
-  ```sheet
+  ```text
   Document
   ├── html
       ├── head
@@ -80,7 +80,7 @@ Simultáneamente, el navegador parsea los archivos CSS para construir el **CSSOM
 
 - **CSSOM:**
 
-  ```sheet
+  ```text
   Stylesheet
   ├── body
   │   └── font-family: Arial, sans-serif
@@ -94,7 +94,7 @@ El navegador combina el DOM y el CSSOM para crear el **Árbol de Renderizado**, 
 
 - **Árbol de Renderizado:**
 
-  ```sheet
+  ```text
   RenderRoot
   ├── RenderBody (font-family: Arial, sans-serif)
       ├── RenderH1 (color: blue)
@@ -172,15 +172,17 @@ Comprender y optimizar la **Ruta Crítica de Renderizado** es esencial para mejo
 
 ---
 
-*Fuentes:*
+*Fuentes y lecturas adicionales:*
 
-1. [Google Developers: Critical Rendering Path](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/)
-2. [MDN Web Docs: CSS Object Model (CSSOM)](https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model)
-3. [Google Developers: Optimize CSS Delivery](https://developers.google.com/speed/docs/insights/OptimizeCSSDelivery)
-4. [Lighthouse Documentation](https://developers.google.com/web/tools/lighthouse)
-5. [PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/)
-6. [WebPageTest](https://www.webpagetest.org/)
-7. [Critical GitHub Repository](https://github.com/addyosmani/critical)
+1. [MDN Web Docs: Critical rendering path (en inglés)](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Critical_rendering_path)
+2. [MDN Web Docs: Cómo funciona un navegador](https://developer.mozilla.org/es/docs/Web/Performance/Guides/How_browsers_work)
+3. [web.dev: Comprender la ruta crítica de renderizado](https://web.dev/learn/performance/understanding-the-critical-path)
+4. [Chrome DevTools: Recursos que bloquean el renderizado](https://developer.chrome.com/docs/performance/insights/render-blocking)
+5. [Lighthouse: Eliminar recursos que bloquean el renderizado](https://developer.chrome.com/docs/lighthouse/performance/render-blocking-resources)
+6. [MDN Web Docs: Modelo de objetos CSS (CSSOM)](https://developer.mozilla.org/es/docs/Web/API/CSS_Object_Model)
+7. [PageSpeed Insights](https://pagespeed.web.dev/)
+8. [WebPageTest](https://www.webpagetest.org/)
+9. [Repositorio de Critical en GitHub](https://github.com/addyosmani/critical)
 
 Estos recursos proporcionan información detallada sobre la CRP y herramientas para optimizar el rendimiento web.
 

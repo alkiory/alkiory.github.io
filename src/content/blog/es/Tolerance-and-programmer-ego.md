@@ -1,87 +1,56 @@
 ---
-title: La Tolerancia en el Lugar de Trabajo y el Ego del Programador
+title: Tolerancia en el trabajo y el ego del programador
 publishDate: 2024-07-04 00:00:00
 img: https://cdn.pixabay.com/photo/2020/04/16/09/30/shield-5049877_1280.jpg
-img_alt: La Tolerancia en el Lugar de Trabajo y el Ego del Programador por sergio campbell dev
-description: En el vertiginoso mundo del desarrollo de software, la colaboración y el trabajo en equipo efectivo son esenciales para el éxito.
+img_alt: Un escudo sobre un fondo neutro — metáfora de la seguridad psicológica y de las defensas que construimos alrededor de nuestro trabajo.
+description: La tolerancia y el ego en los equipos de software no son temas blandos — son factores de rendimiento medibles. Qué dice la investigación sobre seguridad psicológica, culpa y aprendizaje sobre cómo mantener ambos a raya.
 tags:
-- Blog
-- Diario
 - Comunicación
+- Seguridad psicológica
+- Cultura de equipo
+- Liderazgo
 ---
 
-### La Tolerancia en el Lugar de Trabajo y el Ego del Programador
+La colaboración es esencial en los equipos de software, pero dos fuerzas deciden en silencio si esa colaboración funciona de verdad: cuánta tolerancia soporta el entorno ante la diferencia — de opinión, de origen, de estilo de trabajo — y cómo se comporta el ego del programador cuando lo cuestionan. Ninguna es un tema "blando". Las dos aparecen en las métricas de entrega.
 
----
+### Qué significa realmente tolerancia aquí
 
-En el vertiginoso mundo del desarrollo de software, la **colaboración** y el **trabajo en equipo efectivo** son esenciales para el éxito. Sin embargo, dos factores significativos que pueden impactar la dinámica de un equipo son la **tolerancia en el lugar de trabajo** y el **ego del programador**. En este artículo, exploraremos estos aspectos y proporcionaremos estrategias para fomentar un ambiente de trabajo más armonioso y productivo.
+Tolerancia, en este contexto, no es cortesía. Es la capacidad del entorno de trabajo de absorber el desacuerdo sin castigarlo: que un junior diga "creo que este diseño está mal", que un reviewer rechace el PR de un senior, que alguien admita que rompió el build.
 
-### Entendiendo la Tolerancia en el Lugar de Trabajo
+La investigación sobre esto es inusualmente consistente. El [Project Aristotle](https://rework.withgoogle.com/en/guides/understanding-team-effectiveness) de Google encontró que la **seguridad psicológica** — la creencia compartida de que el equipo es un espacio seguro para arriesgarse interpersonalmente — era el predictor más fuerte de la eficacia del equipo, por delante del talento individual o la antigüedad. Amy Edmondson, sobre cuyo trabajo se apoyó el estudio, la define igual en [The Fearless Organization](https://amycedmondson.com/the-fearless-organization/): no va de ser amable; va de poder decir lo que hay que decir.
 
-La **tolerancia en el lugar de trabajo** se refiere a la aceptación y apreciación de las diversas experiencias, opiniones y estilos de trabajo de los miembros del equipo. Implica crear un entorno inclusivo donde todos se sientan valorados y respetados.
+Donde la tolerancia es baja, el modo de fallo es predecible: las malas noticias viajan despacio. Los bugs se esconden, los diseños no se cuestionan y el mismo error se comete dos veces.
 
-#### Por qué la Tolerancia Importa
+### El ego del programador: un arma de doble filo
 
-- **Mejora la Colaboración:** Los equipos tolerantes son más propensos a colaborar eficazmente, aprovechando las fortalezas de cada miembro.
-- **Promueve la Innovación:** Las perspectivas diversas pueden conducir a soluciones más innovadoras para los problemas.
-- **Mejora la Satisfacción Laboral:** Cuando los empleados se sienten respetados y valorados, su satisfacción laboral general y su moral mejoran.
+El ego en programación se suele tratar como un defecto de personalidad. Es más útil verlo como un *recurso con un modo de fallo*.
 
-##### Estrategias para Promover la Tolerancia
+**El lado productivo** es real: la confianza es lo que permite proponer un diseño sin probar, defender una decisión técnicamente correcta pero impopular, o ofrecerse para el refactor feo que nadie quiere. Un equipo con cero ego produce cero convicción.
 
-1. **Fomentar la Comunicación Abierta:**
-    - Crea un ambiente donde los miembros del equipo se sientan cómodos compartiendo sus ideas y opiniones.
-    - Utiliza reuniones regulares y sesiones de retroalimentación para discutir cualquier problema y celebrar los éxitos.
+**El modo de fallo** llega cuando la identidad se ata al código. Entonces el feedback deja de ser información y se vuelve una amenaza. Los síntomas clásicos:
 
-2. **Ofrecer Capacitación en Diversidad:**
-    - Ofrece sesiones de capacitación que eduquen a los empleados sobre la importancia de la diversidad y la inclusión.
-    - Incluye temas como la conciencia cultural y los prejuicios inconscientes.
+- Tratar un comentario de code review como un ataque personal en lugar de un dato.
+- Defender un diseño porque *lo escribiste tú*, no porque sea la mejor opción.
+- Optimizar por parecer inteligente en vez de por ser útil — el patrón que lleva a evitar las preguntas "tontas", que es exactamente cómo sobreviven los huecos de conocimiento.
 
-3. **Liderar con el Ejemplo:**
-    - Los gerentes y líderes de equipo deben modelar un comportamiento tolerante, mostrando respeto y comprensión en todas las interacciones.
-    - Aborda cualquier instancia de intolerancia de manera pronta y efectiva.
+No es una patología exclusiva de programadores, pero el software la amplifica: el trabajo es profundamente individual y a la vez profundamente revisable, así que cada commit es una declaración pública sobre tu competencia.
 
----
+### Qué ayuda de verdad
 
-### El Ego del Programador: Un Arma de Doble Filo
+La evidencia apunta a arreglos estructurales por encima de arreglos de personalidad:
 
-El **ego del programador** puede ser un arma de doble filo en el lugar de trabajo. Por un lado, la confianza en las propias habilidades puede impulsar la innovación y la resolución de problemas. Por otro lado, un ego inflado puede llevar a conflictos y a un ambiente de trabajo tóxico.
+- **Separa el código del codificador en el lenguaje.** "Esta función tiene un bug" se recibe distinto a "tú rompiste esto". Suena trivial; cambia lo que la otra persona puede escuchar.
+- **Haz explícitas las normas de review.** Los equipos que acuerdan para *qué* sirve un review (el código, no la persona) gastan menos energía litigando el tono en cada comentario.
+- **Premia la admisión, no solo el arreglo.** Si el único reconocimiento visible va al heroísmo, la gente aprende a esconder problemas. Una cultura de postmortems sin culpa — la práctica popularizada en [la literatura de DevOps](https://itrevolution.com/product/accelerate/) — funciona porque hace que la honestidad cueste menos que el ocultamiento.
+- **Los líderes van primero.** Un lead que dice "me equivoqué" en público hace más por la seguridad psicológica que cualquier póster. El comportamiento que se modela es el que se repite.
 
-##### El Lado Positivo del Ego
+### Dónde se pone difícil
 
-- **Confianza e Iniciativa:** Un nivel saludable de confianza puede motivar a los programadores a abordar tareas desafiantes y proponer nuevas ideas.
-- **Liderazgo:** Los programadores seguros de sí mismos a menudo están dispuestos a asumir roles de liderazgo y a guiar a los desarrolladores junior.
+Hay una tensión genuina que vale la pena nombrar: la tolerancia sin estándares se vuelve mediocridad, y la confianza sin humildad se vuelve arrogancia. La meta no es eliminar el ego ni el desacuerdo — es mantener ambos apuntando al *problema* en lugar de a la *persona*. Un equipo que discute duro sobre diseños y luego entrega sin rencores es exactamente el equilibrio del que hablamos.
 
-##### El Lado Negativo del Ego
+#### Fuentes y lecturas recomendadas
 
-- **Resistencia a la Retroalimentación:** Los programadores con egos inflados pueden resistirse a la crítica constructiva, lo que obstaculiza su crecimiento profesional.
-- **Conflictos en el Equipo:** Un ego excesivamente dominante puede crear tensión y conflictos dentro del equipo, afectando la productividad general.
-
-#### Estrategias para Gestionar el Ego
-
-1. **Fomentar una Mentalidad de Crecimiento:**
-    - Anima a los programadores a ver la retroalimentación como una oportunidad para crecer en lugar de un ataque personal.
-    - Promueve el aprendizaje continuo y la mejora.
-
-2. **Promover la Humildad:**
-    - Destaca la importancia de la humildad y el valor de la colaboración.
-    - Comparte historias y ejemplos de equipos exitosos que trabajan bien juntos.
-
-3. **Establecer Expectativas Claras:**
-    - Define roles y responsabilidades claras dentro del equipo para minimizar los conflictos.
-    - Establece una cultura de respeto mutuo y reconocimiento de las contribuciones de cada miembro del equipo.
-
----
-
-##### En resumen
-
-La tolerancia y la gestión del ego del programador son cruciales para crear un entorno de trabajo positivo y productivo. Al fomentar una cultura inclusiva y promover un equilibrio saludable entre la confianza y la humildad, los equipos pueden colaborar de manera más efectiva y lograr un mayor éxito.
-
-Recuerda, la fuerza de un equipo de desarrollo reside no solo en las habilidades técnicas de sus miembros, sino también en su capacidad para trabajar juntos armoniosamente y respetar las contribuciones de cada uno.
-
----
-
-*Fuentes:*
-
-1. [La Importancia de la Tolerancia en el Lugar de Trabajo](https://www.theeap.com/wp-content/uploads/2016/02/TotalCare-EAP-March-Employee-Newsletter.pdf)
-2. [El Papel del Ego en el Desarrollo de Software](https://medium.com/@mkoutroumpas/about-a-programmers-ego-97e5cd64988d)
-3. [Construyendo un Ambiente de Equipo Positivo](https://www.mindtools.com/pages/article/building-positive-team.htm)
+- [Google re:Work — Comprender la eficacia de los equipos (Project Aristotle)](https://rework.withgoogle.com/en/guides/understanding-team-effectiveness)
+- [Amy Edmondson — The Fearless Organization](https://amycedmondson.com/the-fearless-organization/)
+- [DORA — Investigación State of DevOps](https://dora.dev/research/)
+- [Accelerate — The Science of Lean Software and DevOps (IT Revolution)](https://itrevolution.com/product/accelerate/)

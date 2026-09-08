@@ -1,7 +1,6 @@
 ---
 title: "Debugging como un Pro: Overrides de Contenido y Headers en DevTools"
 publishDate: 2025-09-10 00:00:00
-date: 2025-09-10
 img: https://i.postimg.cc/Y9p6wsFT/unnamed.png
 img_alt: Ejemplo de Overrides en Chrome DevTools
 description: Aprende a usar Content & Headers Overrides en Chrome DevTools para acelerar debugging, simular escenarios y probar fixes sin tocar el backend.
@@ -12,13 +11,13 @@ tags:
 - productividad
 ---
 
-## 🛠️ Ayuda a depurar como un profesional: Anulaciones de contenido y encabezados en DevTools
+## Depurar como un profesional: Anulaciones de contenido y encabezados en DevTools
 
 Cuando pensamos en la depuración, la mayoría de los desarrolladores se imaginan `console.log()` o puntos de interrupción. Pero hay una técnica menos conocida y muy poderosa: las **Anulaciones (Overrides) de contenido y encabezados en DevTools**.
 
 ---
 
-## 🔎 ¿Qué es?
+## ¿Qué es?
 
 Es la capacidad de **modificar las respuestas del servidor directamente desde tu navegador**, sin cambiar el *backend* real. Esto incluye archivos (HTML, CSS, JS, imágenes) y encabezados HTTP (`CORS`, `cache-control`, `Content-Type`, etc.).
 
@@ -28,31 +27,23 @@ Chrome DevTools te permite:
 * Servir tu versión local en lugar de la del servidor al recargar.
 * Deshabilitar la caché automáticamente cuando las anulaciones están activas.
 
-👉 Piénsalo como una *sandbox* basada en el navegador.
+Piénsalo como una *sandbox* basada en el navegador.
 
 ---
 
-## ⚙️ ¿Cómo funciona?
+## ¿Cómo funciona?
 
 Para comenzar, deberás habilitar las anulaciones y seleccionar una carpeta local para guardar tus cambios. Los archivos que anules se guardarán allí y el navegador los usará automáticamente en lugar de los originales del servidor.
 
 ### Guía paso a paso
 
-**1.** Abre DevTools haciendo clic derecho en una página web y seleccionando **Inspeccionar**. Alternativamente, usa el atajo de teclado `Ctrl+Shift+I` (Windows/Linux) o `Cmd+Option+I` (Mac).
-
-![Abrir DevTools](https://res.cloudinary.com/zenn/image/fetch/s--MKxYQpkn--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_1200/https://storage.googleapis.com/zenn-user-upload/deployed-images/96ffb4939f848dbe24934d52.png%3Fsha%3D9df6256daa384695fd0bf4a7058afd190834d184)
+**1.** Abre DevTools haciendo clic derecho en una página web y seleccionando **Inspeccionar**. Alternativamente, usa el atajo de teclado `Ctrl+Shift+I` (Windows/Linux) o `Cmd+Option+I` (Mac). *(Consulta la [documentación oficial](https://developer.chrome.com/docs/devtools/overrides) para capturas de cada paso.)*
 
 **2.** En DevTools, navega a la pestaña **Sources**.
 
-![Pestaña Sources](https://res.cloudinary.com/zenn/image/fetch/s--z2LEA-5F--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_1200/https://storage.googleapis.com/zenn-user-upload/deployed-images/8391d3817715990d615e3505.png%3Fsha%3De772a52a5537afbbc356e48e6d08c08819c199e8)
-
 **3.** En el panel izquierdo, haz clic en la pestaña **Overrides**. Si no la ves, haz clic en el icono `>>` para ver más pestañas.
 
-![Pestaña Overrides](https://res.cloudinary.com/zenn/image/fetch/s--cIAZw8Mi--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_1200/https://storage.googleapis.com/zenn-user-upload/deployed-images/32494746fef9d7dbf84ec51c.png%3Fsha%3D99d3b1b219338f4cc71129b4dd5faaffafa0ebe6)
-
 **4.** Haz clic en **+ Select folder for overrides** y elige una carpeta local vacía en tu computadora. DevTools te pedirá permiso para acceder a esta carpeta; haz clic en **Allow**.
-
-![Pestaña Sources](https://res.cloudinary.com/zenn/image/fetch/s--zHmRh9cI--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_1200/https://storage.googleapis.com/zenn-user-upload/deployed-images/413fa913dbe9ed7b1c39e066.png%3Fsha%3D79d0d34176190721bceb5bd0154d8d297560123f)
 
 Una vez configurado, puedes comenzar a anular el contenido.
 
@@ -64,7 +55,7 @@ Para realizar un seguimiento de todos tus cambios locales, abre el panel **Chang
 
 ---
 
-## 💡 Casos de uso prácticos
+## Casos de uso prácticos
 
 * **Probar soluciones sin tocar el *backend***: Por ejemplo, aplicar un parche a un error de JS en producción localmente antes de implementarlo.
 * **Simular encabezados *CORS***: Agrega o ajusta `Access-Control-Allow-Origin` para validar integraciones sin necesidad de un cambio en el *backend*.
@@ -76,7 +67,7 @@ Para realizar un seguimiento de todos tus cambios locales, abre el panel **Chang
 
 ---
 
-## 📌 Limitaciones
+## Limitaciones
 
 * Los cambios realizados en el DOM del panel **Elements** no se guardan. Para realizar un cambio persistente, debes editar el archivo directamente en el panel **Sources**.
 * El CSS en línea en HTML no se puede anular desde **Styles**; edítalo desde **Sources** en su lugar.
@@ -84,15 +75,15 @@ Para realizar un seguimiento de todos tus cambios locales, abre el panel **Chang
 
 ---
 
-## 🎯 Conclusión
+## Conclusión
 
 Las **anulaciones en DevTools** convierten tu navegador en un laboratorio de pruebas local. Optimizan el ciclo de *probar-fallar-ajustar*, reducen la dependencia del *backend* y te permiten simular escenarios del mundo real que de otro modo serían difíciles de reproducir.
 
-Más que un simple truco de depuración, es un **impulsor de la productividad y un acelerador del aprendizaje para desarrolladores**. 🚀
+Más que un simple truco de depuración, es un **impulsor de la productividad y un acelerador del aprendizaje para desarrolladores**.
 
 ---
 
-## 📚 Fuentes
+## Fuentes
 
 * [Chrome DevTools Overrides – official documentation](https://developer.chrome.com/docs/devtools/overrides)
 * [DevTools Tips: Override and mock network responses](https://developer.chrome.com/blog/devtools-tips-34)

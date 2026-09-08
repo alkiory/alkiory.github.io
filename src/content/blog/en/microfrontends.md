@@ -186,20 +186,20 @@ Maintaining a consistent UI/UX is a major challenge when multiple teams work on 
 
 ---
 
-### Actionable Conclusion 🎯
+### Actionable Conclusion
 
 Ultimately, **there is no silver bullet**. The chosen architecture must respond to the needs of the people and the product. Each technology is a means to serve the team. The important thing is to thoughtfully evaluate the technical pros and cons (speed, deployment, maintenance, compatibility) and decide based on the real case, complementing that decision with solid strategies for communication, state management, and consistency between modules.
 
 ---
 
-### 🧠 Recommended Resources
+### Recommended Resources
 
 - 📖 *Team Topologies* — on team structures and cognitive flow
 - 📺 Video: ["Vite and Module Federation Makes Micro-Frontends EASY\!"](https://www.youtube.com/watch?v=t-nchkL9yIg)
 
 ---
 
-### 📚 Consulted Sources
+### Consulted Sources
 
 - [Implementing Micro-frontends with Vite Federation : A Practical Guide](https://medium.com/@charu.sharma517/implementing-micro-frontends-with-vite-federation-a-practical-guide-333351575861)
 - [Documentación de Proyecto de Microfrontends con Módulos Federados](https://rpenya.medium.com/documentaci%C3%B3n-de-proyecto-de-microfrontends-con-m%C3%B3dulos-federados-8943f5f85303)

@@ -17,7 +17,7 @@ tags:
 - Clean Code
 ---
 
-##### Introduction
+### Introduction
 
 In the vast realm of software development, **design patterns** are reusable solutions
 to recurring problems — not copy-paste snippets, but a *shape* of code that fits a
@@ -30,7 +30,7 @@ In this article, we will demystify these patterns, exploring their practical
 application and how they improve code quality — without falling into the trap of
 using a pattern "because it's there".
 
-##### Design Patterns in JavaScript and TypeScript
+### Design Patterns in JavaScript and TypeScript
 
 We will look at three of the most essential patterns — **Singleton**, **Observer**,
 and **Factory** — in their JS/TS idiom: small, focused, and adapted to the language's
@@ -135,7 +135,7 @@ These three patterns are not the only ones worth learning — **Strategy**, **De
 and **Adapter** also come up constantly in modern JS/TS code — but they form the
 minimum viable vocabulary for talking about structure with your team.
 
-##### Clean Code in Action
+### Clean Code in Action
 
 Writing clean code is a fundamental skill for any developer. Throughout this article,
 we will share practical tips on how to apply Robert C. Martin's "Clean Code"
@@ -176,7 +176,7 @@ that takes `any` is telling the reader nothing — and it is the single most com
 source of "the test passed locally but the prod runtime crashed" bugs in TS
 codebases we have audited.
 
-##### Efficient Data Architecture
+### Efficient Data Architecture
 
 The efficiency of an application largely depends on its **data architecture**. We
 will explore how to design efficient data structures in the context of JavaScript and
@@ -213,7 +213,7 @@ the keys come from user input or from external systems: it preserves insertion
 order, handles non-string keys, and avoids the inherited-property trap where
 `obj["toString"]` mysteriously returns the function source.
 
-##### Creating Content for Everyone
+### Creating Content for Everyone
 
 Besides addressing technical aspects, we will dedicate a segment to the creation of
 **inclusive content**. How do we explain complex concepts to non-programmer
@@ -229,7 +229,7 @@ Pair the analogy with a **concrete next step** — a one-line change the reader 
 make before finishing the article. Technical content without a "what do I try now"
 landing is read once and forgotten.
 
-##### In summary
+### In summary
 
 This article aims to unravel the mysteries of design patterns, promote the writing
 of clean and efficient code, and encourage the creation of accessible content. By
@@ -242,7 +242,7 @@ solving**. Singleton, Observer, and Factory are not "advanced" because they use
 clever tricks — they are advanced because they line the *shape* of the code up with
 three of the most common shapes in the problem itself.
 
-##### Share Your Experience
+### Share Your Experience
 
 Have you faced challenges when applying design patterns in your projects? Do you
 have any advice on writing clean code? Share your experience in the comments and

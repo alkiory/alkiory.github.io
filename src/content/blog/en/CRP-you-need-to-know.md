@@ -50,7 +50,7 @@ The browser begins by parsing the HTML document to construct the DOM. The DOM is
 
 - **DOM Tree:**
 
-  ```sheet
+  ```text
   Document
   ├── html
       ├── head
@@ -80,7 +80,7 @@ Simultaneously, the browser parses the CSS files to construct the CSSOM, which r
 
 - **CSSOM:**
 
-  ```sheet
+  ```text
   Stylesheet
   ├── body
   │   └── font-family: Arial, sans-serif
@@ -94,7 +94,7 @@ The browser combines the DOM and CSSOM to create the Render Tree, which represen
 
 - **Render Tree:**
 
-  ```sheet
+  ```text
   RenderRoot
   ├── RenderBody (font-family: Arial, sans-serif)
       ├── RenderH1 (color: blue)
@@ -172,15 +172,17 @@ Understanding and optimizing the Critical Rendering Path is essential for enhanc
 
 ---
 
-*Sources:*
+*Sources & Further Reading:*
 
-1. [Google Developers: Critical Rendering Path](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/)
-2. [MDN Web Docs: CSS Object Model (CSSOM)](https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model)
-3. [Google Developers: Optimize CSS Delivery](https://developers.google.com/speed/docs/insights/OptimizeCSSDelivery)
-4. [Lighthouse Documentation](https://developers.google.com/web/tools/lighthouse)
-5. [PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/)
-6. [WebPageTest](https://www.webpagetest.org/)
-7. [Critical GitHub Repository](https://github.com/addyosmani/critical)
+1. [MDN Web Docs: Critical rendering path](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Critical_rendering_path)
+2. [MDN Web Docs: Populating the page — how browsers work](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/How_browsers_work)
+3. [web.dev: Understand the critical path](https://web.dev/learn/performance/understanding-the-critical-path)
+4. [Chrome DevTools: Render-blocking requests insight](https://developer.chrome.com/docs/performance/insights/render-blocking)
+5. [Lighthouse: Eliminate render-blocking resources](https://developer.chrome.com/docs/lighthouse/performance/render-blocking-resources)
+6. [MDN Web Docs: CSS Object Model (CSSOM)](https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model)
+7. [PageSpeed Insights](https://pagespeed.web.dev/)
+8. [WebPageTest](https://www.webpagetest.org/)
+9. [Critical GitHub Repository](https://github.com/addyosmani/critical)
 
 These resources provide in-depth information on CRP and tools for optimizing web performance.
 

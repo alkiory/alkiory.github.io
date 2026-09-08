@@ -11,23 +11,25 @@ tags:
 - next-intl
 ---
 
-##### Integrando la Internacionalización (i18n) en tu Proyecto de Next.js con next-intl
+### Integrando la Internacionalización (i18n) en tu Proyecto de Next.js con next-intl
 
 La **internacionalización**, también conocida como **i18n** (abreviatura de "internationalization"), es un aspecto crucial para alcanzar audiencias globales en el desarrollo de aplicaciones web. En este artículo, te guiaremos a través del proceso de integrar la internacionalización en tu proyecto de **Next.js** utilizando la librería `next-intl`.
 
-##### ¿Qué es next-intl?
+### ¿Qué es next-intl?
 
 `next-intl` es una librería que facilita la internacionalización en proyectos de Next.js. Permite la traducción de contenido y la gestión de formatos de fecha, hora y número en diferentes idiomas de una manera simple y eficiente.
 
-##### Pasos para Integrar next-intl en tu Proyecto de Next.js
+### Pasos para Integrar next-intl en tu Proyecto de Next.js
 
-##### 1. Instalando Dependencias
+> Los fragmentos de código siguen la configuración actual de next-intl para el App Router. La librería evoluciona rápido — si algo cambió, revisa la [documentación oficial](https://next-intl.dev/docs/getting-started/app-router/with-i18n-routing).
+
+### 1. Instalando Dependencias
 
 Para empezar, instala las dependencias necesarias ejecutando el siguiente comando en tu terminal:
 
 ```bash
 npm install next-intl
-````
+```
 
  y crea la siguiente estructura de archivos:
 
@@ -45,16 +47,30 @@ npm install next-intl
             └── page.tsx (6)
 ```
 
-##### 2\. Configurando next-intl
+### 2. Configurando next-intl (next.config)
 
-En tu archivo `next.config.js`, añade la siguiente configuración para habilitar el soporte para `next-intl`:
+El antiguo wrapper `withIntl()` ya no existe. La integración actual usa la fábrica `createNextIntlPlugin` de `next-intl/plugin`, que conecta tu configuración de i18n por petición con los Server Components:
 
 ```js
-const { withIntl } = require('next-intl');
-module.exports = withIntl();
+// next.config.mjs (módulos ES)
+import createNextIntlPlugin from 'next-intl/plugin';
+const withNextIntl = createNextIntlPlugin();
+const nextConfig = {};
+export default withNextIntl(nextConfig);
 ```
 
-##### 3\. Creando Archivos de Traducción
+Si tu proyecto usa CommonJS para la configuración de Next.js:
+
+```js
+// next.config.js (CommonJS)
+const createNextIntlPlugin = require('next-intl/plugin');
+const withNextIntl = createNextIntlPlugin();
+/** @type {import('next').NextConfig} */
+const nextConfig = {};
+module.exports = withNextIntl(nextConfig);
+```
+
+### 3. Creando Archivos de Traducción
 
 Crea archivos de traducción para cada idioma que desees admitir en tu aplicación. Por ejemplo, puedes tener archivos como `en.json` para inglés y `es.json` para español, ubicados en un directorio como `public/locales`.
 
@@ -68,48 +84,48 @@ Ejemplo:
 }
 ```
 
-##### 4\. Configurando next.config.mjs
+### 4. Configurando next.config.mjs
 
 Ahora, configura el plugin que crea un alias para proporcionar tu configuración de i18n (especificada en el siguiente paso) a los **Componentes del Servidor**.
 
 Si estás utilizando módulos de ECMAScript para tu configuración de Next.js, puedes usar el plugin de la siguiente manera:
 
-\<code class="code"\>
-/\*\* @type {import('next').NextConfig} \*/
+```js
+/** @type {import('next').NextConfig} */
 import createNextIntlPlugin from 'next-intl/plugin';
 const withNextIntl = createNextIntlPlugin();
 const nextConfig = {};
 export default withNextIntl(nextConfig);
-\</code\>
+```
 
 Si estás utilizando CommonJS para tu configuración de Next.js, puedes usar el plugin de la siguiente manera:
 
-\<code class="code"\>
+```js
 const createNextIntlPlugin = require('next-intl/plugin');
 const withNextIntl = createNextIntlPlugin();
-/\*\* @type {import('next').NextConfig} \*/
+/** @type {import('next').NextConfig} */
 const nextConfig = {};
 module.exports = withNextIntl(nextConfig);
-\</code\>
+```
 
-##### 5\. Configurando i18n.js
+### 5. Configurando i18n.ts
 
 next-intl crea una configuración una vez por solicitud. Aquí puedes proporcionar mensajes y otras opciones dependiendo del idioma del usuario.
 
-\<code class="code"\>
+```ts
 // src/i18n.ts
 import {notFound} from 'next/navigation';
 import {getRequestConfig} from 'next-intl/server';
 // Se puede importar desde una configuración compartida
 const locales = ['en', 'es'];
-export default getRequestConfig(async ({locale}) =\> {
+export default getRequestConfig(async ({locale}) => {
   // Valida que el parámetro `locale` entrante sea válido
-  if (\!locales.includes(locale as any)) notFound();
+  if (!locales.includes(locale as any)) notFound();
   return {
     messages: (await import(`../messages/${locale}.json`)).default
   };
 });
-\</code\>
+```
 
 **🚨 ¿Puedo mover este archivo a otro lugar?**
 
@@ -124,7 +140,7 @@ const withNextIntl = createNextIntlPlugin(
 );
 ```
 
-##### 6\. Configurando middleware.ts
+### 6. Configurando middleware.ts
 
 El middleware coincide con un idioma para la solicitud y maneja las redirecciones y reescrituras en consecuencia.
 
@@ -145,7 +161,7 @@ export const config = {
 };
 ```
 
-##### 7\. Configurando app/[locale]/layout.tsx
+### 7. Configurando app/[locale]/layout.tsx
 
 El `locale` que coincidió con el middleware está disponible a través del parámetro `locale` y se puede utilizar para configurar el idioma del documento.
 
@@ -166,7 +182,7 @@ export default function LocaleLayout({
 }
 ```
 
-##### Usando Traducciones
+### Usando Traducciones
 
 ¡Utiliza traducciones en los componentes de tu página o en cualquier otro lugar\!
 
@@ -179,7 +195,7 @@ export default function Index() {
 }
 ```
 
-##### Comienza a Internacionalizar tu Aplicación Next.js Hoy Mismo
+### Comienza a Internacionalizar tu Aplicación Next.js Hoy Mismo
 
 Con estos sencillos pasos, puedes añadir fácilmente soporte de internacionalización a tu proyecto de Next.js utilizando `next-intl`. Ahora, tu aplicación estará lista para alcanzar una audiencia global y proporcionar una experiencia localizada y personalizada.
 ¡No esperes más y comienza a internacionalizar tu aplicación hoy mismo\!
@@ -188,7 +204,9 @@ Con estos sencillos pasos, puedes añadir fácilmente soporte de internacionaliz
 
 -----
 
-*Fuentes:*
+#### Fuentes y lecturas adicionales
 
-1. GitHub - Next.js: [https://github.com/vercel/next.js](https://github.com/vercel/next.js)
-2. GitHub - next-intl: [https://github.com/amannn/next-intl](https://github.com/amannn/next-intl)
+- [next-intl — Configuración del App Router con rutas i18n](https://next-intl.dev/docs/getting-started/app-router/with-i18n-routing)
+- [next-intl — Repositorio en GitHub](https://github.com/amannn/next-intl)
+- [Next.js — Documentación de internacionalización](https://nextjs.org/docs/app/building-your-application/internationalization)
+- [Next.js — Repositorio en GitHub](https://github.com/vercel/next.js)

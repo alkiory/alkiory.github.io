@@ -4,11 +4,13 @@ publishDate: 2024-10-13 00:00:00
 img: https://cdn.pixabay.com/photo/2018/03/27/21/44/match-3267506_960_720.jpg
 img_alt: Burnout symbology
 description: El burnout es un estado de agotamiento físico, emocional y mental causado por el estrés prolongado. Puede afectar significativamente la productividad, la satisfacción laboral y el bienestar general.
-tags: 
+tags:
 - Blog
 - Daily
 - Communication
 ---
+
+### Comprender y prevenir el burnout: estrategias para gestionar el estrés en el trabajo remoto
 
 El **burnout** es un estado de agotamiento físico, emocional y mental causado por el estrés prolongado. Puede afectar significativamente la productividad, la satisfacción laboral y el bienestar general. Con el auge del trabajo remoto, prevenir y gestionar el burnout se ha vuelto más crucial que nunca, particularmente para los programadores que a menudo enfrentan altas exigencias y plazos ajustados. Este artículo explorará cómo reconocer, prevenir y manejar el burnout con calma, con consejos prácticos para gestionar el estrés en trabajos de programación remotos.
 
@@ -99,11 +101,9 @@ El burnout es un problema grave que puede afectar a cualquiera, especialmente en
 
 -----
 
-*Fuentes:*
+#### Fuentes y lecturas adicionales
 
 1. [Clínica Mayo: Síndrome de burnout: cómo identificarlo y tomar medidas](https://www.mayoclinic.org/es/healthy-lifestyle/adult-health/in-depth/burnout/art-20046642)
-2. [Organización Mundial de la Salud: El "burn-out" un "fenómeno ocupacional": Clasificación Internacional de Enfermedades](https://www.google.com/search?q=https://www.who.int/es/news/item/28-05-2019-burn-out-an-occupational-phenomenon-international-classification-of-diseases)
+2. [Organización Mundial de la Salud: El "burn-out" un "fenómeno ocupacional": Clasificación Internacional de Enfermedades](https://www.who.int/es/news/item/28-05-2019-burn-out-an-occupational-phenomenon-international-classification-of-diseases)
 3. [Harvard Business Review: Cómo evitar el burnout en un entorno de trabajo remoto](https://hbr.org/2020/04/how-to-avoid-wfh-burnout)
-4. [6 causas del burnout y cómo evitarlas](https://hbr.org/2019/07/6-causes-of-burnout-and-how-to-avoid-them)
-
-Estas fuentes proporcionan información completa sobre el burnout, su prevención y estrategias de gestión, particularmente en el contexto del trabajo remoto para programadores.
+4. [Harvard Business Review: 6 causas del burnout y cómo evitarlas](https://hbr.org/2019/07/6-causes-of-burnout-and-how-to-avoid-them)

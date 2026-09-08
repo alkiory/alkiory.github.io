@@ -2,7 +2,7 @@
 
 Static Astro/TS portfolio (es/en) for Alkiory (Sergio Campbell). SSG, deployed to Firebase Hosting + Docker/Nginx Proxy Manager.
 
-Last full review: 2026-07-10.
+Last full review: 2026-09-08 (post content-refit).
 
 ---
 
@@ -15,8 +15,8 @@ Last full review: 2026-07-10.
 - **Firebase Hosting** (`firebase.json`) + **Docker/Nginx Proxy Manager** behind it.
 
 Local commands:
-- `pnpm exec astro check` — expected 0 errors / 0 warnings.
-- `pnpm run build` — expected ~57 static pages emitted cleanly.
+- `pnpm exec astro check` — expected 0 errors / 0 warnings (currently 3 hints, see below).
+- `pnpm run build` — expected **60** static pages emitted cleanly (~2.3 s).
 - `pnpm dev` — dev server (open `http://localhost:4321/es/` and `/en/`).
 - `pnpm preview` — production preview.
 
@@ -46,9 +46,12 @@ Local commands:
 ### 4. Content collections
 
 - Defined in `src/content.config.ts` with `glob()` loaders. Collections: `blog`, `work`, `snippets` — each has its own Zod schema.
-- ID format: `<lang>/<slug>.md` (or `.mdx`). Helpers in `src/lib/routes-names.ts`:
+- ID format: `<lang>/<slug>.md` (or `.mdx`). The slug is **independent per locale** — pages do NOT pair `en/<slug>` with `es/<slug>`; each entry generates its own route. Keep slugs parallel by convention, not by code.
+- **Blog slug names live in URLs** — never rename a post file casually: the old URL dies and no redirect is generated. The 2026-09 rename `Desmitificando-los-Patrones-de-Diseno.md` → `design-patterns-javascript-typescript.md` (EN only) changed the EN slug; ES keeps `Desmitificando-los-Patrones-de-Diseno.md`. Fine for a low-traffic blog, but decide deliberately next time.
+- Helpers in `src/lib/routes-names.ts`:
   - `slugFromId(id)` — strips `.md`/`.mdx`, returns last segment.
   - `splitContentId(id)` — returns `{ lang, slug }`.
+- **Reading time**: `src/lib/reading-time.ts` exports `readingTime(markdown): number` — build-time estimate, ~200 wpm, strips fenced/inline code + HTML + markdown symbols, min 1. Rendered by `blog/[slug].astro` as "X min read" / "X min de lectura" via i18n.
 - "Top N newest" sorts go through `latest(entries, n)` in `src/lib/content-helpers.ts`. Sort key is `publishDate` desc + `id.localeCompare(b.id, "en")` (explicit locale for cross-runtime stability). Returns a NEW array — input is never mutated.
 
 ### 5. Routes & helpers
@@ -67,25 +70,37 @@ Local commands:
 
 ---
 
-## What's CURRENTLY working (evidence, validated 2026-07-10)
+## What's CURRENTLY working (evidence, validated 2026-09-08)
 
 | Surface | Evidence |
 |---|---|
-| Typecheck | `pnpm exec astro check` → 0 errors / 0 warnings. |
-| Build | `pnpm run build` → 57 pages emitted in ~1.7 s, no build errors/warnings. `dist/es/index.html` 50,243 B, `dist/en/index.html` 49,803 B. |
-| Timeline markup (es + en) | `grep -o` per locale: 9 `timeline-item`, 9 `<details`, 9 `timeline-details-summary`, 9 `data-timeline-item`, 9 timeline dots. |
-| Dark-theme palette flip | `dist/_astro/index.*.css`: 2 `#22d3ee` (light kept), 2 `:root.theme-dark` rules, 10 `var(--accent-regular)`, 4 `var(--accent-light)` references. |
-| IntersectionObserver hydration | `grep -o 'IntersectionObserver' dist/es/index.html dist/en/index.html` → 1 hit each. The Timeline script is inlined into the HTML, so the fill animation runs without an extra JS chunk. |
-| Multi-language summaries in cards | All 9 Spanish + 9 English summary sentences render in their respective `dist/<lang>/index.html`. |
+| Typecheck | `pnpm exec astro check` → 0 errors / 0 warnings / 3 hints. |
+| Build | `pnpm run build` → **60 pages** in ~2.3 s, no build errors/warnings. `dist/es/index.html` 44,004 B, `dist/en/index.html` 43,747 B. |
+| Timeline markup | Now on `dist/<lang>/about/index.html` (moved off home): 9 `<details`, 31 `timeline-item` (incl. data attributes), 2 `IntersectionObserver` hits; the fill-animation script is inlined (no extra JS chunk). |
+| Dark-theme palette flip | `dist/_astro/index.*.css`: 2 `#22d3ee` (light kept), 1 `:root.theme-dark` occurrence in the hash, 11 `var(--accent-regular)` refs; `var(--accent-light)` no longer referenced (now 0 — was 4). |
+| Reading time | `dist/en/blog/take-a-rest/index.html` contains "min read"; the ES twin contains "min de lectura". |
+| Multi-language summaries in cards | All 9 Spanish + 9 English summary sentences render in their respective `dist/<lang>/about/index.html`. |
 
 ---
 
 ## Open work / known limitations
 
-- `src/lib/static-paths.ts` is dead code. Wire through `getLocalePaths()` in every `pages/[lang]/*.astro`, or delete the file. Today the inline `locales.map(...)` is the de-facto source of truth.
-- No automated tests anywhere in the project. `latest(entries, n)` in `src/lib/content-helpers.ts` is the most reasonable first unit-test target (add Vitest).
-- `pnpm exec astro check` reports 18 hints, not warnings: deprecated `z` usage in `src/content.config.ts` and one unused `ROUTE_NAMES` import in `src/components/CardPreview.astro`. Clean up opportunistically.
+- `src/lib/static-paths.ts` is still dead code. Wire through `getLocalePaths()` in every `pages/[lang]/*.astro`, or delete the file. Today the inline `locales.map(...)` is the de-facto source of truth.
+- No automated tests anywhere in the project. `latest(entries, n)` in `src/lib/content-helpers.ts` and `readingTime()` in `src/lib/reading-time.ts` are the most reasonable first unit-test targets (add Vitest).
+- `pnpm exec astro check` reports 3 hints (down from 18): unused `distDir` in `scripts/screenshots.mjs`, unused `defaultLang` in `src/pages/index.astro`, unused `certifications` import in `src/pages/[lang]/index.astro` (the page uses the `CertBadges` component instead — the import can just be deleted). Clean up opportunistically.
 - `ROUTE_NAMES` enum does not include `HOME = ''` — Nav hand-builds `/${lang}/`. The asymmetry is intentional but easy to mistake for a bug unless you know.
+- **Content refit is COMPLETE (2026-09-08)** — see `agent-memory/content-refit-status.md` for the full record and the editorial conventions now in force (### sections, inline citations, Sources & Further Reading, no Google-search URLs, no emoji-template headings).
+
+## Markdown-content theming tokens (2026-09)
+
+`.markdown-content` blockquotes, inline code and table borders were switched from hardcoded hex (`#f9f9f9`, `#f5f5f5`, `#ddd`, `#555`) to theme tokens: `var(--accent-regular)`, `var(--gray-900)`, `var(--gray-200)`, `var(--gray-700)`. **The `--gray-*` scale is inverted vs. intuition**: in `:root` (light theme) `--gray-900` = `#f3f4f7` (very light) and `--gray-200` = `#3d4663` (dark text); under `:root.theme-dark` they flip (`--gray-900` = `#141925`, `--gray-200` = `#c3cadb`). So `blockquote { background: var(--gray-900); color: var(--gray-200) }` is correct in both themes — do NOT "fix" it by swapping the numbers. New theme-aware surfaces should follow the same token pattern instead of raw hex.
+
+## 2026-09-08 content-refit session (summary; details in content-refit-status.md)
+
+- **All four workstreams are done**: W1 structural normalization (all `#####` → `###`, `<code class="code">` → fences, emoji headings gone, front matter normalized, EN design-patterns post renamed — slug change, see §4), W2 citations (elections post Google-URLs replaced with verified direct sources + attributed language; burnout WHO URL fixed; framework docs URLs modernized), W3 deepening (take-a-rest, multitasking, software-engineer-vs-operator fully rewritten with named research: Dewar/Ariga/Albulescu/Baird/Van Dongen/Sonnentag; Monsell/Ophir; BCG/Deloitte — ES mirrors written natively), W4 work collection (all repo/live URLs HTTP-checked; the expired Firebase demo in react-chat-firebase marked offline in EN+ES).
+- Editorial conventions now in force for any new post: `###` sections, inline `[source](url)` near claims, `#### Sources & Further Reading` at the end, no emoji-template structure, no Google-search URLs, no hotlinked screenshots. Full list in content-refit-status.md.
+- `src/styles/global.css`: markdown-content blockquote/inline-code/table colors now theme-token-driven (see the tokens note above).
+- Blog posts count unchanged at 16 per locale.
 
 ## Docker/nginx gotchas (locked — change with care)
 

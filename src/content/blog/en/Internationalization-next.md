@@ -12,22 +12,24 @@ tags:
 - next-intl
 ---
 
-##### Integrating Internationalization (i18n) into your Next.js Project with next-intl
+### Integrating Internationalization (i18n) into your Next.js Project with next-intl
 
 Internationalization, also known as i18n (short for "internationalization"), is a crucial aspect to reach global audiences in web application development. In this article, we will guide you through the process of integrating internationalization into your Next.js project using the `next-intl` library.
 
-##### What is next-intl?
+### What is next-intl?
 
 `next-intl` is a library that facilitates internationalization in Next.js projects. It allows for content translation and management of date, time, and number formats in different languages in a simple and efficient manner.
 
-##### Steps to Integrate next-intl into your Next.js Project
+### Steps to Integrate next-intl into your Next.js Project
 
-##### 1. Installing Dependencies
+> The snippets below follow the current next-intl App Router setup. The library evolves quickly — check the [official docs](https://next-intl.dev/docs/getting-started/app-router/with-i18n-routing) if something has changed.
+
+### 1. Installing Dependencies
 
 To get started, install the necessary dependencies by running the following command in your terminal:
 
 ```bash
-npm install next-intl`
+npm install next-intl
 ```
 
  and create the following file structure:
@@ -46,16 +48,30 @@ npm install next-intl`
             └── page.tsx (6)
 ```
 
-##### 2. Configuring next-intl
+### 2. Configuring next-intl (next.config)
 
-In your `next.config.js` file, add the following configuration to enable support for `next-intl`:
+The old `withIntl()` wrapper no longer exists. The current integration uses the `createNextIntlPlugin` factory from `next-intl/plugin`, which wires your i18n request config into Server Components:
 
 ```js
-const { withIntl } = require('next-intl');
-module.exports = withIntl();
+// next.config.mjs (ES modules)
+import createNextIntlPlugin from 'next-intl/plugin';
+const withNextIntl = createNextIntlPlugin();
+const nextConfig = {};
+export default withNextIntl(nextConfig);
 ```
 
-##### 3. Creating Translation Files
+If your project uses CommonJS for the Next.js config:
+
+```js
+// next.config.js (CommonJS)
+const createNextIntlPlugin = require('next-intl/plugin');
+const withNextIntl = createNextIntlPlugin();
+/** @type {import('next').NextConfig} */
+const nextConfig = {};
+module.exports = withNextIntl(nextConfig);
+```
+
+### 3. Creating Translation Files
 
 Create translation files for each language you wish to support in your application. For example, you can have files like `en.json` for English and `es.json` for Spanish, located in a directory such as `public/locales`.
 
@@ -69,35 +85,35 @@ Example:
 }
 ```
 
-##### 4. Setting up next.config.mjs
+### 4. Setting up next.config.mjs
 
 Now, set up the plugin which creates an alias to provide your i18n configuration (specified in the next step) to Server Components.
 
 If you're using ECMAScript modules for your Next.js config, you can use the plugin as follows:
 
-<code class="code">
+```js
 /** @type {import('next').NextConfig} */
 import createNextIntlPlugin from 'next-intl/plugin';
 const withNextIntl = createNextIntlPlugin();
 const nextConfig = {};
 export default withNextIntl(nextConfig);
-</code>
+```
 
 If you're using CommonJS for your Next.js config, you can use the plugin as follows:
 
-<code class="code">
+```js
 const createNextIntlPlugin = require('next-intl/plugin');
 const withNextIntl = createNextIntlPlugin();
 /** @type {import('next').NextConfig} */
 const nextConfig = {};
 module.exports = withNextIntl(nextConfig);
-</code>
+```
 
-##### 5. Configure i18n.js
+### 5. Configure i18n.ts
 
 next-intl creates a configuration once per request. Here you can provide messages and other options depending on the locale of the user.
 
-<code class="code">
+```ts
 // src/i18n.ts
 import {notFound} from 'next/navigation';
 import {getRequestConfig} from 'next-intl/server';
@@ -110,7 +126,7 @@ export default getRequestConfig(async ({locale}) => {
     messages: (await import(`../messages/${locale}.json`)).default
   };
 });
-</code>
+```
 
 **🚨 Can I move this file somewhere else?**
 
@@ -125,7 +141,7 @@ const withNextIntl = createNextIntlPlugin(
 );
 ```
 
-##### 6. Configure middleware.ts
+### 6. Configure middleware.ts
 
 The middleware matches a locale for the request and handles redirects and rewrites accordingly.
 
@@ -146,7 +162,7 @@ export const config = {
 };
 ```
 
-##### 7. Setting up app/[locale]/layout.tsx
+### 7. Setting up app/[locale]/layout.tsx
 
 The `locale` that was matched by the middleware is available via the `locale` param and can be used to configure the document language.
 
@@ -167,7 +183,7 @@ export default function LocaleLayout({
 }
 ```
 
-##### Using Translations
+### Using Translations
 
 Use translations in your page components or anywhere else!
 
@@ -180,7 +196,7 @@ export default function Index() {
 }
 ```
 
-##### Start Internationalizing your Next.js Application Today
+### Start Internationalizing your Next.js Application Today
 
 With these simple steps, you can easily add internationalization support to your Next.js project using `next-intl`. Now, your application will be ready to reach a global audience and provide a localized and personalized experience.
 Don't wait any longer and start internationalizing your application today!
@@ -189,7 +205,9 @@ Don't wait any longer and start internationalizing your application today!
 
 ---
 
-*Sources:*
+#### Sources & Further Reading
 
-1. GitHub - Next.js: <https://github.com/vercel/next.js>
-2. GitHub - next-intl: <https://github.com/amannn/next-intl>
+- [next-intl — App Router setup with i18n routing](https://next-intl.dev/docs/getting-started/app-router/with-i18n-routing)
+- [next-intl — GitHub repository](https://github.com/amannn/next-intl)
+- [Next.js — Internationalization docs](https://nextjs.org/docs/app/building-your-application/internationalization)
+- [Next.js — GitHub repository](https://github.com/vercel/next.js)

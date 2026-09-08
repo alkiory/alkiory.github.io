@@ -84,11 +84,9 @@ Los frameworks y librerías de JavaScript han influido profundamente en el desar
 
 A medida que el ecosistema de JavaScript continúa evolucionando, mantenerse informado sobre las últimas tendencias y avances asegurará que puedas aprovechar al máximo estas potentes herramientas en tus proyectos de desarrollo.
 
----
+#### Fuentes y lecturas adicionales
 
-*Fuentes:*
-
-1. [Documentación Oficial de React](https://reactjs.org/docs/getting-started.html)
-2. [Documentación Oficial de Angular](https://angular.io/docs)
-3. [Documentación Oficial de Vue.js](https://vuejs.org/v2/guide/)
-4. [Documentación Oficial de Node.js](https://nodejs.org/en/docs/)
+1. [Documentación Oficial de React](https://react.dev/learn)
+2. [Documentación Oficial de Angular](https://angular.dev/)
+3. [Documentación Oficial de Vue.js](https://es.vuejs.org/guide/introduction.html)
+4. [Documentación Oficial de Node.js](https://nodejs.org/docs/latest/api/)

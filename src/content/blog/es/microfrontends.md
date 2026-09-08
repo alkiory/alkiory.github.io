@@ -165,16 +165,16 @@ Mantener una UI/UX coherente es un gran desafío cuando múltiples equipos traba
 - **Sistemas de Diseño (Design Systems):** La adopción de un **Design System** robusto y compartido (con una librería de componentes comunes) es fundamental. Esto garantiza que todos los microfrontends utilicen los mismos estilos, tipografías y componentes (botones, formularios, etc.), ofreciendo una experiencia unificada al usuario final.
 - **Equipos de Gobernanza/Coordinación:** Puede ser útil tener un pequeño equipo de "plataforma" o "UX/UI" que establezca directrices, mantenga el Design System y ofrezca soporte a los equipos de microfrontends para asegurar la coherencia.
 
-### Conclusión Accionable 🎯
+### Conclusión Accionable
 
 En definitiva, **no existe una bala de plata**. La arquitectura elegida debe responder a las necesidades de las personas y del producto. Cada tecnología es un medio al servicio del equipo. Lo importante es evaluar reflexivamente los pros y contras técnicos (velocidad, despliegue, mantenimiento, compatibilidad) y decidir en función del caso real, complementando esa decisión con estrategias sólidas para la comunicación, gestión de estado y consistencia entre los módulos.
 
-### 🧠 Recursos recomendados
+### Recursos recomendados
 
 - 📖 *Team Topologies* — sobre estructuras de equipo y flujo cognitivo
 - 📺 Video: ["Vite and Module Federation Makes Micro-Frontends EASY!"](https://www.youtube.com/watch?v=t-nchkL9yIg)
 
-### 📚 Fuentes consultadas
+### Fuentes consultadas
 
 - [Implementing Micro-frontends with Vite Federation : A Practical Guide](https://medium.com/@charu.sharma517/implementing-micro-frontends-with-vite-federation-a-practical-guide-333351575861)
 - [Documentación de Proyecto de Microfrontends con Módulos Federados](https://rpenya.medium.com/documentaci%C3%B3n-de-proyecto-de-microfrontends-con-m%C3%B3dulos-federados-8943f5f85303)

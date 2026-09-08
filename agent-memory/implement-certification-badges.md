@@ -1,5 +1,9 @@
 # Certification Badges Implementation
 
+Status: SHIPPED (commit 8c7750c). Validated 2026-09-08: `CertBadges.astro` renders on home (`dist/<lang>/index.html` contains badge markup) and about page; badge assets resolve from `src/data/skills.ts`.
+
+Leftover cleanup: `src/pages/[lang]/index.astro` still imports `certifications` directly but doesn't use it (the page goes through `CertBadges.astro`) — flagged as 1 of the 3 current `astro check` hints; safe to delete that import line.
+
 ## Overview
 Added certification badges feature to the portfolio site displaying IBM, SkillUp Online, University of Alberta, and Credly badges on both the home page and about page.
 

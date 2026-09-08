@@ -152,8 +152,10 @@ tiempo ahorrado escribiendo el código.
 
 #### 📈 Resultado actual
 
-✔️ Demo público en vivo en <https://chat-react-c9d77.web.app>,
-servido desde Firebase Hosting con HTTPS.
+✔️ La demo pública estuvo en vivo en <https://chat-react-c9d77.web.app>,
+servida desde Firebase Hosting con HTTPS. *(El canal de demo está
+desactivado actualmente — el proyecto de Firebase expiró. El readme
+del repo tiene los pasos para correrla en local.)*
 
 ✔️ Login con Google funcionando end-to-end — cualquiera puede
 abrir la URL y empezar a mandar mensajes con un solo click.
@@ -187,7 +189,6 @@ de una base conocida y probada.
 ¿Querés leer el código fuente o correr tu propia versión?
 
 - 🔗 [Repositorio](https://github.com/SergioCampbell/ReactChat)
-- 🌐 [Demo en vivo](https://chat-react-c9d77.web.app)
 
 ##### 🧠 ¿Estás armando tu propia app en tiempo real?
 

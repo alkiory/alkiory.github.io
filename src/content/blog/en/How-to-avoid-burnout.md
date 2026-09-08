@@ -4,7 +4,10 @@ publishDate: 2024-10-13 00:00:00
 img: https://cdn.pixabay.com/photo/2018/03/27/21/44/match-3267506_960_720.jpg
 img_alt: "Burnout symbology"
 description: "Burnout is a state of physical, emotional, and mental exhaustion caused by prolonged stress. It can significantly impact productivity, job satisfaction, and overall well-being."
-tags: ["Blog", "Daily", "Communication"]
+tags:
+- Blog
+- Daily
+- Communication
 ---
 
 ### Understanding and Preventing Burnout: Strategies for Managing Stress in Remote Work for Programmers
@@ -98,13 +101,9 @@ Remote programming jobs present unique challenges, but with the right approach, 
 
 Burnout is a serious issue that can affect anyone, especially in the demanding field of software development and remote work environments. By recognizing the signs of burnout, implementing preventive measures, and calmly addressing it when it occurs, you can maintain your well-being and productivity. Remember, taking care of yourself is not just beneficial for you but also essential for your overall effectiveness and success in the workplace.
 
----
-
-*Sources:*
+#### Sources & Further Reading
 
 1. [Mayo Clinic: Job Burnout: How to Spot It and Take Action](https://www.mayoclinic.org/healthy-lifestyle/adult-health/in-depth/burnout/art-20046642)
 2. [World Health Organization: Burn-out an "Occupational Phenomenon": International Classification of Diseases](https://www.who.int/news/item/28-05-2019-burn-out-an-occupational-phenomenon-international-classification-of-diseases)
 3. [Harvard Business Review: How to Avoid Burnout in a Remote Work Environment](https://hbr.org/2020/04/how-to-avoid-wfh-burnout)
-4. [6 Causes of burnout and how to avoid them](https://hbr.org/2019/07/6-causes-of-burnout-and-how-to-avoid-them)
-
-These sources provide comprehensive information about burnout, its prevention, and management strategies, particularly in the context of remote work for programmers.
+4. [Harvard Business Review: 6 Causes of Burnout and How to Avoid Them](https://hbr.org/2019/07/6-causes-of-burnout-and-how-to-avoid-them)

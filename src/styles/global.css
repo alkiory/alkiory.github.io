@@ -331,23 +331,21 @@ pre {
 
 /* Estilos para las citas en Markdown */
 .markdown-content blockquote {
-    /* Resalta la cita con un borde a la izquierda */
-    border-left: 4px solid var(--primary-color, #3498db);
-    /* Color de fondo para diferenciarla */
-    background-color: #f9f9f9;
-    /* Espaciado interno y externo */
+    /* Usamos tu variable de acento en lugar de un color primario no definido */
+    border-left: 4px solid var(--accent-regular);
+    /* Fondo dinámico: gris muy claro en light mode, muy oscuro en dark mode */
+    background-color: var(--gray-900);
     padding: 1.5rem;
     margin: 1.5rem 0;
-    /* Estilo de la fuente */
     font-style: italic;
-    color: #555;
-    /* Margen izquierdo para alinear con el texto */
+    /* Texto dinámico: oscuro en light mode, claro en dark mode */
+    color: var(--gray-200);
     margin-left: 0;
 }
 
 /* Opcional: Estilo para párrafos dentro de una cita */
 .markdown-content blockquote p {
-    margin: 0; /* Elimina el margen por defecto de los párrafos */
+    margin: 0; 
     line-height: 1.6;
 }
 
@@ -356,7 +354,8 @@ pre {
   overflow-x: auto;
   white-space: pre-wrap;
   word-break: break-all;
-  background: #f5f5f5;
+  /* Fondo dinámico reemplazando el #f5f5f5 */
+  background: var(--gray-900);
   padding: 1rem;
   border-radius: 4px;
 }
@@ -375,11 +374,13 @@ pre {
   white-space: nowrap;
 }
 
+/* Tablas en Markdown */
 .markdown-content th,
 .markdown-content td {
   padding: 8px 12px;
   text-align: left;
-  border: 1px solid #ddd;
+  /* Borde dinámico reemplazando el #ddd */
+  border: 1px solid var(--gray-700);
 }
 
 /* Links largos en Markdown */

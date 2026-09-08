@@ -18,7 +18,7 @@ tags:
 - Código Limpio
 ---
 
-##### Introducción
+### Introducción
 
 En el vasto ámbito del desarrollo de software, los **patrones de diseño** son
 soluciones reutilizables a problemas recurrentes — no snippets para copiar y pegar,
@@ -33,7 +33,7 @@ En este artículo, desmitificaremos estos patrones, explorando su aplicación
 práctica y cómo pueden mejorar la calidad del código — sin caer en la trampa de
 usar un patrón "porque está ahí".
 
-##### Patrones de Diseño en JavaScript y TypeScript
+### Patrones de Diseño en JavaScript y TypeScript
 
 Veremos tres de los patrones más esenciales — **Singleton**, **Observer** y
 **Factory** — en su modismo JS/TS: pequeños, enfocados, y adaptados a la forma
@@ -140,7 +140,7 @@ Estos tres patrones no son los únicos que vale la pena aprender — **Strategy*
 **Decorator** y **Adapter** también aparecen constantemente en código JS/TS moderno
 — pero forman el vocabulario mínimo viable para hablar de estructura con tu equipo.
 
-##### Código Limpio en Acción
+### Código Limpio en Acción
 
 Escribir **código limpio** es una habilidad fundamental para cualquier desarrollador.
 A lo largo del artículo compartiremos consejos prácticos sobre cómo aplicar los
@@ -181,7 +181,7 @@ función que recibe `any` no le está diciendo nada — y es la fuente más com�
 bugs del estilo "el test pasaba local pero crasheaba en prod" en codebases TS que
 auditamos.
 
-##### Arquitectura de Datos Eficiente
+### Arquitectura de Datos Eficiente
 
 La eficiencia de una aplicación depende en gran medida de su **arquitectura de
 datos**. Exploraremos cómo diseñar estructuras de datos eficientes en el contexto
@@ -219,7 +219,7 @@ preserva el orden de inserción, maneja keys no-string y evita la trampa de las
 propiedades heredadas donde `obj["toString"]` misteriosamente devuelve el código
 fuente de la función.
 
-##### Creando Contenido para Todos
+### Creando Contenido para Todos
 
 Además de abordar aspectos técnicos, dedicaremos un segmento a la creación de
 **contenido inclusivo**. ¿Cómo explicar conceptos complejos a colegas no
@@ -236,7 +236,7 @@ Acompañá la analogía con un **próximo paso concreto** — un cambio de una l
 que el lector pueda hacer antes de terminar el artículo. El contenido técnico sin
 un "¿qué pruebo ahora?" como cierre se lee una vez y se olvida.
 
-##### En resumen
+### En resumen
 
 En resumen, este artículo tiene como objetivo desentrañar los misterios de los
 patrones de diseño, promover la escritura de código limpio y eficiente, y
@@ -250,7 +250,7 @@ problema que resuelve**. Singleton, Observer y Factory no son "avanzados" porque
 usen trucos ingeniosos — son avanzados porque alinean la *forma* del código con
 tres de las formas más comunes del problema mismo.
 
-##### Comparte tu Experiencia
+### Comparte tu Experiencia
 
 ¿Has enfrentado desafíos al aplicar patrones de diseño en tus proyectos? ¿Tienes
 algún consejo sobre cómo escribir código limpio? Comparte tu experiencia en los

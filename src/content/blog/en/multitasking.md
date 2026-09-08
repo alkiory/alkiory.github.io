@@ -25,7 +25,9 @@ On the surface, this scene conveys a modern idea of productivity: "doing many th
 
 Multitasking has been romanticized. The idea of being able to answer emails while coding, review a design while listening to a daily stand-up, and have a tutorial playing in the background while finishing a ticket.
 
-The reality is different: **the brain doesn't process several complex tasks simultaneously**; instead, it rapidly switches context between them. This constant jumping consumes cognitive energy and increases errors.
+The reality is different: **the brain doesn't process several complex tasks simultaneously**; instead, it rapidly switches context between them. This isn't a metaphor — it's one of the best-studied phenomena in cognitive psychology. Stephen Monsell's review of task-switching research shows that every switch carries a measurable cost in time and accuracy, because the control processes that reconfigure the mind for a new task take time to run ([Monsell, 2003](https://www.sciencedirect.com/science/article/abs/pii/S1364661303000287)). The [American Psychological Association summarizes decades of this research](https://www.apa.org/topics/research/multitasking): shifting between complex tasks can cost enough time that heavy switchers effectively lose a large fraction of their productive time — and the more complex the tasks, the bigger the cost.
+
+It gets worse for people who do it constantly. A [PNAS study](https://www.pnas.org/doi/10.1073/pnas.0903620106) by Ophir, Nass and Wagner found that heavy media multitaskers were *worse* at filtering irrelevant information and at switching between tasks than light multitaskers — the constant juggling was associated with worse attentional control, not better.
 
 > Doing many things at once doesn't make you more productive. It just makes you more tired.
 
@@ -47,14 +49,20 @@ And the result is similar: less presence, more exhaustion, less enjoyment.
 
 It's not about eliminating all multitasking, but about identifying when it truly **sabotages** us. Here are some practical ideas:
 
-* 🧠 **Focus blocks**: Reserve at least 1 hour a day without interruptions for cognitively demanding tasks.
-* 🔕 **Silence notifications** during key moments.
-* ✅ **Do one thing at a time**, even if it seems slower at first.
-* 📵 **Screen-free breaks** between work blocks.
-* 📝 **Short list of priorities**: Choose 1 or 2 key tasks for the day that will define whether it was productive.
+* **Focus blocks**: Reserve at least 1 hour a day without interruptions for cognitively demanding tasks.
+* **Silence notifications** during key moments.
+* **Do one thing at a time**, even if it seems slower at first.
+* **Screen-free breaks** between work blocks.
+* **Short list of priorities**: Choose 1 or 2 key tasks for the day that will define whether it was productive.
 
 ### In Conclusion
 
 You're not alone. We all fall into the trap of "being busy" without being effective. But every time you choose to do **less, but better**, you are training your mind for what truly matters.
 
 Productivity isn't about how many tabs you have open, but how much attention you are capable of sustaining.
+
+#### Sources & Further Reading
+
+- [Monsell (2003) — Task switching, Trends in Cognitive Sciences](https://www.sciencedirect.com/science/article/abs/pii/S1364661303000287)
+- [American Psychological Association — Multitasking: Switching costs](https://www.apa.org/topics/research/multitasking)
+- [Ophir, Nass & Wagner (2009) — Cognitive control in media multitaskers, PNAS](https://www.pnas.org/doi/10.1073/pnas.0903620106)
