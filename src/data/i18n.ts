@@ -50,6 +50,7 @@ export const translations = {
       title: 'Mi Blog Personal',
       description: 'Artículos sobre software, diseño y la construcción de los proyectos.',
       readMore: 'Leer más',
+      readingTime: 'min de lectura',
     },
     about: {
       title: 'Quién Soy',
@@ -213,6 +214,7 @@ export const translations = {
       title: 'My Personal Blog',
       description: 'Articles about software, design and the work behind the projects.',
       readMore: 'Read more',
+      readingTime: 'min read',
     },
     about: {
       title: "Who I Am",

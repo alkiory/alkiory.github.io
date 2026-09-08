@@ -7,7 +7,8 @@ import Hero from "../../../components/ui/Hero.astro";
 import Icon from "../../../components/ui/icon.astro";
 import Pill from "../../../components/ui/Pill.astro";
 import { ROUTE_NAMES, splitContentId } from "../../../lib/routes-names";
-import type { Lang } from "../../../data/i18n";
+import { getTranslations, type Lang } from "../../../data/i18n";
+import { readingTime } from "../../../lib/reading-time";
 
 export async function getStaticPaths() {
   const allBlogPost = await getCollection("blog");
@@ -26,6 +27,9 @@ const lang = (Astro.url.pathname.split("/")[1] as Lang) || "en";
 
 const { blog } = Astro.props;
 const { Content } = await render(blog);
+
+const t = getTranslations(lang);
+const readingMinutes = readingTime(blog.body ?? "");
 ---
 
 <BaseLayout title={blog.data.title} description={blog.data.description}>
@@ -45,6 +49,9 @@ const { Content } = await render(blog);
                 {blog.data.tags.map((tag: string) => <Pill>{tag}</Pill>)}
               </div>
               <p class="description">{blog.data.description}</p>
+              <p class="reading-time">
+                {readingMinutes} {t.blog.readingTime}
+              </p>
             </div>
           </Hero>
         </div>
@@ -99,6 +106,11 @@ const { Content } = await render(blog);
   .description {
     font-size: var(--text-lg);
     max-width: 54ch;
+  }
+
+  .reading-time {
+    font-size: var(--text-lg);
+    opacity: 0.8;
   }
 
   .image {
