@@ -1,7 +1,7 @@
 ---
 title: "RPI Framework: Research, Plan, Implement in AI Coding"
 publishDate: 2026-09-08 00:00:00
-img: https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2d/Artificial_Intelligence_%28AI%29_and_Robotics_exhibition_at_the_Heinz_Nixdorf_MuseumsForum.jpg/1920px-Artificial_Intelligence_%28AI%29_and_Robotics_exhibition_at_the_Heinz_Nixdorf_MuseumsForum.jpg
+img: https://i.postimg.cc/9FPCZGhF/Gemini-Generated-Image-sg8bxsg8bxsg8bxs.jpg
 img_alt: A view of the artificial intelligence and robotics exhibition at the Heinz Nixdorf MuseumsForum.
 description: "The RPI framework (Research, Plan, Implement) turns chaotic AI-assisted coding into predictable delivery. Learn how the three phases and the FAR/FACTS validation gates work."
 tags:

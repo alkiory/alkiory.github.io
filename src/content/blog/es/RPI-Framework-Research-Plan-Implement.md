@@ -1,7 +1,7 @@
 ---
 title: "Framework RPI: qué es y cómo programar con IA"
 publishDate: 2026-09-08 00:00:00
-img: https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2d/Artificial_Intelligence_%28AI%29_and_Robotics_exhibition_at_the_Heinz_Nixdorf_MuseumsForum.jpg/1920px-Artificial_Intelligence_%28AI%29_and_Robotics_exhibition_at_the_Heinz_Nixdorf_MuseumsForum.jpg
+img: https://i.postimg.cc/9FPCZGhF/Gemini-Generated-Image-sg8bxsg8bxsg8bxs.jpg
 img_alt: Vista de la exposición de inteligencia artificial y robótica del Heinz Nixdorf MuseumsForum.
 description: "Aprende qué es el framework RPI (Research, Plan, Implement), cómo funcionan sus tres fases y cómo aplicar las escalas de validación FAR y FACTS para programar con IA de forma fiable."
 tags:
