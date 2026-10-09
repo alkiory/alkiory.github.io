@@ -93,21 +93,21 @@ export const certifications: Certification[] = [
   {
     name: "Cloud Native, Microservices, Containers, DevOps, and Agile",
     web: "https://www.credly.com/badges/a6335c91-df87-4ea9-afc7-e021464b82c6",
-    badge: "/assets/badges/cloud-native-devops.png",
+    badge: "/assets/badges/cloud-native-devops.webp",
     issuer: "IBM",
     date: "Sept. 2026",
   },
   {
     name: "Introduction to Systems Architecture",
     web: "https://www.credly.com/badges/018035dc-1402-455b-8e8d-e6a1c6210135",
-    badge: "/assets/badges/intro-systems-architecture.png",
+    badge: "/assets/badges/intro-systems-architecture.webp",
     issuer: "IBM",
     date: "Aug. 2026",
   },
   {
     name: "Software Systems: Testing, Deployment, and Maintenance (V2)",
     web: "https://www.credly.com/badges/8c78a312-44be-4541-8102-8e88c38124bf",
-    badge: "/assets/badges/software-systems-testing.png",
+    badge: "/assets/badges/software-systems-testing.webp",
     issuer: "IBM",
     date: "Sept. 2026",
   },
@@ -130,7 +130,7 @@ export const certifications: Certification[] = [
   {
     name: "Software Processes and Agile Practices",
     web: "https://coursera.org/share/c42432aa370e50eb5448c6cf75b3d024",
-    badge: "/assets/badges/ualberta.png",
+    badge: "/assets/badges/ualberta.webp",
     issuer: "University of Alberta",
     date: "Sept. 2026",
   },
