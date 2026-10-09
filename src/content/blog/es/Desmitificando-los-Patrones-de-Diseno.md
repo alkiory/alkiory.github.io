@@ -2,7 +2,7 @@
 title: Desmitificando los Patrones de Diseño en JavaScript y TypeScript
 publishDate: 2024-01-05 00:00:00
 img: https://cdn.pixabay.com/photo/2021/01/03/13/51/lego-5884582_1280.jpg
-img_alt: Desmitificando los Patrones de Diseño en JavaScript y TypeScript por sergio campbell dev
+img_alt: "Piezas de lego de colores sobre una mesa, metáfora de los patrones de diseño como bloques reutilizables"
 description: |
   Los patrones de diseño son soluciones reutilizables a problemas recurrentes.
   En JavaScript y TypeScript se traducen en modismos concretos — Singleton para

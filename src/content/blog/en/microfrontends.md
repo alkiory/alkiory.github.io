@@ -3,7 +3,7 @@
 title: Microfrontends with Webpack, Vite, and PNPM Workspaces - What to Choose and When?
 publishDate: 2025-07-25 00:00:00
 img: https://cdn.pixabay.com/photo/2017/02/25/22/05/orchestra-2098877_1280.jpg
-img_alt: Image of Orchestra, Symphony and Stage
+img_alt: Symphony orchestra performing on stage, a metaphor for coordinating microfrontends
 description: Technical analysis of Webpack Module Federation, Vite + Workspaces, and PNPM Workspaces in microfrontend architecture, complemented with communication strategies, state management, and testing.
 tags:
 

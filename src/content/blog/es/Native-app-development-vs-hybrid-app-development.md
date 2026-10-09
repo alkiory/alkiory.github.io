@@ -2,7 +2,7 @@
 title: Desarrollo de Aplicaciones Nativas vs. Desarrollo de Aplicaciones Híbridas
 publishDate: 2024-02-26 00:00:00
 img: https://cdn.pixabay.com/photo/2023/01/24/10/30/gearstick-7740670_1280.jpg
-img_alt: Desarrollo de Aplicaciones Nativas vs. Desarrollo de Aplicaciones Híbridas
+img_alt: "Palanca de cambios de un automóvil, metáfora de la elección entre desarrollo nativo e híbrido"
 description: |
   La decisión entre desarrollo nativo y desarrollo híbrido lleva años en curso.
   Ambos tienen sus ventajas y desventajas propias. Este artículo desglosa para qué

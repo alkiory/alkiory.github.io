@@ -2,7 +2,7 @@
 title: Exploring the Variety of JavaScript Frameworks and Libraries and Their Influence on Software Development
 publishDate: 2024-07-18 00:00:00
 img: https://cdn.pixabay.com/photo/2018/01/25/08/14/aisle-3105629_1280.jpg
-img_alt: Exploring the Variety of JavaScript Frameworks and Libraries and Their Influence on Software Development by sergio campbell dev
+img_alt: Supermarket aisle full of shelves with a wide variety of products, a metaphor for the abundance of JavaScript frameworks
 description: |
    JavaScript is a versatile and powerful language that has become a cornerstone of modern web development. Its ecosystem is vast, with a plethora of frameworks and libraries that have revolutionized the way developers build applications. In this article, we will explore some of the most popular JavaScript frameworks and libraries, and discuss how they influence software development.
 tags:

@@ -2,7 +2,7 @@
 title: Native App Development vs. Hybrid App Development
 publishDate: 2024-02-26 00:00:00
 img: https://cdn.pixabay.com/photo/2023/01/24/10/30/gearstick-7740670_1280.jpg
-img_alt: Native App Development vs. Hybrid App Development
+img_alt: Car gear stick, a metaphor for choosing between native and hybrid development
 description: |
   The decision between native and hybrid app development has been ongoing for years.
   Both have their own advantages and disadvantages. This article breaks down what each

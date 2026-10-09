@@ -2,7 +2,7 @@
 title: Demystifying Design Patterns in JavaScript and TypeScript
 publishDate: 2024-01-05 00:00:00
 img: https://cdn.pixabay.com/photo/2021/01/03/13/51/lego-5884582_1280.jpg
-img_alt: Design Patterns with code samples by sergio campbell dev
+img_alt: Colorful lego bricks on a table, a metaphor for design patterns as reusable building blocks
 description: |
   Design patterns are reusable solutions to recurring problems. In JavaScript and
   TypeScript, they translate into concrete idioms — Singleton for shared state,

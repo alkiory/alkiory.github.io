@@ -2,7 +2,7 @@
 title: CRP (Critical Rendering Path) que necesitas saber
 publishDate: 2024-12-20 00:00:00
 img: https://cdn.pixabay.com/photo/2023/11/29/14/15/forest-8419725_1280.jpg
-img_alt: CRP (Critical Rendering Path) por sergio campbell dev
+img_alt: "Bosque con luz filtrada entre los árboles, metáfora del camino crítico de renderizado"
 description: CRP que solemos usar y no sabemos que lo usamos 🧐.
 tags:
 - TypeScript
