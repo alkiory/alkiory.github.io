@@ -73,10 +73,13 @@ const allProjects = entriesForLang(await getCollection("work"), lang, 3);
       </header>
 
       <!-- SKILLS AND STATISTICS -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-start">
         <Skills />
 
-        <div class="card p-8 flex flex-col justify-center w-fit" style="z-index: 10;">
+        <div
+          class="card p-8 flex flex-col justify-center w-fit"
+          style="z-index: 10;"
+        >
           <div class="grid grid-cols-2 gap-8 text-center">
             <!-- years of experience -->
             <div>
