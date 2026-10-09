@@ -73,41 +73,54 @@ const allProjects = entriesForLang(await getCollection("work"), lang, 3);
       </header>
 
       <!-- SKILLS AND STATISTICS -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-start">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20">
         <Skills />
 
-        <div
-          class="card p-8 flex flex-col justify-center w-fit h-fit self-center"
-          style="z-index: 10;"
-        >
-          <div class="grid grid-cols-2 gap-8 text-center">
-            <!-- years of experience -->
-            <div>
-              <div
-                class="text-4xl font-bold text-[var(--accent-regular)] mb-2 font-brand"
-              >
-                9+
+        <!-- Contenedor Flex: centra la tarjeta vertical y horizontalmente
+             en su columna sin depender de la alineación intrínseca del
+             Grid padre (mismo resultado en dev y en producción). -->
+        <div class="flex items-center justify-center w-full">
+          <div
+            class="card p-8 flex flex-col justify-center w-fit h-fit"
+            style="
+              z-index: 10;
+              /* Fondo translúcido para que el blur de cristal esmerilado
+                 se aprecie; el gradiente de .card queda detrás. Inline
+                 para no depender del purgado de Tailwind en producción. */
+              background-color: var(--gray-999_40);
+              backdrop-filter: blur(6px);
+              -webkit-backdrop-filter: blur(6px);
+            "
+          >
+            <div class="grid grid-cols-2 gap-8 text-center">
+              <!-- years of experience -->
+              <div>
+                <div
+                  class="text-4xl font-bold text-[var(--accent-regular)] mb-2 font-brand"
+                >
+                  9+
+                </div>
+                <p class="text-[var(--gray-400)] text-sm mt-2">
+                  {t.home.yearsOfExperienceDesc || "Years of Experience"}
+                </p>
               </div>
-              <p class="text-[var(--gray-400)] text-sm mt-2">
-                {t.home.yearsOfExperienceDesc || "Years of Experience"}
-              </p>
-            </div>
-            <!-- projects completed -->
-            <div>
-              <div
-                class="text-4xl font-bold text-[var(--accent-regular)] mb-2 font-brand"
-              >
-                67+
+              <!-- projects completed -->
+              <div>
+                <div
+                  class="text-4xl font-bold text-[var(--accent-regular)] mb-2 font-brand"
+                >
+                  67+
+                </div>
+                <p class="text-[var(--gray-400)] text-sm mt-2">
+                  {t.home.projectsCompletedDesc || "Projects Completed"}
+                </p>
               </div>
-              <p class="text-[var(--gray-400)] text-sm mt-2">
-                {t.home.projectsCompletedDesc || "Projects Completed"}
-              </p>
             </div>
-          </div>
 
-          <!-- status badge -->
-          <div class="text-center" style="margin-top: 1rem;">
-            <StatusBadge />
+            <!-- status badge -->
+            <div class="text-center" style="margin-top: 1rem;">
+              <StatusBadge />
+            </div>
           </div>
         </div>
       </div>
