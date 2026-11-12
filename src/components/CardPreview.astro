@@ -33,14 +33,27 @@ const t = getTranslations(lang);
   >
     {entry.data.title}
   </span>
-  <Image
-    src={entry.data.img}
-    alt={entry.data.img_alt || ""}
-    loading="lazy"
-    decoding="async"
-    width={1920}
-    height={1080}
-  />
+  {
+    entry.data.img.startsWith("/") ? (
+      <img
+        src={entry.data.img}
+        alt={entry.data.img_alt || ""}
+        loading="lazy"
+        decoding="async"
+        width="1920"
+        height="1080"
+      />
+    ) : (
+      <Image
+        src={entry.data.img}
+        alt={entry.data.img_alt || ""}
+        loading="lazy"
+        decoding="async"
+        width={1920}
+        height={1080}
+      />
+    )
+  }
 </a>
 
 <style>

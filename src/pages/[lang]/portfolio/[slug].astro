@@ -89,13 +89,23 @@ const hasMermaid =
         <div class="stack gap-10 content">
           {
             project.data.img && (
-              <Image
-                class="image"
-                src={project.data.img}
-                alt={project.data.img_alt || ""}
-                width={1920}
-                height={1080}
-              />
+              project.data.img.startsWith("/") ? (
+                <img
+                  class="image"
+                  src={project.data.img}
+                  alt={project.data.img_alt || ""}
+                  width="1920"
+                  height="1080"
+                />
+              ) : (
+                <Image
+                  class="image"
+                  src={project.data.img}
+                  alt={project.data.img_alt || ""}
+                  width={1920}
+                  height={1080}
+                />
+              )
             )
           }
           <div class="content">
