@@ -1,7 +1,7 @@
 ---
 title: "Vehicle Manager: 100% Offline Vehicle Tracking with Kotlin and Clean Architecture"
 publishDate: 2026-10-12 00:00:00
-img: https://vehicle-manager-landing.vercel.app/screens/dashboard.webp
+img: /assets/vehicle-manager-landing.png
 img_alt: "Vehicle Manager dashboard showing average fuel consumption, cost per kilometer and refuel history"
 description: |
   Vehicle Manager is a native Android app in Kotlin for keeping
